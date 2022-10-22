@@ -1,0 +1,60 @@
+---
+API:
+  endpoints:
+    - route: /round
+      verbs:
+        - verb: GET
+          description: Return the number of the round.
+    
+    - route: /deck
+      verbs:
+        - verb: GET
+          description: Returns all the cards in the deck, in random order (not the order in which the cards are being dealt).
+        - verb: POST
+          description: Creates 2 new decks of cards (pre and post 9/11), in random order. Only available at the start of the game.
+    - route: /deck/discard
+      verbs:
+        - verb: GET
+          description: Returns all the cards that have been discarded.
+    - route: /deck/remove
+      verbs:
+        - verb: GET
+          description: Returns all the cards that have been removed.
+    
+    - route: /card/{id}
+      verbs:
+        - verb: GET
+          description: Get the information about a card.
+    
+    - route: /card/deal
+      verbs:
+        - verb: GET
+          description: Returns a random card. Only available if it's the player's turn.
+    
+    - route: /card/play/{id}
+      verbs:
+        - verb: POST
+          description: Adds the card to the table. Only available if it's the player's turn.
+        - verb: DELETE
+          description: Discards the card. Only available if it's the player's turn.
+    
+    - route: /map
+      verbs:
+        - verb: GET
+          description: Returns all the countries and their data.
+    
+    - route: /score
+      verbs:
+        - verb: GET
+          description: Returns the score of all the players.
+    
+    - route: /route
+      verbs:
+        - verb: null
+          description: text
+        - verb: null
+          description: text
+        - verb: null
+          description: text
+        - verb: null
+          description: text
