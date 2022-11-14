@@ -5,6 +5,8 @@ API:
       verbs:
         - verb: GET
           description: Return the number of the round.
+        - verb: PUT
+          description: Update the number of the round.
     
     - route: /deck
       verbs:
@@ -12,11 +14,11 @@ API:
           description: Returns all the cards in the deck, in random order (not the order in which the cards are being dealt).
         - verb: POST
           description: Creates 2 new decks of cards (pre and post 9/11), in random order. Only available at the start of the game.
-    - route: /deck/discard
+    - route: /deck/discarded
       verbs:
         - verb: GET
           description: Returns all the cards that have been discarded.
-    - route: /deck/remove
+    - route: /deck/removed
       verbs:
         - verb: GET
           description: Returns all the cards that have been removed.
@@ -26,22 +28,24 @@ API:
         - verb: GET
           description: Get the information about a card.
     
-    - route: /card/deal
+    - route: /card/hand
       verbs:
         - verb: GET
-          description: Returns a random card. Only available if it's the player's turn.
+          description: Returns the hand of the player at the current point in time.
     
     - route: /card/play/{id}
       verbs:
         - verb: POST
-          description: Adds the card to the table. Only available if it's the player's turn.
+          description: Adds the card to the table. Only available if it's the player's turn or if the card is played by operations.
         - verb: DELETE
           description: Discards the card. Only available if it's the player's turn.
     
     - route: /map
       verbs:
         - verb: GET
-          description: Returns all the countries and their data.
+          description: Returns all the countries and their data. This object will be big. It will contain the NWO tracks. For each track, the respective slots. It will also contain the regions of the map. For each region, the countries. For each country, the operations of each player and the adjacent countries.
+        - verb: PUT
+          description: Update the status of a part of the map. It can be a NWO track, the operations of a player in a country, or the adjacent countries of a country.
     
     - route: /score
       verbs:
