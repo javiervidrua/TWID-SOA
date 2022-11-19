@@ -3,14 +3,14 @@ openapi: 3.0.0
 servers:
   # Added by API Auto Mocking Plugin
   # - description: SwaggerHub API Auto Mocking
-  #   url: https://virtserver.swaggerhub.com/javiervidrua/TWID-SOA-API-master/1.0.0
+  #   url: https://virtserver.swaggerhub.com/javiervidrua/TWID-SOA-API-resources/1.0.0
   - description: Local server
     url: http://localhost:5000
 
 info:
-  description: TWID-SOA API for the master service.
+  description: TWID-SOA API for the resources service.
   version: "1.0.0"
-  title: TWID-SOA-API-master
+  title: TWID-SOA-API-resources
   contact:
     email: javiervidrua@gmail.com
   license:
