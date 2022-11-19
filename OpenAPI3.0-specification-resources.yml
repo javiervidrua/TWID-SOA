@@ -1,10 +1,12 @@
 openapi: 3.0.0
+
 servers:
   # Added by API Auto Mocking Plugin
   # - description: SwaggerHub API Auto Mocking
   #   url: https://virtserver.swaggerhub.com/javiervidrua/TWID-SOA-API-master/1.0.0
   - description: Local server
     url: http://localhost:5000
+
 info:
   description: TWID-SOA API for the master service.
   version: "1.0.0"
@@ -17,6 +19,7 @@ info:
 tags:
   - name: Map
     description: Everything related to the board, in this case it is called the map
+
 paths:
   /map:
     get:
@@ -70,7 +73,6 @@ paths:
       tags:
         - Map
       summary: Reset the round
-      # operationId: addInventory
       description: Reset the round
       responses:
         '204':
@@ -97,13 +99,13 @@ paths:
       summary: Get the score of a player
       description: Get the score of a player
       parameters:
-        - in: path # query
+        - in: path # can also be query, header, cookie
           name: player
           description: Name of the player
           required: true
           schema:
             type: string
-            example: 'USA'
+            example: USA
       responses:
         '200':
           description: Score of the specified player
@@ -123,7 +125,7 @@ paths:
           required: true
           schema:
             type: string
-            example: 'USA'
+            example: USA
       responses:
         '200':
           description: Score updated
@@ -151,10 +153,77 @@ paths:
           required: true
           schema:
             type: string
-            example: 'USA'
+            example: USA
       responses:
         '204':
           description: Score reset. No content.
+  /map/region:
+    get:
+      tags:
+        - Map
+      summary: Get the regions of the map
+      description: Get the regions of the map
+      responses:
+        '200':
+          description: Regions of the map
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/map-region'
+  /map/region/{region}:
+    get:
+      tags:
+        - Map
+      summary: Get the countries of a region
+      description: Get the countries of a region
+      parameters:
+        - in: path
+          name: region
+          description: Name of the region
+          required: true
+          schema:
+            type: string
+            example: Africa
+      responses:
+        '200':
+          description: Countries of the specified region
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/map-region-region'
+    put:
+      tags:
+        - Map
+      summary: Update the countries of a region
+      description: Update the countries of a region
+      parameters:
+        - in: path
+          name: region
+          description: Name of the region
+          required: true
+          schema:
+            type: string
+            example: Africa
+      responses:
+        '200':
+          description: Countries of the specified region updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/map-region-region'
+        '400':
+          description: Invalid input
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/map-region-region'
+        description: New countries of the specified region
+
 components:
   schemas:
     map:
@@ -166,11 +235,16 @@ components:
           type: string
           example: Region
     map-round:
-      type: integer
-      format: int32
-      minimum: 1
-      maximum: 8
-      example: 4
+      type: object
+      required:
+        - round
+      properties:
+        round:
+          type: integer
+          format: int32
+          minimum: 1
+          maximum: 8
+          example: 4
     map-score:
       type: object
       required:
@@ -181,14 +255,39 @@ components:
           type: string
           example: USA
         score:
-          $ref: '#/components/schemas/map-score-player'
+          type: integer
+          format: int32
+          minimum: 1
+          maximum: 10
+          example: 4
     map-score-player:
-      type: integer
-      format: int32
-      minimum: 1
-      maximum: 10
-      example: 4
-  
+      type: object
+      required:
+        - score
+      properties:
+        score:
+          type: integer
+          format: int32
+          minimum: 1
+          maximum: 10
+          example: 4
+    map-region:
+      type: object
+      required:
+        - region
+      properties:
+        region:
+          type: string
+          example: Middle east
+    map-region-region:
+      type: object
+      required:
+        - country
+      properties:
+        country:
+          type: string
+          example: Congo
+
     # # Autogenerated, use as examples
     # InventoryItem:
     #   type: object
