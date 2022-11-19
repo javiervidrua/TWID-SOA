@@ -196,8 +196,8 @@ paths:
     get:
       tags:
         - Map
-      summary: Get the countries of a region
-      description: Get the countries of a region
+      summary: Get the countries of the specified region
+      description: Get the countries of the specified region
       parameters:
         - in: path
           name: region
@@ -214,12 +214,12 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/map-region-region'
+                  $ref: '#/components/schemas/map-region-region-country'
     put:
       tags:
         - Map
-      summary: Update the countries of a region
-      description: Update the countries of a region
+      summary: Update the countries of the specified region
+      description: Update the countries of the specified region
       parameters:
         - in: path
           name: region
@@ -234,24 +234,78 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/map-region-region'
+                $ref: '#/components/schemas/map-region-region-country'
         '400':
           description: Invalid input
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/map-region-region'
+              $ref: '#/components/schemas/map-region-region-country'
         description: New countries of the specified region
-
-# Data for /map/region/{region}/country/{country}
-# region
-# stability
-# isConflictive
-# isOilProducer
-# influence: {
-# {"superPower": "USA", "influence": 2}
-# }
+  /map/region/{region}/country/{country}:
+    get:
+      tags:
+        - Map
+      summary: Get the specified country of the specified region
+      description: Get the specified country of the specified region
+      parameters:
+        - in: path
+          name: region
+          description: Name of the region
+          required: true
+          schema:
+            type: string
+            example: Africa
+        - in: path
+          name: country
+          description: Name of the country
+          required: true
+          schema:
+            type: string
+            example: Congo
+      responses:
+        '200':
+          description: Specified country of the specified region
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/map-region-region-country-country'
+    put:
+      tags:
+        - Map
+      summary: Update the specified country of the specified region
+      description: Update the specified country of the specified region
+      parameters:
+        - in: path
+          name: region
+          description: Name of the region
+          required: true
+          schema:
+            type: string
+            example: Africa
+        - in: path
+          name: country
+          description: Name of the country
+          required: true
+          schema:
+            type: string
+            example: Congo
+      responses:
+        '200':
+          description: Specified country of the specified region updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/map-region-region-country-country'
+        '400':
+          description: Invalid input
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/map-region-region-country'
+        description: New countries of the specified region
 
 components:
   schemas:
@@ -308,7 +362,7 @@ components:
         region:
           type: string
           example: Middle east
-    map-region-region:
+    map-region-region-country:
       type: object
       required:
         - country
@@ -316,41 +370,86 @@ components:
         country:
           type: string
           example: Congo
+    map-region-region-country-country:
+      type: object
+      required:
+        - country
+        - region
+        - stability
+        - isConflictive
+        - isOilProducer
+        - influence
+      properties:
+        country:
+          type: string
+          example: Congo
+        region:
+          type: string
+          example: Africa
+        stability:
+          type: integer
+          format: int32
+          minimum: 1
+          maximum: 5
+          example: 2
+        isConflictive:
+          type: boolean
+          example: true
+        isOilProducer:
+          type: boolean
+          example: true
+        influence:
+          type: array
+          items:
+            type: object
+            required:
+              - superPower
+              - influence
+            properties:
+              superPower:
+                type: string
+                example: USA
+              influence:
+                type: integer
+                format: int32
+                minimum: 0
+                maximum: 100
+                example: 1
 
-    # # Autogenerated, use as examples
-    # InventoryItem:
-    #   type: object
-    #   required:
-    #     - id
-    #     - name
-    #     - manufacturer
-    #     - releaseDate
-    #   properties:
-    #     id:
-    #       type: string
-    #       format: uuid
-    #       example: d290f1ee-6c54-4b01-90e6-d701748f0851
-    #     name:
-    #       type: string
-    #       example: Widget Adapter
-    #     releaseDate:
-    #       type: string
-    #       format: date-time
-    #       example: '2016-08-29T09:12:33.001Z'
-    #     manufacturer:
-    #       $ref: '#/components/schemas/Manufacturer'
-    # Manufacturer:
-    #   required:
-    #     - name
-    #   properties:
-    #     name:
-    #       type: string
-    #       example: ACME Corporation
-    #     homePage:
-    #       type: string
-    #       format: url
-    #       example: 'https://www.acme-corp.com'
-    #     phone:
-    #       type: string
-    #       example: 408-867-5309
-    #   type: object
+# # Autogenerated, use as examples
+# InventoryItem:
+#   type: object
+#   required:
+#     - id
+#     - name
+#     - manufacturer
+#     - releaseDate
+#   properties:
+#     id:
+#       type: string
+#       format: uuid
+#       example: d290f1ee-6c54-4b01-90e6-d701748f0851
+#     name:
+#       type: string
+#       example: Widget Adapter
+#     releaseDate:
+#       type: string
+#       format: date-time
+#       example: '2016-08-29T09:12:33.001Z'
+#     manufacturer:
+#       $ref: '#/components/schemas/Manufacturer'
+# Manufacturer:
+#   required:
+#     - name
+#   properties:
+#     name:
+#       type: string
+#       example: ACME Corporation
+#     homePage:
+#       type: string
+#       format: url
+#       example: 'https://www.acme-corp.com'
+#     phone:
+#       type: string
+#       example: 408-867-5309
+#   type: object
