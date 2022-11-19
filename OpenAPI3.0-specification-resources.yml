@@ -112,8 +112,8 @@ paths:
     get:
       tags:
         - Map
-      summary: Get the score of a player
-      description: Get the score of a player
+      summary: Get the score of the specified player
+      description: Get the score of the specified player
       parameters:
         - in: path # can also be query, header, cookie
           name: player
@@ -132,8 +132,8 @@ paths:
     put:
       tags:
         - Map
-      summary: Update the score of a player
-      description: Update the score of a player
+      summary: Update the score of the specified player
+      description: Update the score of the specified player
       parameters:
         - in: path
           name: player
@@ -156,7 +156,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/map-score-player'
-        description: New score of the player
+        description: New score of the specified player
     delete:
       tags:
         - Map
@@ -234,14 +234,18 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/map-region-region-country'
+                type: array
+                items:
+                  $ref: '#/components/schemas/map-region-region-country'
         '400':
           description: Invalid input
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/map-region-region-country'
+              type: array
+              items:
+                $ref: '#/components/schemas/map-region-region-country'
         description: New countries of the specified region
   /map/region/{region}/country/{country}:
     get:
@@ -304,8 +308,8 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/map-region-region-country'
-        description: New countries of the specified region
+              $ref: '#/components/schemas/map-region-region-country-country'
+        description: New attributes of the specified country of the specified region
 
 components:
   schemas:
@@ -373,19 +377,11 @@ components:
     map-region-region-country-country:
       type: object
       required:
-        - country
-        - region
         - stability
         - isConflictive
         - isOilProducer
         - influence
       properties:
-        country:
-          type: string
-          example: Congo
-        region:
-          type: string
-          example: Africa
         stability:
           type: integer
           format: int32
