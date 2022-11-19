@@ -49,6 +49,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/map-round'
+    post:
+      tags:
+        - Map
+      summary: Create a new round (increment the current round number)
+      description: Create a new round (increment the current round number)
+      responses:
+        '200':
+          description: Round created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/map-round'
     put:
       tags:
         - Map
@@ -72,11 +84,15 @@ paths:
     delete:
       tags:
         - Map
-      summary: Reset the round
-      description: Reset the round
+      summary: Reset the round to round 1
+      description: Reset the round to round 1
       responses:
-        '204':
-          description: Round reset. No content.
+        '200':
+          description: Round reset
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/map-round'
   /map/score:
     get:
       tags:
@@ -144,8 +160,8 @@ paths:
     delete:
       tags:
         - Map
-      summary: Reset the score of a player
-      description: Reset the score of a player
+      summary: Reset the score of a player to score 0
+      description: Reset the score of a player to score 0
       parameters:
         - in: path
           name: player
@@ -155,8 +171,12 @@ paths:
             type: string
             example: USA
       responses:
-        '204':
-          description: Score reset. No content.
+        '200':
+          description: Score reset
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/map-score-player'
   /map/region:
     get:
       tags:
@@ -172,7 +192,7 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/map-region'
-  /map/region/{region}:
+  /map/region/{region}/country:
     get:
       tags:
         - Map
@@ -224,6 +244,15 @@ paths:
               $ref: '#/components/schemas/map-region-region'
         description: New countries of the specified region
 
+# Data for /map/region/{region}/country/{country}
+# region
+# stability
+# isConflictive
+# isOilProducer
+# influence: {
+# {"superPower": "USA", "influence": 2}
+# }
+
 components:
   schemas:
     map:
@@ -244,7 +273,7 @@ components:
           format: int32
           minimum: 1
           maximum: 8
-          example: 4
+          example: 1
     map-score:
       type: object
       required:
@@ -257,8 +286,8 @@ components:
         score:
           type: integer
           format: int32
-          minimum: 1
-          maximum: 10
+          minimum: 0
+          maximum: 100
           example: 4
     map-score-player:
       type: object
@@ -268,9 +297,9 @@ components:
         score:
           type: integer
           format: int32
-          minimum: 1
-          maximum: 10
-          example: 4
+          minimum: 0
+          maximum: 100
+          example: 0
     map-region:
       type: object
       required:
