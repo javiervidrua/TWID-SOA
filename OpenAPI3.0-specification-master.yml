@@ -54,6 +54,10 @@ paths:
       responses:
         '200':
           description: Round updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/map-round'
         '400':
           description: Invalid input
       requestBody:
@@ -69,8 +73,8 @@ paths:
       # operationId: addInventory
       description: Reset the round
       responses:
-        '200':
-          description: Round reset
+        '204':
+          description: Round reset. No content.
   /map/score:
     get:
       tags:
@@ -123,6 +127,10 @@ paths:
       responses:
         '200':
           description: Score updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/map-score-player'
         '400':
           description: Invalid input
       requestBody:
@@ -145,8 +153,8 @@ paths:
             type: string
             example: 'USA'
       responses:
-        '200':
-          description: Score reset
+        '204':
+          description: Score reset. No content.
 components:
   schemas:
     map:
