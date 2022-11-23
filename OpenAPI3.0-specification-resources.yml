@@ -33,9 +33,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/board'
+                $ref: '#/components/schemas/board'
   /board/round:
     get:
       tags:
@@ -292,17 +290,143 @@ paths:
             schema:
               $ref: '#/components/schemas/board-map-region-country-country'
         description: New attributes of the specified country of the specified region
+  /board/nwo:
+    get:
+      tags:
+        - Board
+      summary: Get the New World Order tracks
+      description: Get the New World Order tracks
+      responses:
+        '200':
+          description: New World Order tracks
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/board-nwo'
+  /board/nwo/{track}:
+    get:
+      tags:
+        - Board
+      summary: Get the slots of the specified track
+      description: Get the slots of the specified track
+      parameters:
+        - in: path
+          name: track
+          description: Name of the track
+          required: true
+          schema:
+            type: string
+            example: Public opinion
+      responses:
+        '200':
+          description: Slots of the specified track
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/board-nwo-track'
+  /board/nwo/{track}/{slot}:
+    get:
+      tags:
+        - Board
+      summary: Get the state of the specified slot of the specified track
+      description: Get the state of the specified slot of the specified track
+      parameters:
+        - in: path
+          name: track
+          description: Name of the track
+          required: true
+          schema:
+            type: string
+            example: Public opinion
+        - in: path
+          name: slot
+          description: Name of the slot
+          required: true
+          schema:
+            type: string
+            example: State propaganda
+      responses:
+        '200':
+          description: State of the specified slot of the specified track
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/board-nwo-track-slot'
+    put:
+      tags:
+        - Board
+      summary: Update the state of the specified slot of the specified track
+      description: Update the state of the specified slot of the specified track
+      parameters:
+        - in: path
+          name: track
+          description: Name of the track
+          required: true
+          schema:
+            type: string
+            example: Public opinion
+        - in: path
+          name: slot
+          description: Name of the slot
+          required: true
+          schema:
+            type: string
+            example: State propaganda
+      responses:
+        '200':
+          description: State of the specified slot of the specified track updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/board-nwo-track-slot'
+        '400':
+          description: Invalid input
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/board-nwo-track-slot'
+        description: New state of the specified slot of the specified track
+    delete:
+      tags:
+        - Board
+      summary: Reset the state of the specified slot of the specified track
+      description: Reset the state of the specified slot of the specified track
+      parameters:
+        - in: path
+          name: track
+          description: Name of the track
+          required: true
+          schema:
+            type: string
+            example: Public opinion
+        - in: path
+          name: slot
+          description: Name of the slot
+          required: true
+          schema:
+            type: string
+            example: State propaganda
+      responses:
+        '200':
+          description: State of the specified slot of the specified track reset
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/board-nwo-track-slot'
 
 components:
   schemas:
     board:
-      type: object
-      required:
-        - name
-      properties:
-        name:
-          type: string
-          example: Map
+      type: array
+      items:
+        type: object
+        required:
+          - name
+        properties:
+          name:
+            type: string
+      example: [{'name': 'round'}, {'name': 'score'}, {'name': 'map'}, {'name': 'nwo'}]
     board-round:
       type: object
       required:
@@ -393,6 +517,34 @@ components:
                 minimum: 0
                 maximum: 100
                 example: 1
+    board-nwo:
+      type: array
+      items:
+        type: object
+        required:
+          - name
+        properties:
+          name:
+            type: string
+      example: [{'name': 'Economy'}, {'name': 'Public opinion'}, {'name': 'Technology'}]
+    board-nwo-track:
+      type: array
+      items:
+        type: object
+        required:
+          - name
+        properties:
+          name:
+            type: string
+      example: [{'name': 'State propaganda'}, {'name': 'Mass media'}, {'name': 'Information leaks'}]
+    board-nwo-track-slot:
+      type: object
+      required:
+        - supremacy
+      properties:
+        supremacy:
+          type: string
+          example: 'USA'
 
 # # Autogenerated, use as examples
 # InventoryItem:
