@@ -17,16 +17,16 @@ info:
     name: MIT
     url: 'https://jvr.mit-license.org/'
 tags:
-  - name: Map
-    description: Everything related to the board, in this case it is called the map
+  - name: Board
+    description: Everything related to the board
 
 paths:
-  /map:
+  /board:
     get:
       tags:
-        - Map
-      summary: Get the resources of the map
-      description: Get the resources of the map
+        - Board
+      summary: Get the resources of the board
+      description: Get the resources of the board
       responses:
         '200':
           description: Map resources
@@ -35,11 +35,11 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/map'
-  /map/round:
+                  $ref: '#/components/schemas/board'
+  /board/round:
     get:
       tags:
-        - Map
+        - Board
       summary: Get the round
       description: Get the round
       responses:
@@ -48,10 +48,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/map-round'
+                $ref: '#/components/schemas/board-round'
     post:
       tags:
-        - Map
+        - Board
       summary: Create a new round (increment the current round number)
       description: Create a new round (increment the current round number)
       responses:
@@ -60,30 +60,12 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/map-round'
-    put:
-      tags:
-        - Map
-      summary: Update the round
-      description: Update the round
-      responses:
-        '200':
-          description: Round updated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/map-round'
+                $ref: '#/components/schemas/board-round'
         '400':
-          description: Invalid input
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/map-round'
-        description: New round
+          description: Cannot create any more rounds
     delete:
       tags:
-        - Map
+        - Board
       summary: Reset the round to round 1
       description: Reset the round to round 1
       responses:
@@ -92,11 +74,11 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/map-round'
-  /map/score:
+                $ref: '#/components/schemas/board-round'
+  /board/score:
     get:
       tags:
-        - Map
+        - Board
       summary: Get the score
       description: Get the score of the players
       responses:
@@ -107,11 +89,11 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/map-score'
-  /map/score/{player}:
+                  $ref: '#/components/schemas/board-score'
+  /board/score/{player}:
     get:
       tags:
-        - Map
+        - Board
       summary: Get the score of the specified player
       description: Get the score of the specified player
       parameters:
@@ -128,10 +110,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/map-score-player'
+                $ref: '#/components/schemas/board-score-player'
     put:
       tags:
-        - Map
+        - Board
       summary: Update the score of the specified player
       description: Update the score of the specified player
       parameters:
@@ -148,18 +130,18 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/map-score-player'
+                $ref: '#/components/schemas/board-score-player'
         '400':
           description: Invalid input
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/map-score-player'
+              $ref: '#/components/schemas/board-score-player'
         description: New score of the specified player
     delete:
       tags:
-        - Map
+        - Board
       summary: Reset the score of a player to score 0
       description: Reset the score of a player to score 0
       parameters:
@@ -176,11 +158,11 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/map-score-player'
-  /map/region:
+                $ref: '#/components/schemas/board-score-player'
+  /board/map:
     get:
       tags:
-        - Map
+        - Board
       summary: Get the regions of the map
       description: Get the regions of the map
       responses:
@@ -191,11 +173,11 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/map-region'
-  /map/region/{region}/country:
+                  $ref: '#/components/schemas/board-map'
+  /board/map/{region}:
     get:
       tags:
-        - Map
+        - Board
       summary: Get the countries of the specified region
       description: Get the countries of the specified region
       parameters:
@@ -214,10 +196,10 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/map-region-region-country'
+                  $ref: '#/components/schemas/board-map-region-country'
     put:
       tags:
-        - Map
+        - Board
       summary: Update the countries of the specified region
       description: Update the countries of the specified region
       parameters:
@@ -236,7 +218,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/map-region-region-country'
+                  $ref: '#/components/schemas/board-map-region-country'
         '400':
           description: Invalid input
       requestBody:
@@ -245,12 +227,12 @@ paths:
             schema:
               type: array
               items:
-                $ref: '#/components/schemas/map-region-region-country'
+                $ref: '#/components/schemas/board-map-region-country'
         description: New countries of the specified region
-  /map/region/{region}/country/{country}:
+  /board/map/{region}/{country}:
     get:
       tags:
-        - Map
+        - Board
       summary: Get the specified country of the specified region
       description: Get the specified country of the specified region
       parameters:
@@ -274,10 +256,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/map-region-region-country-country'
+                $ref: '#/components/schemas/board-map-region-country-country'
     put:
       tags:
-        - Map
+        - Board
       summary: Update the specified country of the specified region
       description: Update the specified country of the specified region
       parameters:
@@ -301,27 +283,27 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/map-region-region-country-country'
+                $ref: '#/components/schemas/board-map-region-country-country'
         '400':
           description: Invalid input
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/map-region-region-country-country'
+              $ref: '#/components/schemas/board-map-region-country-country'
         description: New attributes of the specified country of the specified region
 
 components:
   schemas:
-    map:
+    board:
       type: object
       required:
         - name
       properties:
         name:
           type: string
-          example: Region
-    map-round:
+          example: Map
+    board-round:
       type: object
       required:
         - round
@@ -332,7 +314,7 @@ components:
           minimum: 1
           maximum: 8
           example: 1
-    map-score:
+    board-score:
       type: object
       required:
         - name
@@ -347,7 +329,7 @@ components:
           minimum: 0
           maximum: 100
           example: 4
-    map-score-player:
+    board-score-player:
       type: object
       required:
         - score
@@ -358,7 +340,7 @@ components:
           minimum: 0
           maximum: 100
           example: 0
-    map-region:
+    board-map:
       type: object
       required:
         - region
@@ -366,7 +348,7 @@ components:
         region:
           type: string
           example: Middle east
-    map-region-region-country:
+    board-map-region-country:
       type: object
       required:
         - country
@@ -374,7 +356,7 @@ components:
         country:
           type: string
           example: Congo
-    map-region-region-country-country:
+    board-map-region-country-country:
       type: object
       required:
         - stability
