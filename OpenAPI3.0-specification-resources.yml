@@ -442,6 +442,13 @@ paths:
           required: true
           schema:
             type: string
+        - in: query
+          name: random
+          description: Specify if return the cards in random order
+          required: false
+          schema:
+            type: boolean
+            default: false
       responses:
         '200':
           description: Cards
