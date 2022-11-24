@@ -416,12 +416,32 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/board-nwo-track-slot'
-  /deck/main:
+  /deck:
     get:
       tags:
         - Deck
-      summary: Get the cards of the main deck (not in the dealing order)
-      description: Get the cards of the main deck (not in the dealing order)
+      summary: Get the decks of cards
+      description: Get the decks of cards
+      responses:
+        '200':
+          description: Decks
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/deck'
+  /deck/{type}:
+    get:
+      tags:
+        - Deck
+      summary: Get the cards of the specified deck
+      description: Get the cards of the specified deck
+      parameters:
+        - in: path
+          name: type
+          description: Type of the deck
+          required: true
+          schema:
+            type: string
       responses:
         '200':
           description: Cards
@@ -430,14 +450,20 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/deck-main'
-  /deck/main/{card}:
+                  $ref: '#/components/schemas/deck-type'
+  /deck/{type}/{card}:
     get:
       tags:
         - Deck
       summary: Get the details of the specified card
       description: Get the details of the specified card
       parameters:
+        - in: path
+          name: type
+          description: Type of the deck
+          required: true
+          schema:
+            type: string
         - in: path
           name: card
           description: Id of the card
@@ -454,13 +480,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/deck-main-card'
+                $ref: '#/components/schemas/deck-type-card'
     post:
       tags:
         - Deck
       summary: Add the specified card to the playing deck
       description: Add the specified card to the playing deck
       parameters:
+        - in: path
+          name: type
+          description: Type of the deck
+          required: true
+          schema:
+            type: string
         - in: path
           name: card
           description: Id of the card
@@ -477,12 +509,12 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/deck-main-card'
+                $ref: '#/components/schemas/deck-type-card'
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/deck-main-card'
+              $ref: '#/components/schemas/deck-type-card'
         description: Card added
     delete:
       tags:
@@ -490,6 +522,12 @@ paths:
       summary: Remove the specified card from the playing deck
       description: Remove the specified card from the playing deck
       parameters:
+        - in: path
+          name: type
+          description: Type of the deck
+          required: true
+          schema:
+            type: string
         - in: path
           name: card
           description: Id of the card
@@ -506,7 +544,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/deck-main-card'
+                $ref: '#/components/schemas/deck-type-card'
 
 components:
   schemas:
@@ -638,7 +676,17 @@ components:
         supremacy:
           type: string
           example: 'USA'
-    deck-main:
+    deck:
+      type: array
+      items:
+        type: object
+        required:
+          - type
+        properties:
+          type:
+            type: string
+      example: [{'type': 'main'}, {'type': 'discarded'}, {'type': 'removed'}]
+    deck-type:
       type: object
       required:
         - id
@@ -649,7 +697,7 @@ components:
           minimum: 1
           maximum: 100
           example: 1
-    deck-main-card:
+    deck-type-card:
       type: object
       required:
         - id
