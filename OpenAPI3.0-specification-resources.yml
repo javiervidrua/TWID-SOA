@@ -641,6 +641,91 @@ paths:
                 $ref: '#/components/schemas/cards-id'
         '400':
           description: Cannot remove any more cards
+  /cards/player/{player}/header:
+    get:
+      tags:
+        - Cards
+      summary: Get the cards that are being played as header cards
+      description: Get the cards that are being played as header cards
+      parameters:
+        - in: path
+          name: player
+          description: Name of the player
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Cards
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/cards'
+  /cards/player/{player}/header/{id}:
+    post:
+      tags:
+        - Cards
+      summary: Add the specified card to the cards that are being played as header cards
+      description: Add the specified card to the cards that are being played as header cards
+      parameters:
+        - in: path
+          name: player
+          description: Name of the player
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: id
+          description: Id of the card
+          required: true
+          schema:
+            type: integer
+            format: int32
+            minimum: 1
+            maximum: 100
+            example: 23
+      responses:
+        '200':
+          description: Card added
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/cards-id'
+        '400':
+          description: Cannot add the specified card
+    delete:
+      tags:
+        - Cards
+      summary: Remove the specified card from the cards that are being played as header cards
+      description: Remove the specified card from the cards that are being played as header cards
+      parameters:
+        - in: path
+          name: player
+          description: Name of the player
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: id
+          description: Id of the card
+          required: true
+          schema:
+            type: integer
+            format: int32
+            minimum: 1
+            maximum: 100
+            example: 23
+      responses:
+        '200':
+          description: Card removed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/cards-id'
+        '400':
+          description: Cannot remove the specified card
 
 components:
   schemas:
