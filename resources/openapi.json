@@ -38,7 +38,26 @@
         "description": "Get the resources of the board",
         "responses": {
           "200": {
-            "description": "Map resources",
+            "description": "Board resources",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/board"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Board"
+        ],
+        "summary": "Initialize the resources of the board",
+        "description": "Initialize the resources of the board",
+        "responses": {
+          "200": {
+            "description": "Board resources",
             "content": {
               "application/json": {
                 "schema": {
@@ -636,6 +655,46 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/board-nwo-track-slot"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cards": {
+      "get": {
+        "tags": [
+          "Cards"
+        ],
+        "summary": "Get the resources of the cards",
+        "description": "Get the resources of the cards",
+        "responses": {
+          "200": {
+            "description": "Cards resources",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/card"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Cards"
+        ],
+        "summary": "Initialize the resources of the cards",
+        "description": "Initialize the resources of the cards",
+        "responses": {
+          "200": {
+            "description": "Cards resources",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/card"
                 }
               }
             }
@@ -1330,6 +1389,31 @@
             "example": "USA"
           }
         }
+      },
+      "card": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": [
+            "name"
+          ],
+          "properties": {
+            "name": {
+              "type": "string"
+            }
+          }
+        },
+        "example": [
+          {
+            "name": "deck"
+          },
+          {
+            "name": "playing"
+          },
+          {
+            "name": "player"
+          }
+        ]
       },
       "cards": {
         "type": "object",
