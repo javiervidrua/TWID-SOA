@@ -1,0 +1,14 @@
+# https://www.educative.io/blog/docker-compose-tutorial
+version: "3"
+services:
+  resources:
+    container_name: twid-soa-resources
+
+    # Path to dockerfile.
+    # '.' represents the current directory in which
+    # docker-compose.yml is present.
+    build: ./resources
+
+    # Mapping of container port to host
+    ports:
+      - "8000:8000"
