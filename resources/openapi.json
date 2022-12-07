@@ -170,7 +170,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "example": "USA"
+              "example": "US"
             }
           }
         ],
@@ -201,7 +201,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "example": "USA"
+              "example": "US"
             }
           }
         ],
@@ -245,7 +245,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "example": "USA"
+              "example": "US"
             }
           }
         ],
@@ -1229,7 +1229,7 @@
         "properties": {
           "name": {
             "type": "string",
-            "example": "USA"
+            "example": "US"
           },
           "score": {
             "type": "integer",
@@ -1314,7 +1314,7 @@
               "properties": {
                 "superPower": {
                   "type": "string",
-                  "example": "USA"
+                  "example": "US"
                 },
                 "influence": {
                   "type": "integer",
@@ -1386,7 +1386,7 @@
         "properties": {
           "supremacy": {
             "type": "string",
-            "example": "USA"
+            "example": "US"
           }
         }
       },

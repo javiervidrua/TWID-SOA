@@ -115,7 +115,7 @@ paths:
           required: true
           schema:
             type: string
-            example: USA
+            example: US
       responses:
         '200':
           description: Score of the specified player
@@ -135,7 +135,7 @@ paths:
           required: true
           schema:
             type: string
-            example: USA
+            example: US
       responses:
         '200':
           description: Score updated
@@ -163,7 +163,7 @@ paths:
           required: true
           schema:
             type: string
-            example: USA
+            example: US
       responses:
         '200':
           description: Score reset
@@ -795,7 +795,7 @@ components:
       properties:
         name:
           type: string
-          example: USA
+          example: US
         score:
           type: integer
           format: int32
@@ -859,7 +859,7 @@ components:
             properties:
               superPower:
                 type: string
-                example: USA
+                example: US
               influence:
                 type: integer
                 format: int32
@@ -893,7 +893,7 @@ components:
       properties:
         supremacy:
           type: string
-          example: 'USA'
+          example: US
     card:
       type: array
       items:
