@@ -1,15 +1,16 @@
 from multimeta import MultipleMeta  # https://stackoverflow.com/a/49936625
+import json
 
 
 class Board(metaclass=MultipleMeta):
     def __init__(self):
+        # Load all the data from the json file
+        with open('twid.json', 'r') as file:
+            self.twid = json.load(file)
+        
+        # Initialize everything
         self.round = 1
-        self.score = [
-            {'name': 'US', 'score': 0},
-            {'name': 'EU', 'score': 0},
-            {'name': 'Russia', 'score': 0},
-            {'name': 'China', 'score': 0},
-        ]
+        self.score = [{'name': player, 'score': 0} for player in self.twid['players']]
 
     def __repr__(self):
         return str([
@@ -37,10 +38,10 @@ class Board(metaclass=MultipleMeta):
         return self.score
 
     def scorePlayerGet(self, player):
-        if player in ['US', 'EU', 'Russia', 'China']:
+        if player in self.twid['players']:
             # https://book.pythontips.com/en/latest/map_filter.html
-            # Filter self.score with filter
-            # Then map the result
+            # Filter self.score with filter for the specified player
+            # Then map the result so it looks like {'score': $score}
 
             # https://stackoverflow.com/questions/29563153/python-filter-function-single-result
             # And finally get the element of the iterator
@@ -48,7 +49,7 @@ class Board(metaclass=MultipleMeta):
         return {}
 
     def scorePlayerPut(self, player, score):
-        if player in ['US', 'EU', 'Russia', 'China'] and score >= 0 and score <= 100:
+        if player in self.twid['players'] and score >= 0 and score <= 100:
             for index, item in enumerate(self.score):
                 if item['name'] == player:
                     self.score[index]['score'] = score
