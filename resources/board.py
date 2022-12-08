@@ -7,7 +7,7 @@ class Board(metaclass=MultipleMeta):
         # Load all the data from the json file
         with open('twid.json', 'r') as file:
             self.twid = json.load(file)
-        
+
         # Initialize everything
         self.round = 1
         self.score = [{'name': player, 'score': 0} for player in self.twid['players']]
@@ -45,7 +45,7 @@ class Board(metaclass=MultipleMeta):
 
             # https://stackoverflow.com/questions/29563153/python-filter-function-single-result
             # And finally get the element of the iterator
-            return next(map(lambda x: {'score': x['score']}, filter(lambda x: x['name'] == player, self.score)), {})
+            return next(map(lambda x: x['score'], filter(lambda x: x['name'] == player, self.score)), {})
         return {}
 
     def scorePlayerPut(self, player, score):
@@ -53,6 +53,29 @@ class Board(metaclass=MultipleMeta):
             for index, item in enumerate(self.score):
                 if item['name'] == player:
                     self.score[index]['score'] = score
-                    return {'score': score}
+                    return score
+
+        return False
+
+    # Map methods
+    def mapGet(self):
+        return self.twid['regions']
+
+    def mapRegionGet(self, region):
+        return [{'country': country['name']} for country in self.twid['countries'] if country['region'] == region]
+    
+    def mapRegionPut(self, region, countries):
+        # If the regions and all of the countries exist
+        if region in self.twid['regions'] and set([country['country'] for country in countries]).issubset([country['name'] for country in self.twid['countries']]): # https://stackoverflow.com/questions/3931541/how-to-check-if-all-of-the-following-items-are-in-a-list
+            for index, item in enumerate(self.twid['countries']):
+                
+                # Remove all the countries of the specified region
+                if item['region'] == region:
+                    self.twid['countries'][index]['region'] = ''
+            
+                # Add all the specified new countries of the specified region
+                if item['name'] in [country['country'] for country in countries]:
+                    self.twid['countries'][index]['region'] = region
+            return True
 
         return False

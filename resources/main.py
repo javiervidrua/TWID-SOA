@@ -105,7 +105,7 @@ async def boardRoundDelete(response: Response):
 
         # Idempotent
         board.roundReset()
-        
+
         response.status_code = status.HTTP_200_OK
         return {'round': board.roundGet()}
     except Exception as e:
@@ -141,7 +141,7 @@ async def boardScorePLayerGet(player: str, response: Response):
             return {}
 
         response.status_code = status.HTTP_200_OK
-        return board.scorePlayerGet(player)
+        return {'score': board.scorePlayerGet(player)}
     except Exception as e:
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
         return {'Error': e}
@@ -160,7 +160,7 @@ async def boardScorePLayerPut(player: str, body: validators.BodyBoardScorePlayer
         # If success updating the score
         if score := board.scorePlayerPut(player, body.score):
             response.status_code = status.HTTP_200_OK
-            return score
+            return {'score': score}
 
         # If no success updating the score
         response.status_code = status.HTTP_400_BAD_REQUEST
@@ -179,12 +179,69 @@ async def boardScorePLayerDelete(player: str, response: Response):
         if board == None:
             response.status_code = status.HTTP_200_OK
             return {}
-        
+
         # Idempotent
         board.scorePlayerPut(player, 0)
-        
+
         response.status_code = status.HTTP_200_OK
-        return board.scorePlayerGet(player)
+        return {'score': board.scorePlayerGet(player)}
+    except Exception as e:
+        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+        return {'Error': e}
+
+
+@app.get('/board/map')
+async def boardMapGet(response: Response):
+    try:
+        global board
+
+        # If there is no board
+        if board == None:
+            response.status_code = status.HTTP_200_OK
+            return {}
+
+        response.status_code = status.HTTP_200_OK
+        return board.mapGet()
+    except Exception as e:
+        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+        return {'Error': e}
+
+
+@app.get('/board/map/{region}')
+async def boardMapRegionGet(region: str, response: Response):
+    try:
+        global board
+
+        # If there is no board
+        if board == None:
+            response.status_code = status.HTTP_200_OK
+            return {}
+
+        response.status_code = status.HTTP_200_OK
+        return board.mapRegionGet(region)
+    except Exception as e:
+        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+        return {'Error': e}
+
+
+@app.put('/board/map/{region}')
+async def boardScorePLayerPut(region: str, body: validators.BodyBoardMapRegion, response: Response):
+    try:
+        global board
+
+        # If there is no board
+        if board == None:
+            response.status_code = status.HTTP_200_OK
+            return {}
+
+        # If success updating the score
+        if board.mapRegionPut(region, json.loads(body.json())):
+            response.status_code = status.HTTP_200_OK
+            return board.mapRegionGet(region)
+
+        # If no success updating the score
+        response.status_code = status.HTTP_400_BAD_REQUEST
+        return {}
     except Exception as e:
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
         return {'Error': e}
