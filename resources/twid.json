@@ -21,8 +21,8 @@
             "influence": {
                 "US": 2
             },
-            "conflictive": false,
-            "oil": true,
+            "isConflictive": false,
+            "isOilProducer": true,
             "comments": "",
             "adjacent": [
                 "Canada",
@@ -38,8 +38,8 @@
             "influence": {
                 "US": 1
             },
-            "conflictive": false,
-            "oil": true,
+            "isConflictive": false,
+            "isOilProducer": true,
             "comments": "",
             "adjacent": [
                 "United Kingdom",
@@ -51,8 +51,8 @@
             "region": "NC America",
             "stability": 2,
             "influence": {},
-            "conflictive": true,
-            "oil": true,
+            "isConflictive": true,
+            "isOilProducer": true,
             "comments": "",
             "adjacent": [
                 "United States",
@@ -64,8 +64,8 @@
             "region": "NC America",
             "stability": 3,
             "influence": {},
-            "conflictive": true,
-            "oil": false,
+            "isConflictive": true,
+            "isOilProducer": false,
             "comments": "",
             "adjacent": [
                 "United States",
@@ -78,8 +78,8 @@
             "region": "NC America",
             "stability": 1,
             "influence": {},
-            "conflictive": false,
-            "oil": false,
+            "isConflictive": false,
+            "isOilProducer": false,
             "comments": "",
             "adjacent": [
                 "Mexico",
@@ -91,8 +91,8 @@
             "region": "NC America",
             "stability": 1,
             "influence": {},
-            "conflictive": false,
-            "oil": false,
+            "isConflictive": false,
+            "isOilProducer": false,
             "comments": "",
             "adjacent": [
                 "Guatemala",
@@ -104,8 +104,8 @@
             "region": "NC America",
             "stability": 3,
             "influence": {},
-            "conflictive": false,
-            "oil": false,
+            "isConflictive": false,
+            "isOilProducer": false,
             "comments": "",
             "adjacent": [
                 "Honduras",
@@ -118,8 +118,8 @@
             "region": "NC America",
             "stability": 2,
             "influence": {},
-            "conflictive": true,
-            "oil": false,
+            "isConflictive": true,
+            "isOilProducer": false,
             "comments": "",
             "adjacent": [
                 "Costa Rica",
@@ -131,8 +131,8 @@
             "region": "NC America",
             "stability": 1,
             "influence": {},
-            "conflictive": false,
-            "oil": false,
+            "isConflictive": false,
+            "isOilProducer": false,
             "comments": "",
             "adjacent": [
                 "Cuba",
@@ -145,8 +145,8 @@
             "region": "NC America",
             "stability": 1,
             "influence": {},
-            "conflictive": false,
-            "oil": false,
+            "isConflictive": false,
+            "isOilProducer": false,
             "comments": "",
             "adjacent": [
                 "Cuba",
@@ -158,8 +158,8 @@
             "region": "NC America",
             "stability": 1,
             "influence": {},
-            "conflictive": false,
-            "oil": false,
+            "isConflictive": false,
+            "isOilProducer": false,
             "comments": "",
             "adjacent": [
                 "Haiti"
@@ -170,8 +170,8 @@
             "region": "NC America",
             "stability": 2,
             "influence": {},
-            "conflictive": false,
-            "oil": false,
+            "isConflictive": false,
+            "isOilProducer": false,
             "comments": "Maybe 1",
             "adjacent": [
                 "El Salvador",
@@ -184,8 +184,8 @@
             "region": "South America",
             "stability": 2,
             "influence": {},
-            "conflictive": true,
-            "oil": true,
+            "isConflictive": true,
+            "isOilProducer": true,
             "comments": "",
             "adjacent": [
                 "Colombia",
@@ -197,8 +197,8 @@
             "region": "South America",
             "stability": 1,
             "influence": {},
-            "conflictive": false,
-            "oil": false,
+            "isConflictive": false,
+            "isOilProducer": false,
             "comments": "",
             "adjacent": [
                 "Panama",
@@ -211,8 +211,8 @@
             "region": "South America",
             "stability": 2,
             "influence": {},
-            "conflictive": false,
-            "oil": false,
+            "isConflictive": false,
+            "isOilProducer": false,
             "comments": "",
             "adjacent": [
                 "Colombia",
@@ -224,8 +224,8 @@
             "region": "South America",
             "stability": 2,
             "influence": {},
-            "conflictive": false,
-            "oil": false,
+            "isConflictive": false,
+            "isOilProducer": false,
             "comments": "",
             "adjacent": [
                 "Ecuador",
@@ -238,8 +238,8 @@
             "region": "South America",
             "stability": 2,
             "influence": {},
-            "conflictive": true,
-            "oil": false,
+            "isConflictive": true,
+            "isOilProducer": false,
             "comments": "",
             "adjacent": [
                 "Venezuela",
@@ -251,8 +251,8 @@
             "region": "South America",
             "stability": 2,
             "influence": {},
-            "conflictive": false,
-            "oil": false,
+            "isConflictive": false,
+            "isOilProducer": false,
             "comments": "",
             "adjacent": [
                 "Peru",
@@ -264,8 +264,8 @@
             "region": "South America",
             "stability": 3,
             "influence": {},
-            "conflictive": true,
-            "oil": false,
+            "isConflictive": true,
+            "isOilProducer": false,
             "comments": "Maybe not conflictive?",
             "adjacent": [
                 "Peru",
@@ -277,8 +277,8 @@
             "region": "South America",
             "stability": 2,
             "influence": {},
-            "conflictive": false,
-            "oil": false,
+            "isConflictive": false,
+            "isOilProducer": false,
             "comments": "",
             "adjacent": [
                 "Bolivia",
@@ -291,8 +291,8 @@
             "region": "South America",
             "stability": 2,
             "influence": {},
-            "conflictive": false,
-            "oil": false,
+            "isConflictive": false,
+            "isOilProducer": false,
             "comments": "",
             "adjacent": [
                 "Paraguay",
@@ -305,8 +305,8 @@
             "region": "South America",
             "stability": 2,
             "influence": {},
-            "conflictive": true,
-            "oil": false,
+            "isConflictive": true,
+            "isOilProducer": false,
             "comments": "Maybe not conflictive?",
             "adjacent": [
                 "Chile",
@@ -322,8 +322,8 @@
                 "US": 1,
                 "EU": 2
             },
-            "conflictive": false,
-            "oil": false,
+            "isConflictive": false,
+            "isOilProducer": false,
             "comments": "Connected to USA?",
             "adjacent": [
                 "Canada",
@@ -337,8 +337,8 @@
             "region": "Europe",
             "stability": 4,
             "influence": {},
-            "conflictive": false,
-            "oil": false,
+            "isConflictive": false,
+            "isOilProducer": false,
             "comments": "",
             "adjacent": [
                 "United Kingdom",
@@ -350,8 +350,8 @@
             "region": "Europe",
             "stability": 3,
             "influence": {},
-            "conflictive": false,
-            "oil": false,
+            "isConflictive": false,
+            "isOilProducer": false,
             "comments": "",
             "adjacent": [
                 "Sweden",
@@ -363,8 +363,8 @@
             "region": "Europe",
             "stability": 4,
             "influence": {},
-            "conflictive": false,
-            "oil": false,
+            "isConflictive": false,
+            "isOilProducer": false,
             "comments": "",
             "adjacent": [
                 "Norway",
@@ -377,8 +377,8 @@
             "region": "Europe",
             "stability": 4,
             "influence": {},
-            "conflictive": false,
-            "oil": false,
+            "isConflictive": false,
+            "isOilProducer": false,
             "comments": "",
             "adjacent": [
                 "Sweden",
@@ -390,8 +390,8 @@
             "region": "Europe",
             "stability": 3,
             "influence": {},
-            "conflictive": false,
-            "oil": false,
+            "isConflictive": false,
+            "isOilProducer": false,
             "comments": "",
             "adjacent": [
                 "Germany",
@@ -405,8 +405,8 @@
             "region": "Europe",
             "stability": 3,
             "influence": {},
-            "conflictive": false,
-            "oil": false,
+            "isConflictive": false,
+            "isOilProducer": false,
             "comments": "",
             "adjacent": [
                 "United Kindom",
@@ -418,8 +418,8 @@
             "region": "Europe",
             "stability": 4,
             "influence": {},
-            "conflictive": false,
-            "oil": false,
+            "isConflictive": false,
+            "isOilProducer": false,
             "comments": "",
             "adjacent": [
                 "Benelux",
@@ -435,8 +435,8 @@
             "region": "Europe",
             "stability": 3,
             "influence": {},
-            "conflictive": false,
-            "oil": false,
+            "isConflictive": false,
+            "isOilProducer": false,
             "comments": "",
             "adjacent": [
                 "Poland",
@@ -449,8 +449,8 @@
             "region": "Europe",
             "stability": 4,
             "influence": {},
-            "conflictive": false,
-            "oil": false,
+            "isConflictive": false,
+            "isOilProducer": false,
             "comments": "",
             "adjacent": [
                 "Germany",
@@ -464,8 +464,8 @@
             "region": "Europe",
             "stability": 3,
             "influence": {},
-            "conflictive": false,
-            "oil": false,
+            "isConflictive": false,
+            "isOilProducer": false,
             "comments": "",
             "adjacent": [
                 "Austria",
@@ -479,8 +479,8 @@
             "region": "Europe",
             "stability": 3,
             "influence": {},
-            "conflictive": false,
-            "oil": false,
+            "isConflictive": false,
+            "isOilProducer": false,
             "comments": "",
             "adjacent": [
                 "Hungary",
@@ -496,8 +496,8 @@
             "influence": {
                 "Russia": 1
             },
-            "conflictive": true,
-            "oil": false,
+            "isConflictive": true,
+            "isOilProducer": false,
             "comments": "",
             "adjacent": [
                 "Poland",
@@ -512,8 +512,8 @@
             "influence": {
                 "EU": 2
             },
-            "conflictive": false,
-            "oil": false,
+            "isConflictive": false,
+            "isOilProducer": false,
             "comments": "",
             "adjacent": [
                 "United Kindom",
@@ -530,8 +530,8 @@
             "influence": {
                 "EU": 1
             },
-            "conflictive": false,
-            "oil": false,
+            "isConflictive": false,
+            "isOilProducer": false,
             "comments": "",
             "adjacent": [
                 "France",
@@ -546,8 +546,8 @@
             "influence": {
                 "EU": 1
             },
-            "conflictive": false,
-            "oil": false,
+            "isConflictive": false,
+            "isOilProducer": false,
             "comments": "Possibly non conflictive",
             "adjacent": [
                 "Spain/Portugal",
@@ -560,8 +560,8 @@
             "region": "Europe",
             "stability": 2,
             "influence": {},
-            "conflictive": true,
-            "oil": false,
+            "isConflictive": true,
+            "isOilProducer": false,
             "comments": "",
             "adjacent": [
                 "Italy",
@@ -575,8 +575,8 @@
             "region": "Europe",
             "stability": 3,
             "influence": {},
-            "conflictive": false,
-            "oil": false,
+            "isConflictive": false,
+            "isOilProducer": false,
             "comments": "",
             "adjacent": [
                 "Romania",
@@ -589,8 +589,8 @@
             "region": "Europe",
             "stability": 2,
             "influence": {},
-            "conflictive": false,
-            "oil": false,
+            "isConflictive": false,
+            "isOilProducer": false,
             "comments": "",
             "adjacent": [
                 "Balkan states",
@@ -605,8 +605,8 @@
             "influence": {
                 "Russia": 1
             },
-            "conflictive": false,
-            "oil": true,
+            "isConflictive": false,
+            "isOilProducer": true,
             "comments": "",
             "adjacent": [
                 "Finland",
@@ -622,8 +622,8 @@
             "region": "Africa",
             "stability": 3,
             "influence": {},
-            "conflictive": false,
-            "oil": false,
+            "isConflictive": false,
+            "isOilProducer": false,
             "comments": "",
             "adjacent": [
                 "Spain/Portugal",
@@ -636,8 +636,8 @@
             "region": "Africa",
             "stability": 2,
             "influence": {},
-            "conflictive": false,
-            "oil": false,
+            "isConflictive": false,
+            "isOilProducer": false,
             "comments": "",
             "adjacent": [
                 "Morocco",
@@ -651,8 +651,8 @@
             "region": "Africa",
             "stability": 2,
             "influence": {},
-            "conflictive": false,
-            "oil": false,
+            "isConflictive": false,
+            "isOilProducer": false,
             "comments": "",
             "adjacent": [
                 "Algeria",
@@ -664,8 +664,8 @@
             "region": "Middle East",
             "stability": 2,
             "influence": {},
-            "conflictive": true,
-            "oil": false,
+            "isConflictive": true,
+            "isOilProducer": false,
             "comments": "",
             "adjacent": [
                 "Tunisia",
@@ -677,8 +677,8 @@
             "region": "Middle East",
             "stability": 2,
             "influence": {},
-            "conflictive": true,
-            "oil": false,
+            "isConflictive": true,
+            "isOilProducer": false,
             "comments": "",
             "adjacent": [
                 "Lybia",
@@ -691,8 +691,8 @@
             "region": "Africa",
             "stability": 2,
             "influence": {},
-            "conflictive": false,
-            "oil": false,
+            "isConflictive": false,
+            "isOilProducer": false,
             "comments": "",
             "adjacent": [
                 "Morocco",
@@ -704,8 +704,8 @@
             "region": "Africa",
             "stability": 1,
             "influence": {},
-            "conflictive": false,
-            "oil": false,
+            "isConflictive": false,
+            "isOilProducer": false,
             "comments": "Possibly conflictive",
             "adjacent": [
                 "Algeria",
@@ -717,8 +717,8 @@
             "region": "Africa",
             "stability": 1,
             "influence": {},
-            "conflictive": true,
-            "oil": true,
+            "isConflictive": true,
+            "isOilProducer": true,
             "comments": "",
             "adjacent": [
                 "Sahel states",
@@ -731,8 +731,8 @@
             "region": "Africa",
             "stability": 2,
             "influence": {},
-            "conflictive": false,
-            "oil": false,
+            "isConflictive": false,
+            "isOilProducer": false,
             "comments": "",
             "adjacent": [
                 "West Africa States",
@@ -744,8 +744,8 @@
             "region": "Africa",
             "stability": 1,
             "influence": {},
-            "conflictive": false,
-            "oil": false,
+            "isConflictive": false,
+            "isOilProducer": false,
             "comments": "",
             "adjacent": [
                 "Nigeria",
@@ -757,8 +757,8 @@
             "region": "Africa",
             "stability": 1,
             "influence": {},
-            "conflictive": true,
-            "oil": false,
+            "isConflictive": true,
+            "isOilProducer": false,
             "comments": "",
             "adjacent": [
                 "Cameroon",
@@ -771,8 +771,8 @@
             "region": "Africa",
             "stability": 1,
             "influence": {},
-            "conflictive": true,
-            "oil": false,
+            "isConflictive": true,
+            "isOilProducer": false,
             "comments": "Card about peace in post era, to remove conflictive",
             "adjacent": [
                 "Congo",
@@ -785,8 +785,8 @@
             "region": "Africa",
             "stability": 1,
             "influence": {},
-            "conflictive": false,
-            "oil": false,
+            "isConflictive": false,
+            "isOilProducer": false,
             "comments": "",
             "adjacent": [
                 "Congo",
@@ -799,8 +799,8 @@
             "region": "Africa",
             "stability": 2,
             "influence": {},
-            "conflictive": false,
-            "oil": false,
+            "isConflictive": false,
+            "isOilProducer": false,
             "comments": "",
             "adjacent": [
                 "Zimbawbe",
@@ -813,8 +813,8 @@
             "region": "Africa",
             "stability": 3,
             "influence": {},
-            "conflictive": true,
-            "oil": false,
+            "isConflictive": true,
+            "isOilProducer": false,
             "comments": "",
             "adjacent": [
                 "Angola",
@@ -826,8 +826,8 @@
             "region": "Africa",
             "stability": 1,
             "influence": {},
-            "conflictive": false,
-            "oil": false,
+            "isConflictive": false,
+            "isOilProducer": false,
             "comments": "",
             "adjacent": [
                 "Zimbawbe",
@@ -839,8 +839,8 @@
             "region": "Africa",
             "stability": 2,
             "influence": {},
-            "conflictive": false,
-            "oil": false,
+            "isConflictive": false,
+            "isOilProducer": false,
             "comments": "",
             "adjacent": [
                 "South East Africa States",
@@ -852,8 +852,8 @@
             "region": "Africa",
             "stability": 2,
             "influence": {},
-            "conflictive": true,
-            "oil": false,
+            "isConflictive": true,
+            "isOilProducer": false,
             "comments": "Possibly conflictive",
             "adjacent": [
                 "Kenya",
@@ -865,8 +865,8 @@
             "region": "Africa",
             "stability": 1,
             "influence": {},
-            "conflictive": false,
-            "oil": false,
+            "isConflictive": false,
+            "isOilProducer": false,
             "comments": "",
             "adjacent": [
                 "Sudan",
@@ -878,8 +878,8 @@
             "region": "Africa",
             "stability": 1,
             "influence": {},
-            "conflictive": true,
-            "oil": false,
+            "isConflictive": true,
+            "isOilProducer": false,
             "comments": "",
             "adjacent": [
                 "Egypt",
@@ -891,8 +891,8 @@
             "region": "Middle East",
             "stability": 1,
             "influence": {},
-            "conflictive": false,
-            "oil": false,
+            "isConflictive": false,
+            "isOilProducer": false,
             "comments": "",
             "adjacent": [
                 "Syria",
@@ -905,8 +905,8 @@
             "region": "Middle East",
             "stability": 1,
             "influence": {},
-            "conflictive": false,
-            "oil": false,
+            "isConflictive": false,
+            "isOilProducer": false,
             "comments": "",
             "adjacent": [
                 "Lebanon",
@@ -920,8 +920,8 @@
             "region": "Middle East",
             "stability": 4,
             "influence": {},
-            "conflictive": true,
-            "oil": false,
+            "isConflictive": true,
+            "isOilProducer": false,
             "comments": "",
             "adjacent": [
                 "Lebanon",
@@ -935,8 +935,8 @@
             "region": "Middle East",
             "stability": 3,
             "influence": {},
-            "conflictive": true,
-            "oil": true,
+            "isConflictive": true,
+            "isOilProducer": true,
             "comments": "",
             "adjacent": [
                 "Syria",
@@ -951,8 +951,8 @@
             "region": "Middle East",
             "stability": 2,
             "influence": {},
-            "conflictive": false,
-            "oil": false,
+            "isConflictive": false,
+            "isOilProducer": false,
             "comments": "",
             "adjacent": [
                 "Lebanon",
@@ -966,8 +966,8 @@
             "region": "Middle East",
             "stability": 3,
             "influence": {},
-            "conflictive": false,
-            "oil": true,
+            "isConflictive": false,
+            "isOilProducer": true,
             "comments": "",
             "adjacent": [
                 "Iraq",
@@ -981,8 +981,8 @@
             "influence": {
                 "Russia": 1
             },
-            "conflictive": true,
-            "oil": false,
+            "isConflictive": true,
+            "isOilProducer": false,
             "comments": "",
             "adjacent": [
                 "Russia",
@@ -994,8 +994,8 @@
             "region": "Middle East",
             "stability": 3,
             "influence": {},
-            "conflictive": true,
-            "oil": true,
+            "isConflictive": true,
+            "isOilProducer": true,
             "comments": "",
             "adjacent": [
                 "Iraq",
@@ -1007,8 +1007,8 @@
             "region": "Europe/Middle East",
             "stability": 2,
             "influence": {},
-            "conflictive": false,
-            "oil": false,
+            "isConflictive": false,
+            "isOilProducer": false,
             "comments": "",
             "adjacent": [
                 "Bulgaria",
@@ -1022,8 +1022,8 @@
             "region": "Middle East",
             "stability": 2,
             "influence": {},
-            "conflictive": true,
-            "oil": true,
+            "isConflictive": true,
+            "isOilProducer": true,
             "comments": "",
             "adjacent": [
                 "Iraq",
@@ -1039,8 +1039,8 @@
             "influence": {
                 "Russia": 1
             },
-            "conflictive": false,
-            "oil": false,
+            "isConflictive": false,
+            "isOilProducer": false,
             "comments": "",
             "adjacent": [
                 "Iran",
@@ -1053,8 +1053,8 @@
             "region": "Asia",
             "stability": 2,
             "influence": {},
-            "conflictive": true,
-            "oil": false,
+            "isConflictive": true,
+            "isOilProducer": false,
             "comments": "Possibly conflictive",
             "adjacent": [
                 "Stan states",
@@ -1068,8 +1068,8 @@
             "region": "Asia",
             "stability": 2,
             "influence": {},
-            "conflictive": true,
-            "oil": false,
+            "isConflictive": true,
+            "isOilProducer": false,
             "comments": "",
             "adjacent": [
                 "Afghanistan",
@@ -1083,8 +1083,8 @@
             "region": "Asia",
             "stability": 3,
             "influence": {},
-            "conflictive": true,
-            "oil": false,
+            "isConflictive": true,
+            "isOilProducer": false,
             "comments": "",
             "adjacent": [
                 "Pakistan",
@@ -1097,8 +1097,8 @@
             "region": "Asia",
             "stability": 2,
             "influence": {},
-            "conflictive": false,
-            "oil": false,
+            "isConflictive": false,
+            "isOilProducer": false,
             "comments": "",
             "adjacent": [
                 "India",
@@ -1113,8 +1113,8 @@
             "influence": {
                 "China": 2
             },
-            "conflictive": false,
-            "oil": true,
+            "isConflictive": false,
+            "isOilProducer": true,
             "comments": "Not oil per se, but coal and raw and manufactured materials producer",
             "adjacent": [
                 "Afghanistan",
@@ -1132,8 +1132,8 @@
             "region": "Asia",
             "stability": 1,
             "influence": {},
-            "conflictive": false,
-            "oil": false,
+            "isConflictive": false,
+            "isOilProducer": false,
             "comments": "",
             "adjacent": [
                 "Myanmar",
@@ -1147,8 +1147,8 @@
             "region": "Asia",
             "stability": 2,
             "influence": {},
-            "conflictive": false,
-            "oil": false,
+            "isConflictive": false,
+            "isOilProducer": false,
             "comments": "Possibly non conflictive",
             "adjacent": [
                 "Laos/Cambodia",
@@ -1161,8 +1161,8 @@
             "region": "Asia",
             "stability": 1,
             "influence": {},
-            "conflictive": false,
-            "oil": false,
+            "isConflictive": false,
+            "isOilProducer": false,
             "comments": "",
             "adjacent": [
                 "Laos/Cambodia",
@@ -1174,8 +1174,8 @@
             "region": "Asia",
             "stability": 2,
             "influence": {},
-            "conflictive": false,
-            "oil": false,
+            "isConflictive": false,
+            "isOilProducer": false,
             "comments": "",
             "adjacent": [
                 "Thailand",
@@ -1188,8 +1188,8 @@
             "region": "Asia",
             "stability": 1,
             "influence": {},
-            "conflictive": false,
-            "oil": false,
+            "isConflictive": false,
+            "isOilProducer": false,
             "comments": "",
             "adjacent": [
                 "Malaysia",
@@ -1201,8 +1201,8 @@
             "region": "Asia",
             "stability": 4,
             "influence": {},
-            "conflictive": false,
-            "oil": false,
+            "isConflictive": false,
+            "isOilProducer": false,
             "comments": "",
             "adjacent": [
                 "Malaysia"
@@ -1213,8 +1213,8 @@
             "region": "Asia",
             "stability": 2,
             "influence": {},
-            "conflictive": false,
-            "oil": false,
+            "isConflictive": false,
+            "isOilProducer": false,
             "comments": "",
             "adjacent": [
                 "Indonesia",
@@ -1226,8 +1226,8 @@
             "region": "Asia",
             "stability": 3,
             "influence": {},
-            "conflictive": true,
-            "oil": false,
+            "isConflictive": true,
+            "isOilProducer": false,
             "comments": "",
             "adjacent": [
                 "China",
@@ -1242,8 +1242,8 @@
             "influence": {
                 "US": 1
             },
-            "conflictive": false,
-            "oil": false,
+            "isConflictive": false,
+            "isOilProducer": false,
             "comments": "",
             "adjacent": [
                 "South Korea",
@@ -1257,8 +1257,8 @@
             "region": "Asia",
             "stability": 3,
             "influence": {},
-            "conflictive": true,
-            "oil": false,
+            "isConflictive": true,
+            "isOilProducer": false,
             "comments": "",
             "adjacent": [
                 "North Korea",
@@ -1273,8 +1273,8 @@
             "influence": {
                 "China": 1
             },
-            "conflictive": true,
-            "oil": false,
+            "isConflictive": true,
+            "isOilProducer": false,
             "comments": "",
             "adjacent": [
                 "China",

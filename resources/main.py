@@ -225,7 +225,7 @@ async def boardMapRegionGet(region: str, response: Response):
 
 
 @app.put('/board/map/{region}')
-async def boardScorePLayerPut(region: str, body: validators.BodyBoardMapRegion, response: Response):
+async def boardMapRegionPut(region: str, body: validators.BodyBoardMapRegion, response: Response):
     try:
         global board
 
@@ -240,6 +240,48 @@ async def boardScorePLayerPut(region: str, body: validators.BodyBoardMapRegion, 
             return board.mapRegionGet(region)
 
         # If no success updating the score
+        response.status_code = status.HTTP_400_BAD_REQUEST
+        return {}
+    except Exception as e:
+        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+        return {'Error': e}
+
+
+@app.get('/board/map/{region}/{country}')
+async def boardMapRegionCountryGet(region: str, country: str, response: Response):
+    try:
+        global board
+
+        # If there is no board
+        if board == None:
+            response.status_code = status.HTTP_200_OK
+            return {}
+
+        response.status_code = status.HTTP_200_OK
+        return board.mapRegionCountryGet(region, country)
+    except Exception as e:
+        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+        return {'Error': e}
+
+
+@app.put('/board/map/{region}/{country}')
+async def boardMapRegionCountryPut(region: str, country: str, body: validators.BodyBoardMapRegionCountry, response: Response):
+    try:
+        global board
+
+        # If there is no board
+        if board == None:
+            response.status_code = status.HTTP_200_OK
+            return {}
+
+        # If success updating the country
+        if board.mapRegionCountryPut(region, country, json.loads(body.json())):
+            print('devuelve true')
+            response.status_code = status.HTTP_200_OK
+            print('antes del return')
+            return board.mapRegionCountryGet(region, country)
+
+        # If no success updating the country
         response.status_code = status.HTTP_400_BAD_REQUEST
         return {}
     except Exception as e:

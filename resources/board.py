@@ -38,6 +38,7 @@ class Board(metaclass=MultipleMeta):
         return self.score
 
     def scorePlayerGet(self, player):
+        # If the player exists
         if player in self.twid['players']:
             # https://book.pythontips.com/en/latest/map_filter.html
             # Filter self.score with filter for the specified player
@@ -49,6 +50,7 @@ class Board(metaclass=MultipleMeta):
         return {}
 
     def scorePlayerPut(self, player, score):
+        # If the player exists and 0 <= score <= 100
         if player in self.twid['players'] and score >= 0 and score <= 100:
             for index, item in enumerate(self.score):
                 if item['name'] == player:
@@ -77,5 +79,21 @@ class Board(metaclass=MultipleMeta):
                 if item['name'] in [country['country'] for country in countries]:
                     self.twid['countries'][index]['region'] = region
             return True
+
+        return False
+    
+    def mapRegionCountryGet(self, region, country):
+        return next(({'stability': item['stability'], 'isConflictive': item['isConflictive'], 'isOilProducer': item['isOilProducer'], 'influence': item['influence']} for item in self.twid['countries'] if item['region'] == region and item['name'] == country), {}) # https://stackoverflow.com/questions/58380706/python-list-comprehension-filter-single-element-in-the-list
+    
+    def mapRegionCountryPut(self, region, country, newCountry):
+        # If the regions and all of the countries exist
+        if region in self.twid['regions'] and set([country]).issubset([country['name'] for country in self.twid['countries']]):
+            for index, item in enumerate(self.twid['countries']):
+                
+                if item['name'] == country:
+                    # If the stability and the influence have a valid value
+                    if newCountry['stability'] in range(1, 5+1) and set(newCountry['influence'].values()).issubset(range(1, 100+1)):
+                        self.twid['countries'][index].update(newCountry) # https://stackoverflow.com/questions/405489/python-update-object-from-dictionary
+                        return True
 
         return False

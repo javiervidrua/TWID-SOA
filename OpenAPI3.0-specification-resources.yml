@@ -850,22 +850,17 @@ components:
           type: boolean
           example: true
         influence:
-          type: array
-          items:
-            type: object
-            required:
-              - superPower
-              - influence
-            properties:
-              superPower:
-                type: string
-                example: US
-              influence:
-                type: integer
-                format: int32
-                minimum: 0
-                maximum: 100
-                example: 1
+          type: object
+          required:
+            - $player
+          properties:
+            $player:
+              type: integer
+              format: int32
+              minimum: 0
+              maximum: 100
+              example: 1
+      example: {"stability": 2, "isConflictive": true, "isOilProducer": true, "influence": {"US": 1}}
     board-nwo:
       type: array
       items:
