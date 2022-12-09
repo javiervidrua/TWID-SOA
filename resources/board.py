@@ -17,23 +17,23 @@ class Board(metaclass=MultipleMeta):
         ])
 
     # Round methods
-    def roundGet(self):
+    def round_get(self):
         return self.twid['round']
 
-    def roundAdd(self):
+    def round_add(self):
         if self.twid['round'] < 8:
             self.twid['round'] += 1
             return True
         return False
 
-    def roundReset(self):
+    def round_reset(self):
         self.twid['round'] = 1
 
     # Score methods
-    def scoreGet(self):
+    def score_get(self):
         return self.twid['score']
 
-    def scorePlayerGet(self, player):
+    def score_player_get(self, player):
         # If the player exists
         if player in self.twid['players']:
             # https://book.pythontips.com/en/latest/map_filter.html
@@ -45,7 +45,7 @@ class Board(metaclass=MultipleMeta):
             return next(map(lambda x: x['score'], filter(lambda x: x['name'] == player, self.twid['score'])), {})
         return {}
 
-    def scorePlayerPut(self, player, score):
+    def score_player_put(self, player, score):
         # If the player exists and 0 <= score <= 100
         if player in self.twid['players'] and score >= 0 and score <= 100:
             for index, item in enumerate(self.twid['score']):
@@ -56,13 +56,13 @@ class Board(metaclass=MultipleMeta):
         return False
 
     # Map methods
-    def mapGet(self):
+    def map_get(self):
         return self.twid['regions']
 
-    def mapRegionGet(self, region):
+    def map_region_get(self, region):
         return [{'country': country['name']} for country in self.twid['countries'] if country['region'] == region]
     
-    def mapRegionPut(self, region, countries):
+    def map_region_put(self, region, countries):
         # If the regions and all of the countries exist
         if region in self.twid['regions'] and set([country['country'] for country in countries]).issubset([country['name'] for country in self.twid['countries']]): # https://stackoverflow.com/questions/3931541/how-to-check-if-all-of-the-following-items-are-in-a-list
             for index, item in enumerate(self.twid['countries']):
@@ -78,7 +78,7 @@ class Board(metaclass=MultipleMeta):
 
         return False
     
-    def mapRegionCountryGet(self, region, country):
+    def map_region_country_get(self, region, country):
         return next(({'stability': item['stability'], 'isConflictive': item['isConflictive'], 'isOilProducer': item['isOilProducer'], 'influence': item['influence']} for item in self.twid['countries'] if item['region'] == region and item['name'] == country), {}) # https://stackoverflow.com/questions/58380706/python-list-comprehension-filter-single-element-in-the-list
     
     def mapRegionCountryPut(self, region, country, newCountry):
@@ -94,21 +94,24 @@ class Board(metaclass=MultipleMeta):
 
         return False
     
-    def nwoGet(self):
+    def nwo_get(self):
         return list(self.twid['nwo'].keys())
     
-    def nwoTrackGet(self, track):
+    def nwo_track_get(self, track):
         return list(self.twid['nwo'][track].keys())
     
-    def nwoTrackSlotGet(self, track, slot):
+    def nwo_track_slot_get(self, track, slot):
         return self.twid['nwo'][track][slot]
     
-    def nwoTrackSlotPut(self, track, slot, newSlot):
+    def nwo_track_slot_put(self, track, slot, newSlot):
         # If the track and the slot exist
         if track in list(self.twid['nwo'].keys()) and slot in list(self.twid['nwo'][track].keys()):
             # Create an array of valid values
             validValues = self.twid['players']
             validValues.append('')
+            
+            # Delete the description, that cannot be updated (for now)
+            newSlot.pop('description', None)
             
             # If the new slot has valid values
             if newSlot['veto'] in validValues and newSlot['ahead'] in validValues and newSlot['supremacy'] in validValues:

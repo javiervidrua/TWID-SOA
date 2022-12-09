@@ -22,7 +22,7 @@ cards = None
 
 # Board endpoints
 @app.get('/board')
-async def boardGet(response: Response):
+async def board_get(response: Response):
     try:
         global board
 
@@ -39,7 +39,7 @@ async def boardGet(response: Response):
 
 
 @app.post('/board')
-async def boardPost(response: Response):
+async def board_post(response: Response):
     try:
         global board
 
@@ -54,7 +54,7 @@ async def boardPost(response: Response):
 
 
 @app.get('/board/round')
-async def boardRoundGet(response: Response):
+async def board_round_get(response: Response):
     try:
         global board
 
@@ -64,14 +64,14 @@ async def boardRoundGet(response: Response):
             return {}
 
         response.status_code = status.HTTP_200_OK
-        return {'round': board.roundGet()}
+        return {'round': board.round_get()}
     except Exception as e:
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
         return {'Error': e}
 
 
 @app.post('/board/round')
-async def boardRoundPost(response: Response):
+async def board_round_post(response: Response):
     try:
         global board
 
@@ -81,9 +81,9 @@ async def boardRoundPost(response: Response):
             return {}
 
         # If success adding the round
-        if board.roundAdd():
+        if board.round_add():
             response.status_code = status.HTTP_200_OK
-            return {'round': board.roundGet()}
+            return {'round': board.round_get()}
 
         # If no success adding the round
         response.status_code = status.HTTP_400_BAD_REQUEST
@@ -94,7 +94,7 @@ async def boardRoundPost(response: Response):
 
 
 @app.delete('/board/round')
-async def boardRoundDelete(response: Response):
+async def board_round_delete(response: Response):
     try:
         global board
 
@@ -104,17 +104,17 @@ async def boardRoundDelete(response: Response):
             return {}
 
         # Idempotent
-        board.roundReset()
+        board.round_reset()
 
         response.status_code = status.HTTP_200_OK
-        return {'round': board.roundGet()}
+        return {'round': board.round_get()}
     except Exception as e:
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
         return {'Error': e}
 
 
 @app.get('/board/score')
-async def boardScoreGet(response: Response):
+async def board_score_get(response: Response):
     try:
         global board
 
@@ -124,14 +124,14 @@ async def boardScoreGet(response: Response):
             return {}
 
         response.status_code = status.HTTP_200_OK
-        return board.scoreGet()
+        return board.score_get()
     except Exception as e:
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
         return {'Error': e}
 
 
 @app.get('/board/score/{player}')
-async def boardScorePLayerGet(player: str, response: Response):
+async def board_score_player_get(player: str, response: Response):
     try:
         global board
 
@@ -141,14 +141,14 @@ async def boardScorePLayerGet(player: str, response: Response):
             return {}
 
         response.status_code = status.HTTP_200_OK
-        return {'score': board.scorePlayerGet(player)}
+        return {'score': board.score_player_get(player)}
     except Exception as e:
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
         return {'Error': e}
 
 
 @app.put('/board/score/{player}')
-async def boardScorePLayerPut(player: str, body: validators.BodyBoardScorePlayer, response: Response):
+async def board_score_player_put(player: str, body: validators.BodyBoardScorePlayer, response: Response):
     try:
         global board
 
@@ -158,9 +158,9 @@ async def boardScorePLayerPut(player: str, body: validators.BodyBoardScorePlayer
             return {}
 
         # If success updating the score
-        if board.scorePlayerPut(player, body.score):
+        if board.score_player_put(player, body.score):
             response.status_code = status.HTTP_200_OK
-            return {'score': board.scorePlayerGet(player)}
+            return {'score': board.score_player_get(player)}
 
         # If no success updating the score
         response.status_code = status.HTTP_400_BAD_REQUEST
@@ -171,7 +171,7 @@ async def boardScorePLayerPut(player: str, body: validators.BodyBoardScorePlayer
 
 
 @app.delete('/board/score/{player}')
-async def boardScorePLayerDelete(player: str, response: Response):
+async def board_score_pLayer_delete(player: str, response: Response):
     try:
         global board
 
@@ -181,17 +181,17 @@ async def boardScorePLayerDelete(player: str, response: Response):
             return {}
 
         # Idempotent
-        board.scorePlayerPut(player, 0)
+        board.score_player_put(player, 0)
 
         response.status_code = status.HTTP_200_OK
-        return {'score': board.scorePlayerGet(player)}
+        return {'score': board.score_player_get(player)}
     except Exception as e:
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
         return {'Error': e}
 
 
 @app.get('/board/map')
-async def boardMapGet(response: Response):
+async def board_map_get(response: Response):
     try:
         global board
 
@@ -201,14 +201,14 @@ async def boardMapGet(response: Response):
             return {}
 
         response.status_code = status.HTTP_200_OK
-        return board.mapGet()
+        return board.map_get()
     except Exception as e:
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
         return {'Error': e}
 
 
 @app.get('/board/map/{region}')
-async def boardMapRegionGet(region: str, response: Response):
+async def board_map_region_get(region: str, response: Response):
     try:
         global board
 
@@ -218,14 +218,14 @@ async def boardMapRegionGet(region: str, response: Response):
             return {}
 
         response.status_code = status.HTTP_200_OK
-        return board.mapRegionGet(region)
+        return board.map_region_get(region)
     except Exception as e:
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
         return {'Error': e}
 
 
 @app.put('/board/map/{region}')
-async def boardMapRegionPut(region: str, body: validators.BodyBoardMapRegion, response: Response):
+async def board_map_region_put(region: str, body: validators.BodyBoardMapRegion, response: Response):
     try:
         global board
 
@@ -235,9 +235,9 @@ async def boardMapRegionPut(region: str, body: validators.BodyBoardMapRegion, re
             return {}
 
         # If success updating the score
-        if board.mapRegionPut(region, json.loads(body.json())):
+        if board.map_region_put(region, json.loads(body.json())):
             response.status_code = status.HTTP_200_OK
-            return board.mapRegionGet(region)
+            return board.map_region_get(region)
 
         # If no success updating the score
         response.status_code = status.HTTP_400_BAD_REQUEST
@@ -248,7 +248,7 @@ async def boardMapRegionPut(region: str, body: validators.BodyBoardMapRegion, re
 
 
 @app.get('/board/map/{region}/{country}')
-async def boardMapRegionCountryGet(region: str, country: str, response: Response):
+async def board_map_region_country_get(region: str, country: str, response: Response):
     try:
         global board
 
@@ -258,14 +258,14 @@ async def boardMapRegionCountryGet(region: str, country: str, response: Response
             return {}
 
         response.status_code = status.HTTP_200_OK
-        return board.mapRegionCountryGet(region, country)
+        return board.map_region_country_get(region, country)
     except Exception as e:
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
         return {'Error': e}
 
 
 @app.put('/board/map/{region}/{country}')
-async def boardMapRegionCountryPut(region: str, country: str, body: validators.BodyBoardMapRegionCountry, response: Response):
+async def board_map_region_country_put(region: str, country: str, body: validators.BodyBoardMapRegionCountry, response: Response):
     try:
         global board
 
@@ -277,7 +277,7 @@ async def boardMapRegionCountryPut(region: str, country: str, body: validators.B
         # If success updating the country
         if board.mapRegionCountryPut(region, country, json.loads(body.json())):
             response.status_code = status.HTTP_200_OK
-            return board.mapRegionCountryGet(region, country)
+            return board.map_region_country_get(region, country)
 
         # If no success updating the country
         response.status_code = status.HTTP_400_BAD_REQUEST
@@ -288,7 +288,7 @@ async def boardMapRegionCountryPut(region: str, country: str, body: validators.B
 
 
 @app.get('/board/nwo')
-async def boardNwoGet(response: Response):
+async def board_nwo_get(response: Response):
     try:
         global board
 
@@ -298,14 +298,14 @@ async def boardNwoGet(response: Response):
             return {}
 
         response.status_code = status.HTTP_200_OK
-        return [{'name': track} for track in board.nwoGet()]
+        return [{'name': track} for track in board.nwo_get()]
     except Exception as e:
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
         return {'Error': e}
 
 
 @app.get('/board/nwo/{track}')
-async def boardNwoTrackGet(track: str, response: Response):
+async def board_nwo_track_get(track: str, response: Response):
     try:
         global board
 
@@ -315,14 +315,14 @@ async def boardNwoTrackGet(track: str, response: Response):
             return {}
 
         response.status_code = status.HTTP_200_OK
-        return [{'name': slot} for slot in board.nwoTrackGet(track)]
+        return [{'name': slot} for slot in board.nwo_track_get(track)]
     except Exception as e:
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
         return {'Error': e}
 
 
 @app.get('/board/nwo/{track}/{slot}')
-async def boardNwoTrackSlotGet(track: str, slot: str, response: Response):
+async def board_nwo_track_slot_get(track: str, slot: str, response: Response):
     try:
         global board
 
@@ -332,14 +332,14 @@ async def boardNwoTrackSlotGet(track: str, slot: str, response: Response):
             return {}
 
         response.status_code = status.HTTP_200_OK
-        return board.nwoTrackSlotGet(track, slot)
+        return board.nwo_track_slot_get(track, slot)
     except Exception as e:
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
         return {'Error': e}
 
 
 @app.put('/board/nwo/{track}/{slot}')
-async def boardNwoTrackSlotPut(track: str, slot: str, body: validators.BodyBoardNwoTrackSlot, response: Response):
+async def board_nwo_track_slot_put(track: str, slot: str, body: validators.BodyBoardNwoTrackSlot, response: Response):
     try:
         global board
 
@@ -349,9 +349,9 @@ async def boardNwoTrackSlotPut(track: str, slot: str, body: validators.BodyBoard
             return {}
 
         # If success updating the track slot
-        if board.nwoTrackSlotPut(track, slot, json.loads(body.json())):
+        if board.nwo_track_slot_put(track, slot, json.loads(body.json())):
             response.status_code = status.HTTP_200_OK
-            return board.nwoTrackSlotGet(track, slot)
+            return board.nwo_track_slot_get(track, slot)
 
         # If no success updating the track slot
         response.status_code = status.HTTP_400_BAD_REQUEST
@@ -362,7 +362,7 @@ async def boardNwoTrackSlotPut(track: str, slot: str, body: validators.BodyBoard
 
 
 @app.delete('/board/nwo/{track}/{slot}')
-async def boardNwoTrackSlotDelete(track: str, slot: str, response: Response):
+async def board_nwo_track_slot_delete(track: str, slot: str, response: Response):
     try:
         global board
 
@@ -372,12 +372,12 @@ async def boardNwoTrackSlotDelete(track: str, slot: str, response: Response):
             return {}
 
         # Idempotent
-        slotReset = board.nwoTrackSlotGet(track, slot)
+        slotReset = board.nwo_track_slot_get(track, slot)
         slotReset['supremacy'] = ''
-        board.nwoTrackSlotPut(track, slot, slotReset)
+        board.nwo_track_slot_put(track, slot, slotReset)
 
         response.status_code = status.HTTP_200_OK
-        return board.nwoTrackSlotGet(track, slot)
+        return board.nwo_track_slot_get(track, slot)
     except Exception as e:
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
         return {'Error': e}
@@ -385,7 +385,7 @@ async def boardNwoTrackSlotDelete(track: str, slot: str, response: Response):
 
 # Cards endpoints
 @app.get('/cards')
-async def cardsGet(response: Response):
+async def cards_get(response: Response):
     try:
         global cards
 
@@ -402,7 +402,7 @@ async def cardsGet(response: Response):
 
 
 @app.post('/cards')
-async def cardsPost(response: Response):
+async def cards_post(response: Response):
     try:
         global cards
 
