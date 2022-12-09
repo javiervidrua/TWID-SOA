@@ -1300,5 +1300,67 @@
                 "South Korea"
             ]
         }
-    ]
+    ],
+    "nwo": {
+        "Economy": {
+            "Financial markets": {
+                "veto": "",
+                "ahead": "west",
+                "supremacy": "",
+                "description": "You get +1 on all economy ops"
+            },
+            "Fiscal paradises": {
+                "veto": "",
+                "ahead": "",
+                "supremacy": "",
+                "description": "You may cancel the text of any economy card as it is played for the event or for operations of the opposite block"
+            },
+            "Sovereign funds": {
+                "veto": "",
+                "ahead": "east",
+                "supremacy": "",
+                "description": "You may remove this supremacy to give +2 points to an economy card used for an influence operation"
+            }
+        },
+        "Public opinion": {
+            "State propaganda": {
+                "veto": "EU",
+                "ahead": "",
+                "supremacy": "",
+                "description": "Remove supremacy to add 1 influence to an already controlled country (usable before or after any action, yours or from other player, event or operation)"
+            },
+            "Mass media": {
+                "veto": "",
+                "ahead": "US",
+                "supremacy": "",
+                "description": "You get +1 on all influence ops"
+            },
+            "Information leaks": {
+                "veto": "US",
+                "ahead": "",
+                "supremacy": "",
+                "description": "Remove supremacy to reduce by 2 the op value of an opponent card used to influence"
+            }
+        },
+        "Technology": {
+            "Communications": {
+                "veto": "",
+                "ahead": "",
+                "supremacy": "",
+                "description": "You get +1 on all military card ops"
+            },
+            "Global positioning": {
+                "veto": "",
+                "ahead": "US",
+                "supremacy": "",
+                "description": "Remove supremacy to cancel a personality card text as its text is about to resolve, or to discard a personality in play"
+            },
+            "Drones": {
+                "veto": "",
+                "ahead": "US",
+                "supremacy": "",
+                "description": "You lose 1 less VP on destabilization ops"
+            }
+        }
+    }
 }

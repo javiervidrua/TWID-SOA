@@ -276,14 +276,108 @@ async def boardMapRegionCountryPut(region: str, country: str, body: validators.B
 
         # If success updating the country
         if board.mapRegionCountryPut(region, country, json.loads(body.json())):
-            print('devuelve true')
             response.status_code = status.HTTP_200_OK
-            print('antes del return')
             return board.mapRegionCountryGet(region, country)
 
         # If no success updating the country
         response.status_code = status.HTTP_400_BAD_REQUEST
         return {}
+    except Exception as e:
+        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+        return {'Error': e}
+
+
+@app.get('/board/nwo')
+async def boardNwoGet(response: Response):
+    try:
+        global board
+
+        # If there is no board
+        if board == None:
+            response.status_code = status.HTTP_200_OK
+            return {}
+
+        response.status_code = status.HTTP_200_OK
+        return [{'name': track} for track in board.nwoGet()]
+    except Exception as e:
+        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+        return {'Error': e}
+
+
+@app.get('/board/nwo/{track}')
+async def boardNwoTrackGet(track: str, response: Response):
+    try:
+        global board
+
+        # If there is no board
+        if board == None:
+            response.status_code = status.HTTP_200_OK
+            return {}
+
+        response.status_code = status.HTTP_200_OK
+        return [{'name': slot} for slot in board.nwoTrackGet(track)]
+    except Exception as e:
+        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+        return {'Error': e}
+
+
+@app.get('/board/nwo/{track}/{slot}')
+async def boardNwoTrackSlotGet(track: str, slot: str, response: Response):
+    try:
+        global board
+
+        # If there is no board
+        if board == None:
+            response.status_code = status.HTTP_200_OK
+            return {}
+
+        response.status_code = status.HTTP_200_OK
+        return board.nwoTrackSlotGet(track, slot)
+    except Exception as e:
+        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+        return {'Error': e}
+
+
+@app.put('/board/nwo/{track}/{slot}')
+async def boardNwoTrackSlotPut(track: str, slot: str, body: validators.BodyBoardNwoTrackSlot, response: Response):
+    try:
+        global board
+
+        # If there is no board
+        if board == None:
+            response.status_code = status.HTTP_200_OK
+            return {}
+
+        # If success updating the track slot
+        if board.nwoTrackSlotPut(track, slot, json.loads(body.json())):
+            response.status_code = status.HTTP_200_OK
+            return board.nwoTrackSlotGet(track, slot)
+
+        # If no success updating the track slot
+        response.status_code = status.HTTP_400_BAD_REQUEST
+        return {}
+    except Exception as e:
+        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+        return {'Error': e}
+
+
+@app.delete('/board/nwo/{track}/{slot}')
+async def boardNwoTrackSlotDelete(track: str, slot: str, response: Response):
+    try:
+        global board
+
+        # If there is no board
+        if board == None:
+            response.status_code = status.HTTP_200_OK
+            return {}
+
+        # Idempotent
+        slotReset = board.nwoTrackSlotGet(track, slot)
+        slotReset['supremacy'] = ''
+        board.nwoTrackSlotPut(track, slot, slotReset)
+        
+        response.status_code = status.HTTP_200_OK
+        return board.nwoTrackSlotGet(track, slot)
     except Exception as e:
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
         return {'Error': e}

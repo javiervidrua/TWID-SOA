@@ -21,3 +21,9 @@ class BodyBoardMapRegionCountry(BaseModel):
     isConflictive: bool
     isOilProducer: bool
     influence: Dict[str, Optional[int]]
+
+class BodyBoardNwoTrackSlot(BaseModel):
+    veto: str
+    ahead: str
+    supremacy: str
+    description: str

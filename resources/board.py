@@ -93,3 +93,26 @@ class Board(metaclass=MultipleMeta):
                         return True
 
         return False
+    
+    def nwoGet(self):
+        return list(self.twid['nwo'].keys())
+    
+    def nwoTrackGet(self, track):
+        return list(self.twid['nwo'][track].keys())
+    
+    def nwoTrackSlotGet(self, track, slot):
+        return self.twid['nwo'][track][slot]
+    
+    def nwoTrackSlotPut(self, track, slot, newSlot):
+        # If the track and the slot exist
+        if track in list(self.twid['nwo'].keys()) and slot in list(self.twid['nwo'][track].keys()):
+            # Create an array of valid values
+            validValues = self.twid['players']
+            validValues.append('')
+            
+            # If the new slot has valid values
+            if newSlot['veto'] in validValues and newSlot['ahead'] in validValues and newSlot['supremacy'] in validValues:
+                self.twid['nwo'][track][slot] = newSlot
+                return True
+        
+        return False

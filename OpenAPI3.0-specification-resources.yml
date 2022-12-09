@@ -884,11 +884,23 @@ components:
     board-nwo-track-slot:
       type: object
       required:
+        - veto
+        - ahead
         - supremacy
+        - description
       properties:
+        veto:
+          type: string
+          example: ''
+        ahead:
+          type: string
+          example: US
         supremacy:
           type: string
           example: US
+        description:
+          type: string
+          example: Remove supremacy to add 1 influence to an already controlled country (usable before or after any action, yours or from other player, event or operation)
     card:
       type: array
       items:
