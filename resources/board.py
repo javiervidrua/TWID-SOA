@@ -51,7 +51,7 @@ class Board(metaclass=MultipleMeta):
             for index, item in enumerate(self.twid['score']):
                 if item['name'] == player:
                     self.twid['score'][index]['score'] = score
-                    return score
+                    return True
 
         return False
 

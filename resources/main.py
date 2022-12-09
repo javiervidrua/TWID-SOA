@@ -158,9 +158,9 @@ async def boardScorePLayerPut(player: str, body: validators.BodyBoardScorePlayer
             return {}
 
         # If success updating the score
-        if score := board.scorePlayerPut(player, body.score):
+        if board.scorePlayerPut(player, body.score):
             response.status_code = status.HTTP_200_OK
-            return {'score': score}
+            return {'score': board.scorePlayerGet(player)}
 
         # If no success updating the score
         response.status_code = status.HTTP_400_BAD_REQUEST
@@ -375,7 +375,7 @@ async def boardNwoTrackSlotDelete(track: str, slot: str, response: Response):
         slotReset = board.nwoTrackSlotGet(track, slot)
         slotReset['supremacy'] = ''
         board.nwoTrackSlotPut(track, slot, slotReset)
-        
+
         response.status_code = status.HTTP_200_OK
         return board.nwoTrackSlotGet(track, slot)
     except Exception as e:
