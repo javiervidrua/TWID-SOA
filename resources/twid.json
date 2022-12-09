@@ -1,4 +1,23 @@
 {
+    "round": 1,
+    "score": [
+        {
+            "name": "US",
+            "score": 0
+        },
+        {
+            "name": "EU",
+            "score": 0
+        },
+        {
+            "name": "Russia",
+            "score": 0
+        },
+        {
+            "name": "China",
+            "score": 0
+        }
+    ],
     "players": [
         "US",
         "EU",

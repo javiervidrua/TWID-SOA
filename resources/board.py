@@ -8,10 +8,6 @@ class Board(metaclass=MultipleMeta):
         with open('twid.json', 'r') as file:
             self.twid = json.load(file)
 
-        # Initialize everything
-        self.round = 1
-        self.score = [{'name': player, 'score': 0} for player in self.twid['players']]
-
     def __repr__(self):
         return str([
             {'name': 'round'},
@@ -22,39 +18,39 @@ class Board(metaclass=MultipleMeta):
 
     # Round methods
     def roundGet(self):
-        return self.round
+        return self.twid['round']
 
     def roundAdd(self):
-        if self.round < 8:
-            self.round += 1
+        if self.twid['round'] < 8:
+            self.twid['round'] += 1
             return True
         return False
 
     def roundReset(self):
-        self.round = 1
+        self.twid['round'] = 1
 
     # Score methods
     def scoreGet(self):
-        return self.score
+        return self.twid['score']
 
     def scorePlayerGet(self, player):
         # If the player exists
         if player in self.twid['players']:
             # https://book.pythontips.com/en/latest/map_filter.html
-            # Filter self.score with filter for the specified player
+            # Filter self.twid['score'] with filter for the specified player
             # Then map the result so it looks like {'score': $score}
 
             # https://stackoverflow.com/questions/29563153/python-filter-function-single-result
             # And finally get the element of the iterator
-            return next(map(lambda x: x['score'], filter(lambda x: x['name'] == player, self.score)), {})
+            return next(map(lambda x: x['score'], filter(lambda x: x['name'] == player, self.twid['score'])), {})
         return {}
 
     def scorePlayerPut(self, player, score):
         # If the player exists and 0 <= score <= 100
         if player in self.twid['players'] and score >= 0 and score <= 100:
-            for index, item in enumerate(self.score):
+            for index, item in enumerate(self.twid['score']):
                 if item['name'] == player:
-                    self.score[index]['score'] = score
+                    self.twid['score'][index]['score'] = score
                     return score
 
         return False
