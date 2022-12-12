@@ -928,12 +928,16 @@ components:
       type: object
       required:
         - id
-        - number
-        - block
-        - era # pre/post 9/11
-        - name
+        - title
+        - epoch # pre/post 9/11
+        - description
+        - points
+        - faction
         - type
-        - text
+        - subtype
+        - remove
+        - image
+        - background
       properties:
         id:
           type: integer
@@ -941,27 +945,45 @@ components:
           minimum: 1
           maximum: 100
           example: 23
-        number:
+        title:
+          type: string
+          example: Black Monday
+        epoch:
+          type: string
+          enum: [Pre, Post]
+          example: Pre
+        year:
+          type: string
+          example: 1987
+        description:
+          type: string
+          example: US and EU lose supremacy on all NWO economy slots.
+        points:
           type: integer
           format: int32
           minimum: 1
           maximum: 5
           example: 2
-        block:
+        faction:
           type: string
-          example: W
-        era:
-          type: string
-          example: Pre
-        name:
-          type: string
-          example: Boris Yeltsin
+          enum: [E, W, E/W]
+          example: E
         type:
           type: string
-          example: Political
-        text:
+          example: Economy
+        subtype:
           type: string
-          example: US gains 1 influence in Russia
+          example: ''
+        remove:
+          type: boolean
+          example: true
+        image:
+          type: string
+          example: images/blackMonday.jpg
+        background:
+          type: string
+          example: '#DDDDFF'
+        
     cards-deck:
       type: array
       items:
