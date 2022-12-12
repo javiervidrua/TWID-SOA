@@ -1314,11 +1314,31 @@
             ],
             "properties": {
               "$player": {
-                "type": "integer",
-                "format": "int32",
-                "minimum": 0,
-                "maximum": 100,
-                "example": 1
+                "type": "object",
+                "required": [
+                  "influence"
+                ],
+                "properties": {
+                  "influence": {
+                    "type": "integer",
+                    "format": "int32",
+                    "minimum": 0,
+                    "maximum": 100,
+                    "example": 1
+                  },
+                  "extra": {
+                    "type": "object",
+                    "properties": {
+                      "$player": {
+                        "type": "integer",
+                        "format": "int32",
+                        "minimum": 0,
+                        "maximum": 100,
+                        "example": 1
+                      }
+                    }
+                  }
+                }
               }
             }
           }
@@ -1328,7 +1348,12 @@
           "isConflictive": true,
           "isOilProducer": true,
           "influence": {
-            "US": 1
+            "US": {
+              "influence": 2,
+              "extra": {
+                "China": 1
+              }
+            }
           }
         }
       },
@@ -1459,7 +1484,6 @@
           "points",
           "faction",
           "type",
-          "subtype",
           "remove",
           "image",
           "background"

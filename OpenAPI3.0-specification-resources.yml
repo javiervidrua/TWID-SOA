@@ -857,12 +857,26 @@ components:
             - $player
           properties:
             $player:
-              type: integer
-              format: int32
-              minimum: 0
-              maximum: 100
-              example: 1
-      example: {"stability": 2, "isConflictive": true, "isOilProducer": true, "influence": {"US": 1}}
+              type: object
+              required:
+                - influence
+              properties:
+                influence:
+                  type: integer
+                  format: int32
+                  minimum: 0
+                  maximum: 100
+                  example: 1
+                extra:
+                  type: object
+                  properties:
+                    $player:
+                      type: integer
+                      format: int32
+                      minimum: 0
+                      maximum: 100
+                      example: 1
+      example: {"stability": 2, "isConflictive": true, "isOilProducer": true, "influence": {"US": {"influence": 2, "extra": {"China": 1}}}}
     board-nwo:
       type: array
       items:
@@ -934,7 +948,6 @@ components:
         - points
         - faction
         - type
-        - subtype
         - remove
         - image
         - background

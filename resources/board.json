@@ -38,7 +38,10 @@
             "region": "NC America",
             "stability": 5,
             "influence": {
-                "US": 2
+                "US": {
+                    "influence": 2,
+                    "extra": {}
+                }
             },
             "isConflictive": false,
             "isOilProducer": true,
@@ -55,7 +58,10 @@
             "region": "NC America",
             "stability": 4,
             "influence": {
-                "US": 1
+                "US": {
+                    "influence": 1,
+                    "extra": {}
+                }
             },
             "isConflictive": false,
             "isOilProducer": true,
@@ -338,8 +344,14 @@
             "region": "Europe",
             "stability": 5,
             "influence": {
-                "US": 1,
-                "EU": 2
+                "US": {
+                    "influence": 1,
+                    "extra": {}
+                },
+                "EU": {
+                    "influence": 2,
+                    "extra": {}
+                }
             },
             "isConflictive": false,
             "isOilProducer": false,
@@ -513,7 +525,10 @@
             "region": "Europe",
             "stability": 2,
             "influence": {
-                "Russia": 1
+                "Russia": {
+                    "influence": 1,
+                    "extra": {}
+                }
             },
             "isConflictive": true,
             "isOilProducer": false,
@@ -529,7 +544,10 @@
             "region": "Europe",
             "stability": 3,
             "influence": {
-                "EU": 2
+                "EU": {
+                    "influence": 2,
+                    "extra": {}
+                }
             },
             "isConflictive": false,
             "isOilProducer": false,
@@ -547,7 +565,10 @@
             "region": "Europe",
             "stability": 2,
             "influence": {
-                "EU": 1
+                "EU": {
+                    "influence": 1,
+                    "extra": {}
+                }
             },
             "isConflictive": false,
             "isOilProducer": false,
@@ -563,7 +584,10 @@
             "region": "Europe",
             "stability": 2,
             "influence": {
-                "EU": 1
+                "EU": {
+                    "influence": 1,
+                    "extra": {}
+                }
             },
             "isConflictive": false,
             "isOilProducer": false,
@@ -622,7 +646,10 @@
             "region": "Europe/Asia",
             "stability": 5,
             "influence": {
-                "Russia": 1
+                "Russia": {
+                    "influence": 1,
+                    "extra": {}
+                }
             },
             "isConflictive": false,
             "isOilProducer": true,
@@ -998,7 +1025,10 @@
             "region": "Middle East",
             "stability": 2,
             "influence": {
-                "Russia": 1
+                "Russia": {
+                    "influence": 1,
+                    "extra": {}
+                }
             },
             "isConflictive": true,
             "isOilProducer": false,
@@ -1056,7 +1086,10 @@
             "region": "Asia",
             "stability": 3,
             "influence": {
-                "Russia": 1
+                "Russia": {
+                    "influence": 1,
+                    "extra": {}
+                }
             },
             "isConflictive": false,
             "isOilProducer": false,
@@ -1130,7 +1163,10 @@
             "region": "Asia",
             "stability": 5,
             "influence": {
-                "China": 2
+                "China": {
+                    "influence": 2,
+                    "extra": {}
+                }
             },
             "isConflictive": false,
             "isOilProducer": true,
@@ -1259,7 +1295,10 @@
             "region": "Asia",
             "stability": 4,
             "influence": {
-                "US": 1
+                "US": {
+                    "influence": 1,
+                    "extra": {}
+                }
             },
             "isConflictive": false,
             "isOilProducer": false,
@@ -1290,7 +1329,10 @@
             "region": "Asia",
             "stability": 3,
             "influence": {
-                "China": 1
+                "China": {
+                    "influence": 1,
+                    "extra": {}
+                }
             },
             "isConflictive": true,
             "isOilProducer": false,
