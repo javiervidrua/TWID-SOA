@@ -1,4 +1,5 @@
 import json
+from random import shuffle
 from board import Board
 from cards import Cards
 import validators
@@ -275,7 +276,7 @@ async def board_map_region_country_put(region: str, country: str, body: validato
             return {}
 
         # If success updating the country
-        if board.mapRegionCountryPut(region, country, json.loads(body.json())):
+        if board.map_region_country_put(region, country, json.loads(body.json())):
             response.status_code = status.HTTP_200_OK
             return board.map_region_country_get(region, country)
 
@@ -411,6 +412,105 @@ async def cards_post(response: Response):
 
         response.status_code = status.HTTP_200_OK
         return repr(cards)
+    except Exception as e:
+        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+        return {'Error': e}
+
+@app.get('/cards/deck')
+async def cards_deck_get(response: Response):
+    try:
+        global cards
+
+        # If there are no cards
+        if cards == None:
+            response.status_code = status.HTTP_200_OK
+            return {}
+
+        response.status_code = status.HTTP_200_OK
+        return cards.cards_deck_get()
+    except Exception as e:
+        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+        return {'Error': e}
+
+# Has to be below the /cards/deck as otherwise FastAPI wouldn't know if /cards/deck or /cards/{id} was called
+@app.get('/cards/{id}')
+async def cards_id_get(id: int, response: Response):
+    try:
+        global cards
+
+        # If there are no cards
+        if cards == None:
+            response.status_code = status.HTTP_200_OK
+            return {}
+
+        response.status_code = status.HTTP_200_OK
+        return cards.cards_get(id)
+    except Exception as e:
+        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+        return {'Error': e}
+
+@app.get('/cards/deck/{type}')
+async def cards_deck_type_get(type: str, response: Response, random: bool=False):
+    try:
+        global cards
+
+        # If there are no cards
+        if cards == None:
+            response.status_code = status.HTTP_200_OK
+            return {}
+
+        response.status_code = status.HTTP_200_OK
+        deck = cards.cards_deck_get(type)
+        if random == False: return deck
+
+        # If random is True, shuffle the deck
+        shuffle(deck)
+        return deck
+
+    except Exception as e:
+        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+        return {'Error': e}
+
+@app.post('/cards/deck/{type}/{id}')
+async def cards_deck_type_id_post(type: str, id: int, response: Response):
+    try:
+        global board
+
+        # If there are no cards
+        if cards == None:
+            response.status_code = status.HTTP_200_OK
+            return {}
+
+        # If success updating the deck with the new card
+        if cards.cards_deck_add(type, id):
+            response.status_code = status.HTTP_200_OK
+            return cards.cards_get(id)
+
+        # If no success updating the deck with the new card
+        response.status_code = status.HTTP_400_BAD_REQUEST
+        return {}
+    except Exception as e:
+        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+        return {'Error': e}
+
+@app.delete('/cards/deck/{type}/{id}')
+async def cards_deck_type_id_delete(type: str, id: int, response: Response):
+    try:
+        global board
+
+        # If there are no cards
+        if cards == None:
+            response.status_code = status.HTTP_200_OK
+            return {}
+
+        # If success deleting the card from the deck
+        if cards.cards_deck_remove(type, id):
+            response.status_code = status.HTTP_200_OK
+            return cards.cards_get(id)
+
+        # If no success deleting the card from the deck
+        response.status_code = status.HTTP_400_BAD_REQUEST
+        return {}
     except Exception as e:
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
         return {'Error': e}

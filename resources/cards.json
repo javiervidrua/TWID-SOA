@@ -1134,7 +1134,7 @@
             "background": "#DDDDDD"
         },
         {
-            "id": "P1",
+            "id": 98,
             "title": "Conspiracy theory",
             "epoch": "Pre",
             "description": "PROMO. Pick a card from another player's hand. Play it by its text switching Russia and US, China and EU, and West and East.",
@@ -1145,10 +1145,10 @@
             "background": "#DDDDFF"
         },
         {
-            "id": "P2",
+            "id": 99,
             "title": "Silvio Berlusconi",
             "epoch": "Pre",
-            "description": "If first epoch, remove any Russia influence from Italy and gain 1VP. If second epoch, EU loses 1VP.",
+            "description": "PROMO. If first epoch, remove any Russia influence from Italy and gain 1VP. If second epoch, EU loses 1VP.",
             "points": 2,
             "faction": "E/W",
             "type": "Political",
@@ -1158,11 +1158,11 @@
             "background": "#DDDDFF"
         },
         {
-            "id": "P3",
+            "id": 100,
             "title": "Madrid bombings",
             "epoch": "Post",
             "year": 2004,
-            "description": "EU player must choose to remove 1 West influence on Spain/Portugal or remove 1 EU influence on Afghanistan.",
+            "description": "PROMO. EU player must choose to remove 1 West influence on Spain/Portugal or remove 1 EU influence on Afghanistan.",
             "points": 1,
             "faction": "E",
             "type": "Military",
@@ -1173,7 +1173,7 @@
         }
     ],
     "decks": {
-        "main": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, "P1", "P2"],
+        "main": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 98, 99],
         "discarded": [],
         "removed": []
     },

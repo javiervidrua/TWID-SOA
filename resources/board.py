@@ -81,7 +81,7 @@ class Board(metaclass=MultipleMeta):
     def map_region_country_get(self, region, country):
         return next(({'stability': item['stability'], 'isConflictive': item['isConflictive'], 'isOilProducer': item['isOilProducer'], 'influence': item['influence']} for item in self.board['countries'] if item['region'] == region and item['name'] == country), {}) # https://stackoverflow.com/questions/58380706/python-list-comprehension-filter-single-element-in-the-list
     
-    def mapRegionCountryPut(self, region, country, newCountry):
+    def map_region_country_put(self, region, country, newCountry):
         # If the regions and all of the countries exist
         if region in self.board['regions'] and set([country]).issubset([country['name'] for country in self.board['countries']]):
             for index, item in enumerate(self.board['countries']):

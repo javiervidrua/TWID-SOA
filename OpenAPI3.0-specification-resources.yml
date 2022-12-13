@@ -471,7 +471,7 @@ paths:
             format: int32
             minimum: 1
             maximum: 100
-            example: 23
+            example: 3
       responses:
         '200':
           description: Card
@@ -957,7 +957,7 @@ components:
           format: int32
           minimum: 1
           maximum: 100
-          example: 23
+          example: 3
         title:
           type: string
           example: Black Monday
