@@ -432,23 +432,6 @@ async def cards_deck_get(response: Response):
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
         return {'Error': e}
 
-# Has to be below the /cards/deck as otherwise FastAPI wouldn't know if /cards/deck or /cards/{id} was called
-@app.get('/cards/{id}')
-async def cards_id_get(id: int, response: Response):
-    try:
-        global cards
-
-        # If there are no cards
-        if cards == None:
-            response.status_code = status.HTTP_200_OK
-            return {}
-
-        response.status_code = status.HTTP_200_OK
-        return cards.cards_get(id)
-    except Exception as e:
-        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
-        return {'Error': e}
-
 @app.get('/cards/deck/{type}')
 async def cards_deck_type_get(type: str, response: Response, random: bool=False):
     try:
@@ -509,6 +492,99 @@ async def cards_deck_type_id_delete(type: str, id: int, response: Response):
             return cards.cards_get(id)
 
         # If no success deleting the card from the deck
+        response.status_code = status.HTTP_400_BAD_REQUEST
+        return {}
+    except Exception as e:
+        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+        return {'Error': e}
+
+@app.get('/cards/playing')
+async def cards_playing_get(response: Response):
+    try:
+        global cards
+
+        # If there are no cards
+        if cards == None:
+            response.status_code = status.HTTP_200_OK
+            return {}
+
+        response.status_code = status.HTTP_200_OK
+        return cards.cards_playing_get()
+    except Exception as e:
+        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+        return {'Error': e}
+
+# Has to be below the /cards/deck and /cards/playing as otherwise FastAPI wouldn't know if /cards/deck or /cards/playing or /cards/{id} was called
+@app.get('/cards/{id}')
+async def cards_id_get(id: int, response: Response):
+    try:
+        global cards
+
+        # If there are no cards
+        if cards == None:
+            response.status_code = status.HTTP_200_OK
+            return {}
+
+        response.status_code = status.HTTP_200_OK
+        return cards.cards_get(id)
+    except Exception as e:
+        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+        return {'Error': e}
+
+@app.get('/cards/player/{player}')
+async def cards_player_player_get(player: str, response: Response):
+    try:
+        global cards
+
+        # If there are no cards
+        if cards == None:
+            response.status_code = status.HTTP_200_OK
+            return {}
+
+        response.status_code = status.HTTP_200_OK
+        return cards.cards_player_get(player)
+    except Exception as e:
+        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+        return {'Error': e}
+
+@app.post('/cards/player/{player}/{id}')
+async def cards_player_player_id_post(player: str, id: int, response: Response):
+    try:
+        global cards
+
+        # If there are no cards
+        if cards == None:
+            response.status_code = status.HTTP_200_OK
+            return {}
+
+        # If success adding the card to the player's hand
+        if cards.cards_player_add(player, id):
+            response.status_code = status.HTTP_200_OK
+            return cards.cards_get(id)
+
+        # If no success adding the card to the player's hand
+        response.status_code = status.HTTP_400_BAD_REQUEST
+        return {}
+    except Exception as e:
+        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+        return {'Error': e}
+
+@app.delete('/cards/player/{player}/{id}')
+async def cards_player_player_id_delete(player: str, id: int, response: Response):
+    try:
+        global cards
+
+        # If there are no cards
+        if cards == None:
+            response.status_code = status.HTTP_200_OK
+            return {}
+
+        # If success deleting the card to the player's hand
+        if cards.cards_player_remove(player, id):
+            response.status_code = status.HTTP_200_OK
+            return cards.cards_get(id)
+
+        # If no success deleting the card to the player's hand
         response.status_code = status.HTTP_400_BAD_REQUEST
         return {}
     except Exception as e:

@@ -37,3 +37,23 @@ class Cards(metaclass=MultipleMeta):
             self.cards['decks'][deck].remove(id)
             return True
         return False
+    
+    def cards_playing_get(self):
+        return self.cards['playing']
+    
+    def cards_player_get(self, player):
+        if player in list(self.cards['player'].keys()):
+            return self.cards['player'][player]['hand']
+        return []
+    
+    def cards_player_add(self, player, id):
+        if player in list(self.cards['player'].keys()) and len([card for card in self.cards['player'][player]['hand'] if card==id])==0 and id in list(map(lambda x: x['id'], self.cards['cards'])):
+            self.cards['player'][player]['hand'].append(id)
+            return True
+        return False
+    
+    def cards_player_remove(self, player, id):
+        if player in list(self.cards['player'].keys()) and len([card for card in self.cards['player'][player]['hand'] if card==id])==1:
+            self.cards['player'][player]['hand'].remove(id)
+            return True
+        return False
