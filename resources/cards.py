@@ -57,3 +57,21 @@ class Cards(metaclass=MultipleMeta):
             self.cards['player'][player]['hand'].remove(id)
             return True
         return False
+    
+    def cards_player_header_get(self, player):
+        if player in list(self.cards['player'].keys()):
+            return self.cards['player'][player]['header']
+        return {}
+    
+    def cards_player_header_unset(self, player):
+        if player in list(self.cards['player'].keys()):
+            id = self.cards['player'][player]['header']
+            self.cards['player'][player]['header'] = None
+            return id
+        return False
+
+    def cards_player_header_set(self, player, id):
+        if player in list(self.cards['player'].keys()) and len([card for card in self.cards['player'][player]['hand'] if card==id])==1:
+            self.cards['player'][player]['header'] = id
+            return True
+        return False

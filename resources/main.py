@@ -547,6 +547,45 @@ async def cards_player_player_get(player: str, response: Response):
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
         return {'Error': e}
 
+@app.get('/cards/player/{player}/header')
+async def cards_player_player_header_get(player: str, response: Response):
+    try:
+        global cards
+
+        # If there are no cards
+        if cards == None:
+            response.status_code = status.HTTP_200_OK
+            return {}
+
+        response.status_code = status.HTTP_200_OK
+        return {'id': cards.cards_player_header_get(player)}
+    except Exception as e:
+        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+        return {'Error': e}
+
+@app.delete('/cards/player/{player}/header')
+async def cards_player_player_header_delete(player: str, response: Response):
+    try:
+        global cards
+
+        # If there are no cards
+        if cards == None:
+            response.status_code = status.HTTP_200_OK
+            return {}
+
+        # If success deleting the card as the player's header card
+        if id := cards.cards_player_header_unset(player):
+            response.status_code = status.HTTP_200_OK
+            return cards.cards_get(id)
+
+        # If no success deleting the card as the player's header card
+        response.status_code = status.HTTP_400_BAD_REQUEST
+        return {}
+    except Exception as e:
+        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+        return {'Error': e}
+
+# These next 2 have to be below the /cards/player/{player}/header for the same reason as before
 @app.post('/cards/player/{player}/{id}')
 async def cards_player_player_id_post(player: str, id: int, response: Response):
     try:
@@ -585,6 +624,28 @@ async def cards_player_player_id_delete(player: str, id: int, response: Response
             return cards.cards_get(id)
 
         # If no success deleting the card to the player's hand
+        response.status_code = status.HTTP_400_BAD_REQUEST
+        return {}
+    except Exception as e:
+        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+        return {'Error': e}
+
+@app.post('/cards/player/{player}/header/{id}')
+async def cards_player_player_header_post(player: str, id: int, response: Response):
+    try:
+        global cards
+
+        # If there are no cards
+        if cards == None:
+            response.status_code = status.HTTP_200_OK
+            return {}
+
+        # If success setting the card as the player's header card
+        if cards.cards_player_header_set(player, id):
+            response.status_code = status.HTTP_200_OK
+            return cards.cards_get(id)
+
+        # If no success setting the card as the player's header card
         response.status_code = status.HTTP_400_BAD_REQUEST
         return {}
     except Exception as e:

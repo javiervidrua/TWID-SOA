@@ -700,6 +700,25 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/cards'
+    delete:
+      tags:
+        - Cards
+      summary: Unset the specified card as the one being played as header card
+      description: Unset the specified card as the one being played as header card
+      parameters:
+        - in: path
+          name: player
+          description: Name of the player
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Card unset as header card
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/cards-id'
   /cards/player/{player}/header/{id}:
     post:
       tags:
@@ -732,37 +751,6 @@ paths:
                 $ref: '#/components/schemas/cards-id'
         '400':
           description: Cannot add the specified card
-    delete:
-      tags:
-        - Cards
-      summary: Unset the specified card as the one being played as header card
-      description: Unset the specified card as the one being played as header card
-      parameters:
-        - in: path
-          name: player
-          description: Name of the player
-          required: true
-          schema:
-            type: string
-        - in: path
-          name: id
-          description: Id of the card
-          required: true
-          schema:
-            type: integer
-            format: int32
-            minimum: 1
-            maximum: 100
-            example: 23
-      responses:
-        '200':
-          description: Card removed
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/cards-id'
-        '400':
-          description: Cannot remove the specified card
 
 components:
   schemas:
