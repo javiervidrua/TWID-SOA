@@ -542,7 +542,7 @@ async def cards_player_player_get(player: str, response: Response):
             return {}
 
         response.status_code = status.HTTP_200_OK
-        return cards.cards_player_get(player)
+        return [{'id': card} for card in cards.cards_player_get(player)]
     except Exception as e:
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
         return {'Error': e}

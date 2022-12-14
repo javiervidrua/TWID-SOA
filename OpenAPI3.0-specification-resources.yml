@@ -684,8 +684,8 @@ paths:
     get:
       tags:
         - Cards
-      summary: Get the cards that are being played as header cards
-      description: Get the cards that are being played as header cards
+      summary: Get the card that is being played as header card
+      description: Get the card that is being played as header card
       parameters:
         - in: path
           name: player
@@ -695,19 +695,17 @@ paths:
             type: string
       responses:
         '200':
-          description: Cards
+          description: Card
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/cards'
+                $ref: '#/components/schemas/cards'
   /cards/player/{player}/header/{id}:
     post:
       tags:
         - Cards
-      summary: Add the specified card to the cards that are being played as header cards
-      description: Add the specified card to the cards that are being played as header cards
+      summary: Set the specified card as the one being played as header card
+      description: Set the specified card as the one being played as header card
       parameters:
         - in: path
           name: player
@@ -727,7 +725,7 @@ paths:
             example: 23
       responses:
         '200':
-          description: Card added
+          description: Card set as header card
           content:
             application/json:
               schema:
@@ -737,8 +735,8 @@ paths:
     delete:
       tags:
         - Cards
-      summary: Remove the specified card from the cards that are being played as header cards
-      description: Remove the specified card from the cards that are being played as header cards
+      summary: Unset the specified card as the one being played as header card
+      description: Unset the specified card as the one being played as header card
       parameters:
         - in: path
           name: player
