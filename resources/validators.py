@@ -15,12 +15,16 @@ class BoardMapRegion(BaseModel):
 class BodyBoardMapRegion(BaseModel):
     __root__: List[BoardMapRegion]
 
+class BoardMapRegionCountryInfluence(BaseModel):
+    influence: int
+    extra: Dict[str, Optional[int]]
+
 # https://stackoverflow.com/questions/63272595/is-it-possible-to-have-arbitrary-key-names-in-pydantic
 class BodyBoardMapRegionCountry(BaseModel):
     stability: int
     isConflictive: bool
     isOilProducer: bool
-    influence: Dict[str, Optional[int]]
+    influence: Dict[str, Optional[BoardMapRegionCountryInfluence]]
 
 class BodyBoardNwoTrackSlot(BaseModel):
     veto: str

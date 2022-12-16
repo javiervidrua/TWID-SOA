@@ -1,4 +1,5 @@
 from multimeta import MultipleMeta  # https://stackoverflow.com/a/49936625
+from copy import deepcopy
 import json
 
 
@@ -87,8 +88,21 @@ class Board(metaclass=MultipleMeta):
             for index, item in enumerate(self.board['countries']):
                 
                 if item['name'] == country:
+                    # Check if all the values are valid
+                    wrongValues = False
+                    for indexPlayer in newCountry['influence']:
+                        if newCountry['influence'][indexPlayer]['influence'] not in range(1, 100+1):
+                            wrongValues = True
+                            break
+                        
+                        # Check if all the values in the extra field are valid
+                        for indexPlayerExtra in newCountry['influence'][indexPlayer]['extra']:
+                            if newCountry['influence'][indexPlayer]['extra'][indexPlayerExtra] not in range(1, 100+1):
+                                wrongValues = True
+                                break
+
                     # If the stability and the influence have a valid value
-                    if newCountry['stability'] in range(1, 5+1) and set(newCountry['influence'].values()).issubset(range(1, 100+1)):
+                    if not wrongValues and newCountry['stability'] in range(1, 5+1):
                         self.board['countries'][index].update(newCountry) # https://stackoverflow.com/questions/405489/python-update-object-from-dictionary
                         return True
 
@@ -101,7 +115,7 @@ class Board(metaclass=MultipleMeta):
         return list(self.board['nwo'][track].keys())
     
     def nwo_track_slot_get(self, track, slot):
-        return self.board['nwo'][track][slot]
+        return deepcopy(self.board['nwo'][track][slot])
     
     def nwo_track_slot_put(self, track, slot, newSlot):
         # If the track and the slot exist
@@ -115,7 +129,7 @@ class Board(metaclass=MultipleMeta):
             
             # If the new slot has valid values
             if newSlot['veto'] in validValues and newSlot['ahead'] in validValues and newSlot['supremacy'] in validValues:
-                self.board['nwo'][track][slot] = newSlot
+                self.board['nwo'][track][slot].update(newSlot)
                 return True
         
         return False
