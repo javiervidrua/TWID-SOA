@@ -19,18 +19,55 @@ info:
     name: MIT
     url: 'https://jvr.mit-license.org/'
 tags:
+  - name: Game
+    description: Everything related to the game
   - name: Board
     description: Everything related to the board
   - name: Cards
     description: Everything related to the cards
 
 paths:
-  /board:
+  /game:
+    get:
+      tags:
+        - Game
+      summary: Get the games
+      description: Get the games
+      responses:
+        '200':
+          description: Games
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/game'
+    post:
+      tags:
+        - Game
+      summary: Create a new game
+      description: Create a new game
+      responses:
+        '200':
+          description: Game created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/game'
+  /game/{game}/board:
     get:
       tags:
         - Board
       summary: Get the resources of the board
       description: Get the resources of the board
+      parameters:
+        - in: path # can also be query, header, cookie
+          name: game
+          description: Id of the game
+          required: true
+          schema:
+            type: string
+            example: zq7d24gr9n
       responses:
         '200':
           description: Board resources
@@ -43,6 +80,14 @@ paths:
         - Board
       summary: Initialize the resources of the board
       description: Initialize the resources of the board
+      parameters:
+        - in: path
+          name: game
+          description: Id of the game
+          required: true
+          schema:
+            type: string
+            example: zq7d24gr9n
       responses:
         '200':
           description: Board resources
@@ -50,12 +95,20 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/board'
-  /board/round:
+  /game/{game}/board/round:
     get:
       tags:
         - Board
       summary: Get the round
       description: Get the round
+      parameters:
+        - in: path
+          name: game
+          description: Id of the game
+          required: true
+          schema:
+            type: string
+            example: zq7d24gr9n
       responses:
         '200':
           description: Round number
@@ -68,6 +121,14 @@ paths:
         - Board
       summary: Create a new round (increment the current round number)
       description: Create a new round (increment the current round number)
+      parameters:
+        - in: path
+          name: game
+          description: Id of the game
+          required: true
+          schema:
+            type: string
+            example: zq7d24gr9n
       responses:
         '200':
           description: Round created
@@ -82,6 +143,14 @@ paths:
         - Board
       summary: Reset the round to round 1
       description: Reset the round to round 1
+      parameters:
+        - in: path
+          name: game
+          description: Id of the game
+          required: true
+          schema:
+            type: string
+            example: zq7d24gr9n
       responses:
         '200':
           description: Round reset
@@ -89,12 +158,20 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/board-round'
-  /board/score:
+  /game/{game}/board/score:
     get:
       tags:
         - Board
       summary: Get the score
       description: Get the score of the players
+      parameters:
+        - in: path
+          name: game
+          description: Id of the game
+          required: true
+          schema:
+            type: string
+            example: zq7d24gr9n
       responses:
         '200':
           description: Score of the players
@@ -104,13 +181,20 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/board-score'
-  /board/score/{player}:
+  /game/{game}/board/score/{player}:
     get:
       tags:
         - Board
       summary: Get the score of the specified player
       description: Get the score of the specified player
       parameters:
+        - in: path
+          name: game
+          description: Id of the game
+          required: true
+          schema:
+            type: string
+            example: zq7d24gr9n
         - in: path # can also be query, header, cookie
           name: player
           description: Name of the player
@@ -131,6 +215,13 @@ paths:
       summary: Update the score of the specified player
       description: Update the score of the specified player
       parameters:
+        - in: path
+          name: game
+          description: Id of the game
+          required: true
+          schema:
+            type: string
+            example: zq7d24gr9n
         - in: path
           name: player
           description: Name of the player
@@ -160,6 +251,13 @@ paths:
       description: Reset the score of a player to score 0
       parameters:
         - in: path
+          name: game
+          description: Id of the game
+          required: true
+          schema:
+            type: string
+            example: zq7d24gr9n
+        - in: path
           name: player
           description: Name of the player
           required: true
@@ -173,12 +271,20 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/board-score-player'
-  /board/map:
+  /game/{game}/board/map:
     get:
       tags:
         - Board
       summary: Get the regions of the map
       description: Get the regions of the map
+      parameters:
+        - in: path
+          name: game
+          description: Id of the game
+          required: true
+          schema:
+            type: string
+            example: zq7d24gr9n
       responses:
         '200':
           description: Regions of the map
@@ -188,13 +294,20 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/board-map'
-  /board/map/{region}:
+  /game/{game}/board/map/{region}:
     get:
       tags:
         - Board
       summary: Get the countries of the specified region
       description: Get the countries of the specified region
       parameters:
+        - in: path
+          name: game
+          description: Id of the game
+          required: true
+          schema:
+            type: string
+            example: zq7d24gr9n
         - in: path
           name: region
           description: Name of the region
@@ -217,6 +330,13 @@ paths:
       summary: Update the countries of the specified region
       description: Update the countries of the specified region
       parameters:
+        - in: path
+          name: game
+          description: Id of the game
+          required: true
+          schema:
+            type: string
+            example: zq7d24gr9n
         - in: path
           name: region
           description: Name of the region
@@ -243,13 +363,20 @@ paths:
               items:
                 $ref: '#/components/schemas/board-map-region-country'
         description: New countries of the specified region
-  /board/map/{region}/{country}:
+  /game/{game}/board/map/{region}/{country}:
     get:
       tags:
         - Board
       summary: Get the specified country of the specified region
       description: Get the specified country of the specified region
       parameters:
+        - in: path
+          name: game
+          description: Id of the game
+          required: true
+          schema:
+            type: string
+            example: zq7d24gr9n
         - in: path
           name: region
           description: Name of the region
@@ -277,6 +404,13 @@ paths:
       summary: Update the specified country of the specified region
       description: Update the specified country of the specified region
       parameters:
+        - in: path
+          name: game
+          description: Id of the game
+          required: true
+          schema:
+            type: string
+            example: zq7d24gr9n
         - in: path
           name: region
           description: Name of the region
@@ -306,12 +440,20 @@ paths:
             schema:
               $ref: '#/components/schemas/board-map-region-country-country'
         description: New attributes of the specified country of the specified region
-  /board/nwo:
+  /game/{game}/board/nwo:
     get:
       tags:
         - Board
       summary: Get the New World Order tracks
       description: Get the New World Order tracks
+      parameters:
+        - in: path
+          name: game
+          description: Id of the game
+          required: true
+          schema:
+            type: string
+            example: zq7d24gr9n
       responses:
         '200':
           description: New World Order tracks
@@ -319,13 +461,20 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/board-nwo'
-  /board/nwo/{track}:
+  /game/{game}/board/nwo/{track}:
     get:
       tags:
         - Board
       summary: Get the slots of the specified track
       description: Get the slots of the specified track
       parameters:
+        - in: path
+          name: game
+          description: Id of the game
+          required: true
+          schema:
+            type: string
+            example: zq7d24gr9n
         - in: path
           name: track
           description: Name of the track
@@ -340,13 +489,20 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/board-nwo-track'
-  /board/nwo/{track}/{slot}:
+  /game/{game}/board/nwo/{track}/{slot}:
     get:
       tags:
         - Board
       summary: Get the state of the specified slot of the specified track
       description: Get the state of the specified slot of the specified track
       parameters:
+        - in: path
+          name: game
+          description: Id of the game
+          required: true
+          schema:
+            type: string
+            example: zq7d24gr9n
         - in: path
           name: track
           description: Name of the track
@@ -374,6 +530,13 @@ paths:
       summary: Update the state of the specified slot of the specified track
       description: Update the state of the specified slot of the specified track
       parameters:
+        - in: path
+          name: game
+          description: Id of the game
+          required: true
+          schema:
+            type: string
+            example: zq7d24gr9n
         - in: path
           name: track
           description: Name of the track
@@ -410,6 +573,13 @@ paths:
       description: Reset the state of the specified slot of the specified track
       parameters:
         - in: path
+          name: game
+          description: Id of the game
+          required: true
+          schema:
+            type: string
+            example: zq7d24gr9n
+        - in: path
           name: track
           description: Name of the track
           required: true
@@ -430,12 +600,20 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/board-nwo-track-slot'
-  /cards:
+  /game/{game}/cards:
     get:
       tags:
         - Cards
       summary: Get the resources of the cards
       description: Get the resources of the cards
+      parameters:
+        - in: path
+          name: game
+          description: Id of the game
+          required: true
+          schema:
+            type: string
+            example: zq7d24gr9n
       responses:
         '200':
           description: Cards resources
@@ -448,6 +626,14 @@ paths:
         - Cards
       summary: Initialize the resources of the cards
       description: Initialize the resources of the cards
+      parameters:
+        - in: path
+          name: game
+          description: Id of the game
+          required: true
+          schema:
+            type: string
+            example: zq7d24gr9n
       responses:
         '200':
           description: Cards resources
@@ -455,13 +641,20 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/card'
-  /cards/{id}:
+  /game/{game}/cards/{id}:
     get:
       tags:
         - Cards
       summary: Get the details of the card with the specified id
       description: Get the details of the card with the specified id
       parameters:
+        - in: path
+          name: game
+          description: Id of the game
+          required: true
+          schema:
+            type: string
+            example: zq7d24gr9n
         - in: path
           name: id
           description: Id of the card
@@ -479,12 +672,20 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/cards-id'
-  /cards/deck:
+  /game/{game}/cards/deck:
     get:
       tags:
         - Cards
       summary: Get the decks of cards
       description: Get the decks of cards
+      parameters:
+        - in: path
+          name: game
+          description: Id of the game
+          required: true
+          schema:
+            type: string
+            example: zq7d24gr9n
       responses:
         '200':
           description: Decks
@@ -492,13 +693,20 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/cards-deck'
-  /cards/deck/{type}:
+  /game/{game}/cards/deck/{type}:
     get:
       tags:
         - Cards
       summary: Get the cards of the specified deck
       description: Get the cards of the specified deck
       parameters:
+        - in: path
+          name: game
+          description: Id of the game
+          required: true
+          schema:
+            type: string
+            example: zq7d24gr9n
         - in: path
           name: type
           description: Type of the deck
@@ -521,13 +729,20 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/cards'
-  /cards/deck/{type}/{id}:
+  /game/{game}/cards/deck/{type}/{id}:
     post:
       tags:
         - Cards
       summary: Add the specified card to the specified deck
       description: Add the specified card to the specified deck
       parameters:
+        - in: path
+          name: game
+          description: Id of the game
+          required: true
+          schema:
+            type: string
+            example: zq7d24gr9n
         - in: path
           name: type
           description: Type of the deck
@@ -558,6 +773,13 @@ paths:
       description: Remove the specified card from the specified deck
       parameters:
         - in: path
+          name: game
+          description: Id of the game
+          required: true
+          schema:
+            type: string
+            example: zq7d24gr9n
+        - in: path
           name: type
           description: Type of the deck
           required: true
@@ -580,12 +802,20 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/cards-id'
-  /cards/playing:
+  /game/{game}/cards/playing:
     get:
       tags:
         - Cards
       summary: Get the cards that are currently being played
       description: Get the cards that are currently being played
+      parameters:
+        - in: path
+          name: game
+          description: Id of the game
+          required: true
+          schema:
+            type: string
+            example: zq7d24gr9n
       responses:
         '200':
           description: Cards
@@ -595,13 +825,20 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/cards'
-  /cards/player/{player}:
+  /game/{game}/cards/player/{player}:
     get:
       tags:
         - Cards
       summary: Get the cards of the specified player's hand
       description: Get the cards of the specified player's hand
       parameters:
+        - in: path
+          name: game
+          description: Id of the game
+          required: true
+          schema:
+            type: string
+            example: zq7d24gr9n
         - in: path
           name: player
           description: Name of the player
@@ -617,13 +854,20 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/cards'
-  /cards/player/{player}/{id}:
+  /game/{game}/cards/player/{player}/{id}:
     post:
       tags:
         - Cards
       summary: Add the specified card to the specified player's hand
       description: Add the specified card to the specified player's hand
       parameters:
+        - in: path
+          name: game
+          description: Id of the game
+          required: true
+          schema:
+            type: string
+            example: zq7d24gr9n
         - in: path
           name: player
           description: Name of the player
@@ -656,6 +900,13 @@ paths:
       description: Remove the specified card from the specified player's hand
       parameters:
         - in: path
+          name: game
+          description: Id of the game
+          required: true
+          schema:
+            type: string
+            example: zq7d24gr9n
+        - in: path
           name: player
           description: Name of the player
           required: true
@@ -680,13 +931,20 @@ paths:
                 $ref: '#/components/schemas/cards-id'
         '400':
           description: Cannot remove any more cards
-  /cards/player/{player}/header:
+  /game/{game}/cards/player/{player}/header:
     get:
       tags:
         - Cards
       summary: Get the card that is being played as header card
       description: Get the card that is being played as header card
       parameters:
+        - in: path
+          name: game
+          description: Id of the game
+          required: true
+          schema:
+            type: string
+            example: zq7d24gr9n
         - in: path
           name: player
           description: Name of the player
@@ -707,6 +965,13 @@ paths:
       description: Unset the specified card as the one being played as header card
       parameters:
         - in: path
+          name: game
+          description: Id of the game
+          required: true
+          schema:
+            type: string
+            example: zq7d24gr9n
+        - in: path
           name: player
           description: Name of the player
           required: true
@@ -719,13 +984,20 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/cards-id'
-  /cards/player/{player}/header/{id}:
+  /game/{game}/cards/player/{player}/header/{id}:
     post:
       tags:
         - Cards
       summary: Set the specified card as the one being played as header card
       description: Set the specified card as the one being played as header card
       parameters:
+        - in: path
+          name: game
+          description: Id of the game
+          required: true
+          schema:
+            type: string
+            example: zq7d24gr9n
         - in: path
           name: player
           description: Name of the player
@@ -754,6 +1026,16 @@ paths:
 
 components:
   schemas:
+    game:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: string
+          minLength: 10
+          maxLength: 10
+          example: zq7d24gr9n
     board:
       type: array
       items:
