@@ -574,7 +574,8 @@ async def cards_player_player_header_delete(player: str, response: Response):
             return {}
 
         # If success deleting the card as the player's header card
-        if id := cards.cards_player_header_unset(player):
+        id = cards.cards_player_header_unset(player)
+        if id:
             response.status_code = status.HTTP_200_OK
             return cards.cards_get(id)
 
