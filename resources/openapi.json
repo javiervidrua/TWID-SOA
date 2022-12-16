@@ -24,6 +24,10 @@
   },
   "tags": [
     {
+      "name": "Game",
+      "description": "Everything related to the game"
+    },
+    {
       "name": "Board",
       "description": "Everything related to the board"
     },
@@ -33,13 +37,68 @@
     }
   ],
   "paths": {
-    "/board": {
+    "/game": {
+      "get": {
+        "tags": [
+          "Game"
+        ],
+        "summary": "Get the games",
+        "description": "Get the games",
+        "responses": {
+          "200": {
+            "description": "Games",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/game"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Game"
+        ],
+        "summary": "Create a new game",
+        "description": "Create a new game",
+        "responses": {
+          "200": {
+            "description": "Game created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/game"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/game/{game}/board": {
       "get": {
         "tags": [
           "Board"
         ],
         "summary": "Get the resources of the board",
         "description": "Get the resources of the board",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "game",
+            "description": "Id of the game",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "zq7d24gr9n"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Board resources",
@@ -59,6 +118,18 @@
         ],
         "summary": "Initialize the resources of the board",
         "description": "Initialize the resources of the board",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "game",
+            "description": "Id of the game",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "zq7d24gr9n"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Board resources",
@@ -73,13 +144,25 @@
         }
       }
     },
-    "/board/round": {
+    "/game/{game}/board/round": {
       "get": {
         "tags": [
           "Board"
         ],
         "summary": "Get the round",
         "description": "Get the round",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "game",
+            "description": "Id of the game",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "zq7d24gr9n"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Round number",
@@ -99,6 +182,18 @@
         ],
         "summary": "Create a new round (increment the current round number)",
         "description": "Create a new round (increment the current round number)",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "game",
+            "description": "Id of the game",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "zq7d24gr9n"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Round created",
@@ -121,6 +216,18 @@
         ],
         "summary": "Reset the round to round 1",
         "description": "Reset the round to round 1",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "game",
+            "description": "Id of the game",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "zq7d24gr9n"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Round reset",
@@ -135,13 +242,25 @@
         }
       }
     },
-    "/board/score": {
+    "/game/{game}/board/score": {
       "get": {
         "tags": [
           "Board"
         ],
         "summary": "Get the score",
         "description": "Get the score of the players",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "game",
+            "description": "Id of the game",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "zq7d24gr9n"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Score of the players",
@@ -159,7 +278,7 @@
         }
       }
     },
-    "/board/score/{player}": {
+    "/game/{game}/board/score/{player}": {
       "get": {
         "tags": [
           "Board"
@@ -167,6 +286,16 @@
         "summary": "Get the score of the specified player",
         "description": "Get the score of the specified player",
         "parameters": [
+          {
+            "in": "path",
+            "name": "game",
+            "description": "Id of the game",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "zq7d24gr9n"
+            }
+          },
           {
             "in": "path",
             "name": "player",
@@ -198,6 +327,16 @@
         "summary": "Update the score of the specified player",
         "description": "Update the score of the specified player",
         "parameters": [
+          {
+            "in": "path",
+            "name": "game",
+            "description": "Id of the game",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "zq7d24gr9n"
+            }
+          },
           {
             "in": "path",
             "name": "player",
@@ -244,6 +383,16 @@
         "parameters": [
           {
             "in": "path",
+            "name": "game",
+            "description": "Id of the game",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "zq7d24gr9n"
+            }
+          },
+          {
+            "in": "path",
             "name": "player",
             "description": "Name of the player",
             "required": true,
@@ -267,13 +416,25 @@
         }
       }
     },
-    "/board/map": {
+    "/game/{game}/board/map": {
       "get": {
         "tags": [
           "Board"
         ],
         "summary": "Get the regions of the map",
         "description": "Get the regions of the map",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "game",
+            "description": "Id of the game",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "zq7d24gr9n"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Regions of the map",
@@ -291,7 +452,7 @@
         }
       }
     },
-    "/board/map/{region}": {
+    "/game/{game}/board/map/{region}": {
       "get": {
         "tags": [
           "Board"
@@ -299,6 +460,16 @@
         "summary": "Get the countries of the specified region",
         "description": "Get the countries of the specified region",
         "parameters": [
+          {
+            "in": "path",
+            "name": "game",
+            "description": "Id of the game",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "zq7d24gr9n"
+            }
+          },
           {
             "in": "path",
             "name": "region",
@@ -333,6 +504,16 @@
         "summary": "Update the countries of the specified region",
         "description": "Update the countries of the specified region",
         "parameters": [
+          {
+            "in": "path",
+            "name": "game",
+            "description": "Id of the game",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "zq7d24gr9n"
+            }
+          },
           {
             "in": "path",
             "name": "region",
@@ -377,7 +558,7 @@
         }
       }
     },
-    "/board/map/{region}/{country}": {
+    "/game/{game}/board/map/{region}/{country}": {
       "get": {
         "tags": [
           "Board"
@@ -385,6 +566,16 @@
         "summary": "Get the specified country of the specified region",
         "description": "Get the specified country of the specified region",
         "parameters": [
+          {
+            "in": "path",
+            "name": "game",
+            "description": "Id of the game",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "zq7d24gr9n"
+            }
+          },
           {
             "in": "path",
             "name": "region",
@@ -426,6 +617,16 @@
         "summary": "Update the specified country of the specified region",
         "description": "Update the specified country of the specified region",
         "parameters": [
+          {
+            "in": "path",
+            "name": "game",
+            "description": "Id of the game",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "zq7d24gr9n"
+            }
+          },
           {
             "in": "path",
             "name": "region",
@@ -474,13 +675,25 @@
         }
       }
     },
-    "/board/nwo": {
+    "/game/{game}/board/nwo": {
       "get": {
         "tags": [
           "Board"
         ],
         "summary": "Get the New World Order tracks",
         "description": "Get the New World Order tracks",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "game",
+            "description": "Id of the game",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "zq7d24gr9n"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "New World Order tracks",
@@ -495,7 +708,7 @@
         }
       }
     },
-    "/board/nwo/{track}": {
+    "/game/{game}/board/nwo/{track}": {
       "get": {
         "tags": [
           "Board"
@@ -503,6 +716,16 @@
         "summary": "Get the slots of the specified track",
         "description": "Get the slots of the specified track",
         "parameters": [
+          {
+            "in": "path",
+            "name": "game",
+            "description": "Id of the game",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "zq7d24gr9n"
+            }
+          },
           {
             "in": "path",
             "name": "track",
@@ -528,7 +751,7 @@
         }
       }
     },
-    "/board/nwo/{track}/{slot}": {
+    "/game/{game}/board/nwo/{track}/{slot}": {
       "get": {
         "tags": [
           "Board"
@@ -536,6 +759,16 @@
         "summary": "Get the state of the specified slot of the specified track",
         "description": "Get the state of the specified slot of the specified track",
         "parameters": [
+          {
+            "in": "path",
+            "name": "game",
+            "description": "Id of the game",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "zq7d24gr9n"
+            }
+          },
           {
             "in": "path",
             "name": "track",
@@ -577,6 +810,16 @@
         "summary": "Update the state of the specified slot of the specified track",
         "description": "Update the state of the specified slot of the specified track",
         "parameters": [
+          {
+            "in": "path",
+            "name": "game",
+            "description": "Id of the game",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "zq7d24gr9n"
+            }
+          },
           {
             "in": "path",
             "name": "track",
@@ -633,6 +876,16 @@
         "parameters": [
           {
             "in": "path",
+            "name": "game",
+            "description": "Id of the game",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "zq7d24gr9n"
+            }
+          },
+          {
+            "in": "path",
             "name": "track",
             "description": "Name of the track",
             "required": true,
@@ -666,13 +919,25 @@
         }
       }
     },
-    "/cards": {
+    "/game/{game}/cards": {
       "get": {
         "tags": [
           "Cards"
         ],
         "summary": "Get the resources of the cards",
         "description": "Get the resources of the cards",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "game",
+            "description": "Id of the game",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "zq7d24gr9n"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Cards resources",
@@ -692,6 +957,18 @@
         ],
         "summary": "Initialize the resources of the cards",
         "description": "Initialize the resources of the cards",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "game",
+            "description": "Id of the game",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "zq7d24gr9n"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Cards resources",
@@ -706,7 +983,7 @@
         }
       }
     },
-    "/cards/{id}": {
+    "/game/{game}/cards/{id}": {
       "get": {
         "tags": [
           "Cards"
@@ -714,6 +991,16 @@
         "summary": "Get the details of the card with the specified id",
         "description": "Get the details of the card with the specified id",
         "parameters": [
+          {
+            "in": "path",
+            "name": "game",
+            "description": "Id of the game",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "zq7d24gr9n"
+            }
+          },
           {
             "in": "path",
             "name": "id",
@@ -742,13 +1029,25 @@
         }
       }
     },
-    "/cards/deck": {
+    "/game/{game}/cards/deck": {
       "get": {
         "tags": [
           "Cards"
         ],
         "summary": "Get the decks of cards",
         "description": "Get the decks of cards",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "game",
+            "description": "Id of the game",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "zq7d24gr9n"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Decks",
@@ -763,7 +1062,7 @@
         }
       }
     },
-    "/cards/deck/{type}": {
+    "/game/{game}/cards/deck/{type}": {
       "get": {
         "tags": [
           "Cards"
@@ -771,6 +1070,16 @@
         "summary": "Get the cards of the specified deck",
         "description": "Get the cards of the specified deck",
         "parameters": [
+          {
+            "in": "path",
+            "name": "game",
+            "description": "Id of the game",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "zq7d24gr9n"
+            }
+          },
           {
             "in": "path",
             "name": "type",
@@ -808,7 +1117,7 @@
         }
       }
     },
-    "/cards/deck/{type}/{id}": {
+    "/game/{game}/cards/deck/{type}/{id}": {
       "post": {
         "tags": [
           "Cards"
@@ -816,6 +1125,16 @@
         "summary": "Add the specified card to the specified deck",
         "description": "Add the specified card to the specified deck",
         "parameters": [
+          {
+            "in": "path",
+            "name": "game",
+            "description": "Id of the game",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "zq7d24gr9n"
+            }
+          },
           {
             "in": "path",
             "name": "type",
@@ -861,6 +1180,16 @@
         "parameters": [
           {
             "in": "path",
+            "name": "game",
+            "description": "Id of the game",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "zq7d24gr9n"
+            }
+          },
+          {
+            "in": "path",
             "name": "type",
             "description": "Type of the deck",
             "required": true,
@@ -896,13 +1225,25 @@
         }
       }
     },
-    "/cards/playing": {
+    "/game/{game}/cards/playing": {
       "get": {
         "tags": [
           "Cards"
         ],
         "summary": "Get the cards that are currently being played",
         "description": "Get the cards that are currently being played",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "game",
+            "description": "Id of the game",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "zq7d24gr9n"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Cards",
@@ -920,7 +1261,7 @@
         }
       }
     },
-    "/cards/player/{player}": {
+    "/game/{game}/cards/player/{player}": {
       "get": {
         "tags": [
           "Cards"
@@ -928,6 +1269,16 @@
         "summary": "Get the cards of the specified player's hand",
         "description": "Get the cards of the specified player's hand",
         "parameters": [
+          {
+            "in": "path",
+            "name": "game",
+            "description": "Id of the game",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "zq7d24gr9n"
+            }
+          },
           {
             "in": "path",
             "name": "player",
@@ -955,7 +1306,7 @@
         }
       }
     },
-    "/cards/player/{player}/{id}": {
+    "/game/{game}/cards/player/{player}/{id}": {
       "post": {
         "tags": [
           "Cards"
@@ -963,6 +1314,16 @@
         "summary": "Add the specified card to the specified player's hand",
         "description": "Add the specified card to the specified player's hand",
         "parameters": [
+          {
+            "in": "path",
+            "name": "game",
+            "description": "Id of the game",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "zq7d24gr9n"
+            }
+          },
           {
             "in": "path",
             "name": "player",
@@ -1011,6 +1372,16 @@
         "parameters": [
           {
             "in": "path",
+            "name": "game",
+            "description": "Id of the game",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "zq7d24gr9n"
+            }
+          },
+          {
+            "in": "path",
             "name": "player",
             "description": "Name of the player",
             "required": true,
@@ -1049,7 +1420,7 @@
         }
       }
     },
-    "/cards/player/{player}/header": {
+    "/game/{game}/cards/player/{player}/header": {
       "get": {
         "tags": [
           "Cards"
@@ -1057,6 +1428,16 @@
         "summary": "Get the card that is being played as header card",
         "description": "Get the card that is being played as header card",
         "parameters": [
+          {
+            "in": "path",
+            "name": "game",
+            "description": "Id of the game",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "zq7d24gr9n"
+            }
+          },
           {
             "in": "path",
             "name": "player",
@@ -1089,6 +1470,16 @@
         "parameters": [
           {
             "in": "path",
+            "name": "game",
+            "description": "Id of the game",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "zq7d24gr9n"
+            }
+          },
+          {
+            "in": "path",
             "name": "player",
             "description": "Name of the player",
             "required": true,
@@ -1111,7 +1502,7 @@
         }
       }
     },
-    "/cards/player/{player}/header/{id}": {
+    "/game/{game}/cards/player/{player}/header/{id}": {
       "post": {
         "tags": [
           "Cards"
@@ -1119,6 +1510,16 @@
         "summary": "Set the specified card as the one being played as header card",
         "description": "Set the specified card as the one being played as header card",
         "parameters": [
+          {
+            "in": "path",
+            "name": "game",
+            "description": "Id of the game",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "zq7d24gr9n"
+            }
+          },
           {
             "in": "path",
             "name": "player",
@@ -1162,6 +1563,20 @@
   },
   "components": {
     "schemas": {
+      "game": {
+        "type": "object",
+        "required": [
+          "id"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 10,
+            "example": "zq7d24gr9n"
+          }
+        }
+      },
       "board": {
         "type": "array",
         "items": {
