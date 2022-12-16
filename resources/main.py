@@ -2,6 +2,7 @@ import json
 from random import shuffle
 from board import Board
 from cards import Cards
+from game import Game
 import validators
 # https://fastapi.tiangolo.com/advanced/response-change-status-code/
 from fastapi import FastAPI, Response, status
@@ -17,35 +18,57 @@ def custom_openapi():
 
 # Definitions
 app.openapi = custom_openapi
+games = {}
 board = None
 cards = None
 
 
-# Board endpoints
-@app.get('/board')
-async def board_get(response: Response):
+# Game endpoints
+@app.get('/game')
+async def game_get(response: Response):
     try:
-        global board
+        global games
 
-        # If there is no board
-        if board == None:
+        # If there are no games
+        if games == []:
             response.status_code = status.HTTP_200_OK
-            return {}
+            return []
 
         response.status_code = status.HTTP_200_OK
-        return repr(board)
+        return [{'id':gameId} for gameId in list(games.keys())]
     except Exception as e:
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
         return {'Error': e}
 
 
-@app.post('/board')
-async def board_post(response: Response):
+@app.post('/game')
+async def game_post(response: Response):
     try:
-        global board
+        global games
 
         # Idempotent
-        board = Board()
+        game = Game()
+        games[repr(game)] = game
+
+        response.status_code = status.HTTP_200_OK
+        return {'id':repr(game)}
+    except Exception as e:
+        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+        return {'Error': e}
+
+
+# Board endpoints
+@app.get('/game/{game}/board')
+async def board_get(game: str, response: Response):
+    try:
+        global games
+
+        # If there is no game
+        if game not in games.keys():
+            response.status_code = status.HTTP_200_OK
+            return {}
+        
+        board = games[game].board
 
         response.status_code = status.HTTP_200_OK
         return repr(board)
@@ -54,15 +77,17 @@ async def board_post(response: Response):
         return {'Error': e}
 
 
-@app.get('/board/round')
-async def board_round_get(response: Response):
+@app.get('/game/{game}/board/round')
+async def board_round_get(game: str, response: Response):
     try:
-        global board
+        global games
 
-        # If there is no board
-        if board == None:
+        # If there is no game
+        if game not in games.keys():
             response.status_code = status.HTTP_200_OK
             return {}
+        
+        board = games[game].board
 
         response.status_code = status.HTTP_200_OK
         return {'round': board.round_get()}
@@ -71,15 +96,17 @@ async def board_round_get(response: Response):
         return {'Error': e}
 
 
-@app.post('/board/round')
-async def board_round_post(response: Response):
+@app.post('/game/{game}/board/round')
+async def board_round_post(game: str, response: Response):
     try:
-        global board
+        global games
 
-        # If there is no board
-        if board == None:
+        # If there is no game
+        if game not in games.keys():
             response.status_code = status.HTTP_200_OK
             return {}
+        
+        board = games[game].board
 
         # If success adding the round
         if board.round_add():
@@ -94,15 +121,17 @@ async def board_round_post(response: Response):
         return {'Error': e}
 
 
-@app.delete('/board/round')
-async def board_round_delete(response: Response):
+@app.delete('/game/{game}/board/round')
+async def board_round_delete(game: str, response: Response):
     try:
-        global board
+        global games
 
-        # If there is no board
-        if board == None:
+        # If there is no game
+        if game not in games.keys():
             response.status_code = status.HTTP_200_OK
             return {}
+        
+        board = games[game].board
 
         # Idempotent
         board.round_reset()
@@ -114,15 +143,17 @@ async def board_round_delete(response: Response):
         return {'Error': e}
 
 
-@app.get('/board/score')
-async def board_score_get(response: Response):
+@app.get('/game/{game}/board/score')
+async def board_score_get(game: str, response: Response):
     try:
-        global board
+        global games
 
-        # If there is no board
-        if board == None:
+        # If there is no game
+        if game not in games.keys():
             response.status_code = status.HTTP_200_OK
             return {}
+        
+        board = games[game].board
 
         response.status_code = status.HTTP_200_OK
         return board.score_get()
@@ -131,15 +162,17 @@ async def board_score_get(response: Response):
         return {'Error': e}
 
 
-@app.get('/board/score/{player}')
-async def board_score_player_get(player: str, response: Response):
+@app.get('/game/{game}/board/score/{player}')
+async def board_score_player_get(game: str, player: str, response: Response):
     try:
-        global board
+        global games
 
-        # If there is no board
-        if board == None:
+        # If there is no game
+        if game not in games.keys():
             response.status_code = status.HTTP_200_OK
             return {}
+        
+        board = games[game].board
 
         response.status_code = status.HTTP_200_OK
         return {'score': board.score_player_get(player)}
@@ -148,15 +181,17 @@ async def board_score_player_get(player: str, response: Response):
         return {'Error': e}
 
 
-@app.put('/board/score/{player}')
-async def board_score_player_put(player: str, body: validators.BodyBoardScorePlayer, response: Response):
+@app.put('/game/{game}/board/score/{player}')
+async def board_score_player_put(game: str, player: str, body: validators.BodyBoardScorePlayer, response: Response):
     try:
-        global board
+        global games
 
-        # If there is no board
-        if board == None:
+        # If there is no game
+        if game not in games.keys():
             response.status_code = status.HTTP_200_OK
             return {}
+        
+        board = games[game].board
 
         # If success updating the score
         if board.score_player_put(player, body.score):
@@ -171,15 +206,17 @@ async def board_score_player_put(player: str, body: validators.BodyBoardScorePla
         return {'Error': e}
 
 
-@app.delete('/board/score/{player}')
-async def board_score_pLayer_delete(player: str, response: Response):
+@app.delete('/game/{game}/board/score/{player}')
+async def board_score_pLayer_delete(game: str, player: str, response: Response):
     try:
-        global board
+        global games
 
-        # If there is no board
-        if board == None:
+        # If there is no game
+        if game not in games.keys():
             response.status_code = status.HTTP_200_OK
             return {}
+        
+        board = games[game].board
 
         # Idempotent
         board.score_player_put(player, 0)
@@ -191,15 +228,17 @@ async def board_score_pLayer_delete(player: str, response: Response):
         return {'Error': e}
 
 
-@app.get('/board/map')
-async def board_map_get(response: Response):
+@app.get('/game/{game}/board/map')
+async def board_map_get(game: str, response: Response):
     try:
-        global board
+        global games
 
-        # If there is no board
-        if board == None:
+        # If there is no game
+        if game not in games.keys():
             response.status_code = status.HTTP_200_OK
             return {}
+        
+        board = games[game].board
 
         response.status_code = status.HTTP_200_OK
         return board.map_get()
@@ -208,15 +247,17 @@ async def board_map_get(response: Response):
         return {'Error': e}
 
 
-@app.get('/board/map/{region}')
-async def board_map_region_get(region: str, response: Response):
+@app.get('/game/{game}/board/map/{region}')
+async def board_map_region_get(game: str, region: str, response: Response):
     try:
-        global board
+        global games
 
-        # If there is no board
-        if board == None:
+        # If there is no game
+        if game not in games.keys():
             response.status_code = status.HTTP_200_OK
             return {}
+        
+        board = games[game].board
 
         response.status_code = status.HTTP_200_OK
         return board.map_region_get(region)
@@ -225,15 +266,17 @@ async def board_map_region_get(region: str, response: Response):
         return {'Error': e}
 
 
-@app.put('/board/map/{region}')
-async def board_map_region_put(region: str, body: validators.BodyBoardMapRegion, response: Response):
+@app.put('/game/{game}/board/map/{region}')
+async def board_map_region_put(game: str, region: str, body: validators.BodyBoardMapRegion, response: Response):
     try:
-        global board
+        global games
 
-        # If there is no board
-        if board == None:
+        # If there is no game
+        if game not in games.keys():
             response.status_code = status.HTTP_200_OK
             return {}
+        
+        board = games[game].board
 
         # If success updating the score
         if board.map_region_put(region, json.loads(body.json())):
@@ -248,15 +291,17 @@ async def board_map_region_put(region: str, body: validators.BodyBoardMapRegion,
         return {'Error': e}
 
 
-@app.get('/board/map/{region}/{country}')
-async def board_map_region_country_get(region: str, country: str, response: Response):
+@app.get('/game/{game}/board/map/{region}/{country}')
+async def board_map_region_country_get(game: str, region: str, country: str, response: Response):
     try:
-        global board
+        global games
 
-        # If there is no board
-        if board == None:
+        # If there is no game
+        if game not in games.keys():
             response.status_code = status.HTTP_200_OK
             return {}
+        
+        board = games[game].board
 
         response.status_code = status.HTTP_200_OK
         return board.map_region_country_get(region, country)
@@ -265,15 +310,17 @@ async def board_map_region_country_get(region: str, country: str, response: Resp
         return {'Error': e}
 
 
-@app.put('/board/map/{region}/{country}')
-async def board_map_region_country_put(region: str, country: str, body: validators.BodyBoardMapRegionCountry, response: Response):
+@app.put('/game/{game}/board/map/{region}/{country}')
+async def board_map_region_country_put(game: str, region: str, country: str, body: validators.BodyBoardMapRegionCountry, response: Response):
     try:
-        global board
+        global games
 
-        # If there is no board
-        if board == None:
+        # If there is no game
+        if game not in games.keys():
             response.status_code = status.HTTP_200_OK
             return {}
+        
+        board = games[game].board
 
         # If success updating the country
         if board.map_region_country_put(region, country, json.loads(body.json())):
@@ -288,15 +335,17 @@ async def board_map_region_country_put(region: str, country: str, body: validato
         return {'Error': e}
 
 
-@app.get('/board/nwo')
-async def board_nwo_get(response: Response):
+@app.get('/game/{game}/board/nwo')
+async def board_nwo_get(game: str, response: Response):
     try:
-        global board
+        global games
 
-        # If there is no board
-        if board == None:
+        # If there is no game
+        if game not in games.keys():
             response.status_code = status.HTTP_200_OK
             return {}
+        
+        board = games[game].board
 
         response.status_code = status.HTTP_200_OK
         return [{'name': track} for track in board.nwo_get()]
@@ -305,15 +354,17 @@ async def board_nwo_get(response: Response):
         return {'Error': e}
 
 
-@app.get('/board/nwo/{track}')
-async def board_nwo_track_get(track: str, response: Response):
+@app.get('/game/{game}/board/nwo/{track}')
+async def board_nwo_track_get(game: str, track: str, response: Response):
     try:
-        global board
+        global games
 
-        # If there is no board
-        if board == None:
+        # If there is no game
+        if game not in games.keys():
             response.status_code = status.HTTP_200_OK
             return {}
+        
+        board = games[game].board
 
         response.status_code = status.HTTP_200_OK
         return [{'name': slot} for slot in board.nwo_track_get(track)]
@@ -322,15 +373,17 @@ async def board_nwo_track_get(track: str, response: Response):
         return {'Error': e}
 
 
-@app.get('/board/nwo/{track}/{slot}')
-async def board_nwo_track_slot_get(track: str, slot: str, response: Response):
+@app.get('/game/{game}/board/nwo/{track}/{slot}')
+async def board_nwo_track_slot_get(game: str, track: str, slot: str, response: Response):
     try:
-        global board
+        global games
 
-        # If there is no board
-        if board == None:
+        # If there is no game
+        if game not in games.keys():
             response.status_code = status.HTTP_200_OK
             return {}
+        
+        board = games[game].board
 
         response.status_code = status.HTTP_200_OK
         return board.nwo_track_slot_get(track, slot)
@@ -339,15 +392,17 @@ async def board_nwo_track_slot_get(track: str, slot: str, response: Response):
         return {'Error': e}
 
 
-@app.put('/board/nwo/{track}/{slot}')
-async def board_nwo_track_slot_put(track: str, slot: str, body: validators.BodyBoardNwoTrackSlot, response: Response):
+@app.put('/game/{game}/board/nwo/{track}/{slot}')
+async def board_nwo_track_slot_put(game: str, track: str, slot: str, body: validators.BodyBoardNwoTrackSlot, response: Response):
     try:
-        global board
+        global games
 
-        # If there is no board
-        if board == None:
+        # If there is no game
+        if game not in games.keys():
             response.status_code = status.HTTP_200_OK
             return {}
+        
+        board = games[game].board
 
         # If success updating the track slot
         if board.nwo_track_slot_put(track, slot, json.loads(body.json())):
@@ -362,15 +417,17 @@ async def board_nwo_track_slot_put(track: str, slot: str, body: validators.BodyB
         return {'Error': e}
 
 
-@app.delete('/board/nwo/{track}/{slot}')
-async def board_nwo_track_slot_delete(track: str, slot: str, response: Response):
+@app.delete('/game/{game}/board/nwo/{track}/{slot}')
+async def board_nwo_track_slot_delete(game: str, track: str, slot: str, response: Response):
     try:
-        global board
+        global games
 
-        # If there is no board
-        if board == None:
+        # If there is no game
+        if game not in games.keys():
             response.status_code = status.HTTP_200_OK
             return {}
+        
+        board = games[game].board
 
         # Idempotent
         slotReset = board.nwo_track_slot_get(track, slot)
@@ -385,15 +442,17 @@ async def board_nwo_track_slot_delete(track: str, slot: str, response: Response)
 
 
 # Cards endpoints
-@app.get('/cards')
-async def cards_get(response: Response):
+@app.get('/game/{game}/cards')
+async def cards_get(game: str, response: Response):
     try:
-        global cards
+        global games
 
-        # If there are no cards
-        if cards == None:
+        # If there is no game
+        if game not in games.keys():
             response.status_code = status.HTTP_200_OK
             return {}
+        
+        cards = games[game].cards
 
         response.status_code = status.HTTP_200_OK
         return repr(cards)
@@ -402,29 +461,17 @@ async def cards_get(response: Response):
         return {'Error': e}
 
 
-@app.post('/cards')
-async def cards_post(response: Response):
+@app.get('/game/{game}/cards/deck')
+async def cards_deck_get(game: str, response: Response):
     try:
-        global cards
+        global games
 
-        # Idempotent
-        cards = Cards()
-
-        response.status_code = status.HTTP_200_OK
-        return repr(cards)
-    except Exception as e:
-        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
-        return {'Error': e}
-
-@app.get('/cards/deck')
-async def cards_deck_get(response: Response):
-    try:
-        global cards
-
-        # If there are no cards
-        if cards == None:
+        # If there is no game
+        if game not in games.keys():
             response.status_code = status.HTTP_200_OK
             return {}
+        
+        cards = games[game].cards
 
         response.status_code = status.HTTP_200_OK
         return cards.cards_deck_get()
@@ -432,15 +479,17 @@ async def cards_deck_get(response: Response):
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
         return {'Error': e}
 
-@app.get('/cards/deck/{type}')
-async def cards_deck_type_get(type: str, response: Response, random: bool=False):
+@app.get('/game/{game}/cards/deck/{type}')
+async def cards_deck_type_get(game: str, type: str, response: Response, random: bool=False):
     try:
-        global cards
+        global games
 
-        # If there are no cards
-        if cards == None:
+        # If there is no game
+        if game not in games.keys():
             response.status_code = status.HTTP_200_OK
             return {}
+        
+        cards = games[game].cards
 
         response.status_code = status.HTTP_200_OK
         deck = cards.cards_deck_get(type)
@@ -454,15 +503,17 @@ async def cards_deck_type_get(type: str, response: Response, random: bool=False)
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
         return {'Error': e}
 
-@app.post('/cards/deck/{type}/{id}')
-async def cards_deck_type_id_post(type: str, id: int, response: Response):
+@app.post('/game/{game}/cards/deck/{type}/{id}')
+async def cards_deck_type_id_post(game: str, type: str, id: int, response: Response):
     try:
-        global board
+        global games
 
-        # If there are no cards
-        if cards == None:
+        # If there is no game
+        if game not in games.keys():
             response.status_code = status.HTTP_200_OK
             return {}
+        
+        cards = games[game].cards
 
         # If success updating the deck with the new card
         if cards.cards_deck_add(type, id):
@@ -476,15 +527,17 @@ async def cards_deck_type_id_post(type: str, id: int, response: Response):
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
         return {'Error': e}
 
-@app.delete('/cards/deck/{type}/{id}')
-async def cards_deck_type_id_delete(type: str, id: int, response: Response):
+@app.delete('/game/{game}/cards/deck/{type}/{id}')
+async def cards_deck_type_id_delete(game: str, type: str, id: int, response: Response):
     try:
-        global board
+        global games
 
-        # If there are no cards
-        if cards == None:
+        # If there is no game
+        if game not in games.keys():
             response.status_code = status.HTTP_200_OK
             return {}
+        
+        cards = games[game].cards
 
         # If success deleting the card from the deck
         if cards.cards_deck_remove(type, id):
@@ -498,15 +551,17 @@ async def cards_deck_type_id_delete(type: str, id: int, response: Response):
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
         return {'Error': e}
 
-@app.get('/cards/playing')
-async def cards_playing_get(response: Response):
+@app.get('/game/{game}/cards/playing')
+async def cards_playing_get(game: str, response: Response):
     try:
-        global cards
+        global games
 
-        # If there are no cards
-        if cards == None:
+        # If there is no game
+        if game not in games.keys():
             response.status_code = status.HTTP_200_OK
             return {}
+        
+        cards = games[game].cards
 
         response.status_code = status.HTTP_200_OK
         return cards.cards_playing_get()
@@ -515,15 +570,17 @@ async def cards_playing_get(response: Response):
         return {'Error': e}
 
 # Has to be below the /cards/deck and /cards/playing as otherwise FastAPI wouldn't know if /cards/deck or /cards/playing or /cards/{id} was called
-@app.get('/cards/{id}')
-async def cards_id_get(id: int, response: Response):
+@app.get('/game/{game}/cards/{id}')
+async def cards_id_get(game: str, id: int, response: Response):
     try:
-        global cards
+        global games
 
-        # If there are no cards
-        if cards == None:
+        # If there is no game
+        if game not in games.keys():
             response.status_code = status.HTTP_200_OK
             return {}
+        
+        cards = games[game].cards
 
         response.status_code = status.HTTP_200_OK
         return cards.cards_get(id)
@@ -531,15 +588,17 @@ async def cards_id_get(id: int, response: Response):
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
         return {'Error': e}
 
-@app.get('/cards/player/{player}')
-async def cards_player_player_get(player: str, response: Response):
+@app.get('/game/{game}/cards/player/{player}')
+async def cards_player_player_get(game: str, player: str, response: Response):
     try:
-        global cards
+        global games
 
-        # If there are no cards
-        if cards == None:
+        # If there is no game
+        if game not in games.keys():
             response.status_code = status.HTTP_200_OK
             return {}
+        
+        cards = games[game].cards
 
         response.status_code = status.HTTP_200_OK
         return [{'id': card} for card in cards.cards_player_get(player)]
@@ -547,15 +606,17 @@ async def cards_player_player_get(player: str, response: Response):
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
         return {'Error': e}
 
-@app.get('/cards/player/{player}/header')
-async def cards_player_player_header_get(player: str, response: Response):
+@app.get('/game/{game}/cards/player/{player}/header')
+async def cards_player_player_header_get(game: str, player: str, response: Response):
     try:
-        global cards
+        global games
 
-        # If there are no cards
-        if cards == None:
+        # If there is no game
+        if game not in games.keys():
             response.status_code = status.HTTP_200_OK
             return {}
+        
+        cards = games[game].cards
 
         response.status_code = status.HTTP_200_OK
         return {'id': cards.cards_player_header_get(player)}
@@ -563,15 +624,17 @@ async def cards_player_player_header_get(player: str, response: Response):
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
         return {'Error': e}
 
-@app.delete('/cards/player/{player}/header')
-async def cards_player_player_header_delete(player: str, response: Response):
+@app.delete('/game/{game}/cards/player/{player}/header')
+async def cards_player_player_header_delete(game: str, player: str, response: Response):
     try:
-        global cards
+        global games
 
-        # If there are no cards
-        if cards == None:
+        # If there is no game
+        if game not in games.keys():
             response.status_code = status.HTTP_200_OK
             return {}
+        
+        cards = games[game].cards
 
         # If success deleting the card as the player's header card
         id = cards.cards_player_header_unset(player)
@@ -587,15 +650,17 @@ async def cards_player_player_header_delete(player: str, response: Response):
         return {'Error': e}
 
 # These next 2 have to be below the /cards/player/{player}/header for the same reason as before
-@app.post('/cards/player/{player}/{id}')
-async def cards_player_player_id_post(player: str, id: int, response: Response):
+@app.post('/game/{game}/cards/player/{player}/{id}')
+async def cards_player_player_id_post(game: str, player: str, id: int, response: Response):
     try:
-        global cards
+        global games
 
-        # If there are no cards
-        if cards == None:
+        # If there is no game
+        if game not in games.keys():
             response.status_code = status.HTTP_200_OK
             return {}
+        
+        cards = games[game].cards
 
         # If success adding the card to the player's hand
         if cards.cards_player_add(player, id):
@@ -609,15 +674,17 @@ async def cards_player_player_id_post(player: str, id: int, response: Response):
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
         return {'Error': e}
 
-@app.delete('/cards/player/{player}/{id}')
-async def cards_player_player_id_delete(player: str, id: int, response: Response):
+@app.delete('/game/{game}/cards/player/{player}/{id}')
+async def cards_player_player_id_delete(game: str, player: str, id: int, response: Response):
     try:
-        global cards
+        global games
 
-        # If there are no cards
-        if cards == None:
+        # If there is no game
+        if game not in games.keys():
             response.status_code = status.HTTP_200_OK
             return {}
+        
+        cards = games[game].cards
 
         # If success deleting the card to the player's hand
         if cards.cards_player_remove(player, id):
@@ -631,15 +698,17 @@ async def cards_player_player_id_delete(player: str, id: int, response: Response
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
         return {'Error': e}
 
-@app.post('/cards/player/{player}/header/{id}')
-async def cards_player_player_header_post(player: str, id: int, response: Response):
+@app.post('/game/{game}/cards/player/{player}/header/{id}')
+async def cards_player_player_header_post(game: str, player: str, id: int, response: Response):
     try:
-        global cards
+        global games
 
-        # If there are no cards
-        if cards == None:
+        # If there is no game
+        if game not in games.keys():
             response.status_code = status.HTTP_200_OK
             return {}
+        
+        cards = games[game].cards
 
         # If success setting the card as the player's header card
         if cards.cards_player_header_set(player, id):

@@ -45,8 +45,8 @@ paths:
     post:
       tags:
         - Game
-      summary: Create a new game
-      description: Create a new game
+      summary: Create a new game (with a board and the cards)
+      description: Create a new game (with a board and the cards)
       responses:
         '200':
           description: Game created
@@ -62,26 +62,6 @@ paths:
       description: Get the resources of the board
       parameters:
         - in: path # can also be query, header, cookie
-          name: game
-          description: Id of the game
-          required: true
-          schema:
-            type: string
-            example: zq7d24gr9n
-      responses:
-        '200':
-          description: Board resources
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/board'
-    post:
-      tags:
-        - Board
-      summary: Initialize the resources of the board
-      description: Initialize the resources of the board
-      parameters:
-        - in: path
           name: game
           description: Id of the game
           required: true
@@ -606,26 +586,6 @@ paths:
         - Cards
       summary: Get the resources of the cards
       description: Get the resources of the cards
-      parameters:
-        - in: path
-          name: game
-          description: Id of the game
-          required: true
-          schema:
-            type: string
-            example: zq7d24gr9n
-      responses:
-        '200':
-          description: Cards resources
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/card'
-    post:
-      tags:
-        - Cards
-      summary: Initialize the resources of the cards
-      description: Initialize the resources of the cards
       parameters:
         - in: path
           name: game
