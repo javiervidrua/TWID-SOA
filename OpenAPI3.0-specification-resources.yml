@@ -1,9 +1,6 @@
 openapi: 3.0.0
 
 servers:
-  # Added by API Auto Mocking Plugin
-  # - description: SwaggerHub API Auto Mocking
-  #   url: https://virtserver.swaggerhub.com/javiervidrua/TWID-SOA-API-resources/1.0.0
   - description: Local server
     url: http://localhost:8000
   - description: Local server 2
@@ -61,7 +58,7 @@ paths:
       summary: Get the resources of the board
       description: Get the resources of the board
       parameters:
-        - in: path # can also be query, header, cookie
+        - in: path # can also be "query", "header" or "cookie"
           name: game
           description: Id of the game
           required: true

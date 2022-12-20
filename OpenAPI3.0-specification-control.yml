@@ -1,0 +1,76 @@
+openapi: 3.0.0
+
+servers:
+  - description: Local server
+    url: http://localhost:8001
+  - description: Local server 2
+    url: http://localhost:4442
+
+info:
+  description: TWID-SOA API for the control service.
+  version: "1.0.0"
+  title: TWID-SOA-API-control
+  contact:
+    email: javiervidrua@gmail.com
+  license:
+    name: MIT
+    url: 'https://jvr.mit-license.org/'
+tags:
+  - name: Auth
+    description: Everything related to the auth
+
+paths:
+  /auth/signin/guest:
+    post:
+      tags:
+        - Auth
+      summary: Sign in as guest
+      description: Sign in as guest
+      responses:
+        '200':
+          description: Signed in
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/auth-signin-guest'
+        '429':
+          description: Too many requests
+  /auth/signout:
+    post:
+      tags:
+        - Auth
+      summary: Sign out
+      description: Sign out
+      security:
+        - X-ACCESS-TOKEN: []
+      responses:
+        '200':
+          description: Signed out
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/auth-signin-guest'
+        '400':
+          description: Bad request
+
+components:
+  securitySchemes:
+    X-ACCESS-TOKEN:
+      type: apiKey
+      in: header # can be "header", "query" or "cookie"
+      name: X-ACCESS-TOKEN
+  schemas:
+    auth-signin-guest:
+      type: object
+      required:
+        - access_token
+        - token_type
+      properties:
+        access_token:
+          type: string
+          minLength: 36
+          maxLength: 36
+          example: 829863b3-3ba3-4357-a819-fa62ee39b426
+        token_type:
+          type: string
+          example: Bearer
