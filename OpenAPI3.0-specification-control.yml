@@ -18,6 +18,8 @@ info:
 tags:
   - name: Auth
     description: Everything related to the auth
+  - name: Game
+    description: Everything related to the game
 
 paths:
   /auth/signin/guest:
@@ -50,8 +52,137 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/auth-signin-guest'
+        '401':
+          description: Unauthorized
+  /game:
+    get:
+      tags:
+        - Game
+      summary: Get the games
+      description: Get the games
+      responses:
+        '200':
+          description: Games
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/game'
+        '401':
+          description: Unauthorized
+    post:
+      tags:
+        - Game
+      summary: Create a new game
+      description: Create a new game
+      responses:
+        '200':
+          description: Game created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/game'
+        '401':
+          description: Unauthorized
+        '429':
+          description: Too many requests
+  /game/{game}:
+    get:
+      tags:
+        - Game
+      summary: Get the details of a game
+      description: Get the details of a game
+      parameters:
+        - in: path
+          name: game
+          description: Id of the game
+          required: true
+          schema:
+            type: string
+            example: zq7d24gr9n
+      responses:
+        '200':
+          description: Game details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/game-game'
         '400':
           description: Bad request
+        '401':
+          description: Unauthorized
+    post:
+      tags:
+        - Game
+      summary: Start a game. The host of the game must do it
+      description: Start a game. The host of the game must do it
+      parameters:
+        - in: path
+          name: game
+          description: Id of the game
+          required: true
+          schema:
+            type: string
+            example: zq7d24gr9n
+      responses:
+        '200':
+          description: Game started
+        '400':
+          description: Bad request
+        '401':
+          description: Unauthorized
+    delete:
+      tags:
+        - Game
+      summary: Remove a game
+      description: Remove a game
+      parameters:
+        - in: path
+          name: game
+          description: Id of the game
+          required: true
+          schema:
+            type: string
+            example: zq7d24gr9n
+      responses:
+        '200':
+          description: Game removed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/game'
+        '400':
+          description: Bad request
+        '401':
+          description: Unauthorized
+  /game/{game}/player/{player}:
+    post:
+      tags:
+        - Game
+      summary: Select the specified player as the user's player in the specified game. The host of the game must choose the first
+      description: Select the specified player as the user's player in the specified game. The host of the game must choose the first
+      parameters:
+        - in: path
+          name: game
+          description: Id of the game
+          required: true
+          schema:
+            type: string
+            example: zq7d24gr9n
+        - in: path
+          name: player
+          description: Name of the player
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Player selected
+        '400':
+          description: Bad request
+        '401':
+          description: Unauthorized
 
 components:
   securitySchemes:
@@ -74,3 +205,23 @@ components:
         token_type:
           type: string
           example: Bearer
+    game:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: string
+          minLength: 10
+          maxLength: 10
+          example: zq7d24gr9n
+    game-game:
+      type: object
+      required:
+        - playersAvailable
+      properties:
+        pleayersAvailable:
+          type: array
+          items:
+            type: string
+      example: {playersAvailable: [US, EU, Russia, China]}
