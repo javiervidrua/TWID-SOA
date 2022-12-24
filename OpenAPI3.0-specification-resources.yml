@@ -139,7 +139,7 @@ paths:
     get:
       tags:
         - Board
-      summary: Get the score
+      summary: Get the score of the players
       description: Get the score of the players
       parameters:
         - in: path
