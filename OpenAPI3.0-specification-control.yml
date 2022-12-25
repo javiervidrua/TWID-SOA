@@ -170,7 +170,7 @@ paths:
     post:
       tags:
         - Game
-      summary: Select the specified player as the user's player in the specified game. The host of the game must choose the first
+      summary: Select the specified player as the user's player in the specified game
       description: Select the specified player as the user's player in the specified game. The host of the game must choose the first
       security:
         - X-ACCESS-TOKEN: []
@@ -309,7 +309,7 @@ paths:
     get:
       tags:
         - Game
-      summary: Get the cards of the players. A player cannot see the cards of another player's hand, but the player is allowed to see the header cards once all of them are chosen
+      summary: Get the cards of the players
       description: Get the cards of the players. A player cannot see the cards of another player's hand, but the player is allowed to see the header cards once all of them are chosen
       security:
         - X-ACCESS-TOKEN: []
@@ -365,12 +365,12 @@ paths:
           description: Bad request
         '401':
           description: Unauthorized
-  /game/{game}/cards/playing/{id}:
+  /game/{game}/cards/playing/influence/{id}:
     post:
       tags:
         - Game
-      summary: Play the specified card
-      description: Play the specified card
+      summary: Play the specified card as influence
+      description: Play the specified card as influence
       security:
         - X-ACCESS-TOKEN: []
       parameters:
@@ -402,6 +402,185 @@ paths:
           description: Bad request
         '401':
           description: Unauthorized
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/card-playing-influence'
+            # examples:
+            #   ops:
+            #     value:
+            #       id: 10
+            #   text:
+            #     value:
+            #       id: 11
+        description: Description of how the card is going to be played
+  /game/{game}/cards/playing/destabilization/{id}:
+    post:
+      tags:
+        - Game
+      summary: Play the specified card as destabilization. This play consists of 2 requests
+      description: Play the specified card as destabilization. This play consists of 2 requests. 1st request will return the result of a dice throw (1 to 6) + card points - the country stability points * 2. If the country is conflictive you lose 1 VP. If result X is positive, you can add (superpowers of your block) or remove (opposing superpowers) up to X points of influence
+      security:
+        - X-ACCESS-TOKEN: []
+      parameters:
+        - in: path
+          name: game
+          description: Id of the game
+          required: true
+          schema:
+            type: string
+            example: zq7d24gr9n
+        - in: path
+          name: id
+          description: Id of the card
+          required: true
+          schema:
+            type: integer
+            format: int32
+            minimum: 1
+            maximum: 100
+            example: 3
+      responses:
+        '200':
+          description: Card
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/card'
+        '400':
+          description: Bad request
+        '401':
+          description: Unauthorized
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/card-playing-destabilization'
+        description: Description of how the card is going to be played
+  /game/{game}/cards/playing/text/{id}:
+    post:
+      tags:
+        - Game
+      summary: Play the specified card by its text
+      description: Play the specified card by its text. The request body is only necessary for the cards that need the player to choose something and it is used to specify said choice
+      security:
+        - X-ACCESS-TOKEN: []
+      parameters:
+        - in: path
+          name: game
+          description: Id of the game
+          required: true
+          schema:
+            type: string
+            example: zq7d24gr9n
+        - in: path
+          name: id
+          description: Id of the card
+          required: true
+          schema:
+            type: integer
+            format: int32
+            minimum: 1
+            maximum: 100
+            example: 3
+      responses:
+        '200':
+          description: Card
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/card'
+        '400':
+          description: Bad request
+        '401':
+          description: Unauthorized
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/card-playing-text'
+        description: Description of how the card is going to be played
+  /game/{game}/cards/playing/score/{id}:
+    post:
+      tags:
+        - Game
+      summary: Play the specified punctuation card. Score
+      description: Play the specified punctuation card. Score it
+      security:
+        - X-ACCESS-TOKEN: []
+      parameters:
+        - in: path
+          name: game
+          description: Id of the game
+          required: true
+          schema:
+            type: string
+            example: zq7d24gr9n
+        - in: path
+          name: id
+          description: Id of the card
+          required: true
+          schema:
+            type: integer
+            format: int32
+            minimum: 1
+            maximum: 100
+            example: 3
+      responses:
+        '200':
+          description: Card
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/card'
+        '400':
+          description: Bad request
+        '401':
+          description: Unauthorized
+  /game/{game}/cards/playing/nwo/{id}:
+    post:
+      tags:
+        - Game
+      summary: Play the specified card in a New World Order track
+      description: Play the specified card in a New World Order track
+      security:
+        - X-ACCESS-TOKEN: []
+      parameters:
+        - in: path
+          name: game
+          description: Id of the game
+          required: true
+          schema:
+            type: string
+            example: zq7d24gr9n
+        - in: path
+          name: id
+          description: Id of the card
+          required: true
+          schema:
+            type: integer
+            format: int32
+            minimum: 1
+            maximum: 100
+            example: 3
+      responses:
+        '200':
+          description: Card
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/card'
+        '400':
+          description: Bad request
+        '401':
+          description: Unauthorized
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/card-playing-nwo'
+        description: Description of how the card is going to be played
   /game/{game}/cards/playing/header/{id}:
     post:
       tags:
@@ -732,4 +911,63 @@ components:
               items:
                 type: string
       example: {"US": {"header": null, "hand": []}, "EU": {"header": null, "hand": []}, "Russia": {"header":null, "hand": []}, "China": {"header": null, "hand": []}}
-          
+    card-playing-influence:
+      type: object
+      required:
+        - targets
+      properties:
+        targets:
+          type: array
+          items:
+            type: object
+            properties:
+              target:
+                type: string
+              targetExtra:
+                type: object
+                properties:
+                  name:
+                    type: integer
+      example: {"targets": [{"target": "Congo", "targetExtra": {"US": 1}}]}
+    card-playing-destabilization:
+      type: object
+      required:
+        - add
+        - remove
+      properties:
+        target:
+          type: string
+        add:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: integer
+        remove:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: integer
+      example: {"target": "Congo","add": [{"US": 2}], "remove": [{"China": 1}]}
+    card-playing-text:
+      type: object
+      properties:
+        targets:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: integer
+      example: {"targets": [{"Congo": 1}]}
+    card-playing-nwo:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          example: State propaganda
