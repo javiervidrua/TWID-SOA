@@ -1,6 +1,7 @@
 import json
 from game import Game
 import validators
+import config
 from datetime import datetime
 from uuid import uuid4
 # https://fastapi.tiangolo.com/advanced/response-change-status-code/
@@ -19,6 +20,7 @@ def custom_openapi():
 app.openapi = custom_openapi
 users = {}
 usersLogs = {}
+games = {}
 
 # https://stackoverflow.com/questions/72831952/how-do-i-integrate-custom-exception-handling-with-the-fastapi-exception-handling
 # Custom exception and handler
@@ -35,6 +37,13 @@ async def authentication_exception_handler(request: Request, exc: Authentication
 def verify_token(req: Request):
     global users
 
+    # If ENV_DEBUG is enabled, don't ask for a token
+    if config.ENV_DEBUG == 'True':
+        token = 'development-token-0000-0001'
+        users[token] = users.get(token, {'games': []})
+        return token
+
+    # Get the token from the headers
     token = req.headers.get("X-ACCESS-TOKEN", None)
     
     # If the token is not valid, raise exception
@@ -72,7 +81,7 @@ async def auth_signing_guest_post(request: Request, response: Response):
 
         # Create a new uuid4 (a new user) # https://stackoverflow.com/questions/534839/how-to-create-a-guid-uuid-in-python
         uuid = str(uuid4())
-        users[uuid] = {}
+        users[uuid] = {'games': []}
 
         response.status_code = status.HTTP_200_OK
         return {'access_token': uuid, 'token_type': 'Bearer'}
@@ -106,38 +115,48 @@ async def auth_signout_post(request: Request, response: Response, token: str = D
         return {'Error': e}
 
 
-# # Game endpoints
-# @app.get('/game')
-# async def game_get(response: Response):
-#     try:
-#         global games
+# Game endpoints
+@app.get('/game')
+async def game_get(response: Response, token: str = Depends(verify_token)):
+    try:
+        global users
 
-#         # If there are no games
-#         if games == []:
-#             response.status_code = status.HTTP_200_OK
-#             return []
+        # If there are no games
+        if users[token]['games'] == []:
+            response.status_code = status.HTTP_200_OK
+            return []
 
-#         response.status_code = status.HTTP_200_OK
-#         return [{'id':gameId} for gameId in list(games.keys())]
-#     except Exception as e:
-#         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
-#         return {'Error': e}
+        response.status_code = status.HTTP_200_OK
+        return [{'id':gameId} for gameId in users[token]['games']]
+    except Exception as e:
+        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+        return {'Error': e}
 
 
-# @app.post('/game')
-# async def game_post(response: Response):
-#     try:
-#         global games
+@app.post('/game')
+async def game_post(response: Response, token: str = Depends(verify_token)):
+    try:
+        global users
+        global games
 
-#         # Idempotent
-#         game = Game()
-#         games[repr(game)] = game
+        # 10 games maximum
+        if len(users[token]['games']) > 10:
+            return Response(status_code=status.HTTP_429_TOO_MANY_REQUESTS)
 
-#         response.status_code = status.HTTP_200_OK
-#         return {'id':repr(game)}
-#     except Exception as e:
-#         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
-#         return {'Error': e}
+        # Idempotent
+        game = Game()
+
+        # When a user creates a game, add it to users[user]['games']
+        users[token]['games'].append(repr(game))
+
+        # Add the game to the list of games
+        games[repr(game)] = game
+
+        response.status_code = status.HTTP_200_OK
+        return {'id':repr(game)}
+    except Exception as e:
+        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+        return {'Error': e}
 
 
 # # Board endpoints

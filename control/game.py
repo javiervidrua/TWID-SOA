@@ -1,7 +1,13 @@
+import config
+import requests
 from multimeta import MultipleMeta # https://stackoverflow.com/a/49936625
 from shortuuid import ShortUUID
 
+
 class Game(metaclass=MultipleMeta):
-    # RE-IMPLEMENT ALL OF THIS TO CALL THE RESOURCES SERVICE
     def __init__(self):
-        pass
+        response = requests.post(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game')
+        self.id = response.json()['id']
+    
+    def __repr__(self):
+        return self.id
