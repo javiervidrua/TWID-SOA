@@ -1074,9 +1074,19 @@
       "game-game": {
         "type": "object",
         "required": [
+          "isStarted",
+          "isFinished",
           "playersAvailable"
         ],
         "properties": {
+          "isStarted": {
+            "type": "boolean",
+            "default": false
+          },
+          "isFinished": {
+            "type": "boolean",
+            "default": false
+          },
           "pleayersAvailable": {
             "type": "array",
             "items": {
@@ -1085,6 +1095,8 @@
           }
         },
         "example": {
+          "isStarted": false,
+          "isFinished": false,
           "playersAvailable": [
             "US",
             "EU",

@@ -690,13 +690,21 @@ components:
     game-game:
       type: object
       required:
+        - isStarted
+        - isFinished
         - playersAvailable
       properties:
+        isStarted:
+          type: boolean
+          default: False
+        isFinished:
+          type: boolean
+          default: False
         pleayersAvailable:
           type: array
           items:
             type: string
-      example: {playersAvailable: [US, EU, Russia, China]}
+      example: {isStarted: False, isFinished: False, playersAvailable: [US, EU, Russia, China]}
     game-game-board:
       type: array
       items:
