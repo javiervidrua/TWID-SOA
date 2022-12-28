@@ -315,50 +315,6 @@
         }
       }
     },
-    "/game/{game}/board": {
-      "get": {
-        "tags": [
-          "Game"
-        ],
-        "summary": "Get the resources of the board",
-        "description": "Get the resources of the board",
-        "security": [
-          {
-            "X-ACCESS-TOKEN": []
-          }
-        ],
-        "parameters": [
-          {
-            "in": "path",
-            "name": "game",
-            "description": "Id of the game",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "example": "zq7d24gr9n"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Board resources",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/game-game-board"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad request"
-          },
-          "401": {
-            "description": "Unauthorized"
-          }
-        }
-      }
-    },
     "/game/{game}/board/round": {
       "get": {
         "tags": [
@@ -1104,31 +1060,6 @@
             "China"
           ]
         }
-      },
-      "game-game-board": {
-        "type": "array",
-        "items": {
-          "type": "object",
-          "required": [
-            "name"
-          ],
-          "properties": {
-            "name": {
-              "type": "string"
-            }
-          }
-        },
-        "example": [
-          {
-            "name": "round"
-          },
-          {
-            "name": "score"
-          },
-          {
-            "name": "map"
-          }
-        ]
       },
       "game-game-board-round": {
         "type": "object",
