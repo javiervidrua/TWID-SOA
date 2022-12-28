@@ -121,13 +121,17 @@ async def game_get(response: Response, token: str = Depends(verify_token)):
     try:
         global users
 
+        # Get the games of the user, the ones he created and the ones he is part of
+        userGames = [gameId for gameId in users[token]['games']]
+        [userGames.append(game) for game in games if token in list(games[game].get_players().values())]
+
         # If there are no games
-        if users[token]['games'] == []:
+        if userGames == []:
             response.status_code = status.HTTP_200_OK
             return []
 
         response.status_code = status.HTTP_200_OK
-        return [{'id':gameId} for gameId in users[token]['games']]
+        return [{'id':gameId} for gameId in userGames]
     except Exception as e:
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
         return {'Error': e}
@@ -159,21 +163,87 @@ async def game_post(response: Response, token: str = Depends(verify_token)):
         return {'Error': e}
 
 
-# # Board endpoints
-# @app.get('/game/{game}/board')
-# async def board_get(game: str, response: Response):
-#     try:
-#         global games
+@app.get('/game/{game}')
+async def game_game_get(game: str, response: Response, token: str = Depends(verify_token)):
+    try:
+        global users
+        global games
 
-#         # If there is no game
-#         if game not in games.keys():
-#             response.status_code = status.HTTP_200_OK
-#             return {}
+        # If there is no game or if the user is not part of this specific game
+        if game not in games and (game not in users[token]['games'] or token not in list(games[game].get_players().values())):
+            return Response(status_code=status.HTTP_400_BAD_REQUEST)
+
+        response.status_code = status.HTTP_200_OK
+        return {
+                'isStarted': games[game].get_isStarted(),
+                'isFinished': games[game].get_isFinished(),
+                'playersAvailable': [player for player in games[game].get_players() if games[game].get_players()[player]==None]
+            }
+    except Exception as e:
+        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+        return {'Error': e}
+
+
+@app.post('/game/{game}')
+async def game_game_post(game: str, response: Response, token: str = Depends(verify_token)):
+    try:
+        global users
+        global games
+
+        # If there is no game or if the user is not the creator of this specific game or if there are no players assigned
+        if game not in games or game not in users[token]['games'] or len([user for user in list(games[game].get_players().values()) if user!=None])==0:
+            return Response(status_code=status.HTTP_400_BAD_REQUEST)
+
+        games[game].start()
+        return Response(status_code=status.HTTP_200_OK)
+    except Exception as e:
+        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+        return {'Error': e}
+
+
+@app.delete('/game/{game}')
+async def game_game_delete(game: str, response: Response, token: str = Depends(verify_token)):
+    try:
+        global users
+        global games
+
+        # If the user is not the creator of the game or if there is no game
+        if game not in users[token]['games'] or game not in games:
+            return Response(status_code=status.HTTP_400_BAD_REQUEST)
         
-#         board = games[game].board
+        # Remove the game from the user and from the games
+        users[token]['games'].remove(game)
+        games.pop(game)
 
-#         response.status_code = status.HTTP_200_OK
-#         return repr(board)
-#     except Exception as e:
-#         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
-#         return {'Error': e}
+        response.status_code = status.HTTP_200_OK
+        return {'id': game}
+    except Exception as e:
+        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+        return {'Error': e}
+
+
+@app.post('/game/{game}/player/{player}')
+async def game_game_player_player_post(game: str, player: str, response: Response, token: str = Depends(verify_token)):
+    try:
+        global users
+        global games
+
+        # If there is no game
+        if game not in games:
+            return Response(status_code=status.HTTP_400_BAD_REQUEST)
+        
+        # If this is the first user to choose a player, he must be the creator of the game
+        if len([player for player in list(games[game].get_players().values()) if player!=None])==0 and game not in users[token]['games']:
+            return Response(status_code=status.HTTP_400_BAD_REQUEST)
+        
+        # If the player has not been already chosen and this user has not already chosen a player, set the player to the requesting user
+        if games[game].get_isStarted() == False and games[game].get_isFinished() == False and games[game].get_players()[player] == None and token not in list(games[game].get_players().values()):
+            games[game].set_player_user(player, token)
+
+            return Response(status_code=status.HTTP_200_OK)
+        
+        # Otherwise, return bad request
+        return Response(status_code=status.HTTP_400_BAD_REQUEST)
+    except Exception as e:
+        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+        return {'Error': e}
