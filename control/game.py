@@ -85,3 +85,6 @@ class Game(metaclass=MultipleMeta):
         # Only show the score of the players of the game. e.g: IF there are 3 players, do not show 4 scores
         score = [playerScore for playerScore in score if playerScore['name'] in [player for player in self.players if self.players[player] != None]]
         return score
+
+    def board_map_get(self):
+        return requests.get(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/board').json()

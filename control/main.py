@@ -293,6 +293,27 @@ async def game_game_board_score_get(game: str, response: Response, token: str = 
         return {'Error': e}
 
 
+@app.get('/game/{game}/board/map')
+async def game_game_board_map_get(game: str, response: Response, token: str = Depends(verify_token)):
+    try:
+        global games
+
+        # If there is no game
+        if game not in games:
+            return Response(status_code=status.HTTP_400_BAD_REQUEST)
+        
+        # If the game has not started or if it has ended
+        if games[game].get_isStarted() == False or games[game].get_isFinished() == True:
+            return Response(status_code=status.HTTP_400_BAD_REQUEST)
+
+        # Get the map
+        response.status_code = status.HTTP_200_OK
+        return games[game].board_map_get()
+    except Exception as e:
+        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+        return {'Error': e}
+
+
 @app.get('/game/{game}/cards/player')
 async def game_game_cards_player_get(game: str, response: Response, token: str = Depends(verify_token)):
     try:
