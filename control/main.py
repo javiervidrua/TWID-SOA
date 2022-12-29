@@ -124,6 +124,8 @@ async def game_get(response: Response, token: str = Depends(verify_token)):
         # Get the games of the user, the ones he created and the ones he is part of
         userGames = [gameId for gameId in users[token]['games']]
         [userGames.append(game) for game in games if token in list(games[game].get_players().values())]
+        # Remove the duplicates
+        userGames = list(set(userGames))
 
         # If there are no games
         if userGames == []:
@@ -238,12 +240,81 @@ async def game_game_player_player_post(game: str, player: str, response: Respons
 
         # If the player has not been already chosen and this user has not already chosen a player, set the player to the requesting user
         if games[game].get_isStarted() == False and games[game].get_isFinished() == False and games[game].get_players()[player] == None and token not in list(games[game].get_players().values()):
-            games[game].set_player_user(player, token)
-
-            return Response(status_code=status.HTTP_200_OK)
+            if games[game].set_player_user(player, token) == True:
+                return Response(status_code=status.HTTP_200_OK)
+            return Response(status_code=status.HTTP_400_BAD_REQUEST)
 
         # Otherwise, return bad request
         return Response(status_code=status.HTTP_400_BAD_REQUEST)
+    except Exception as e:
+        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+        return {'Error': e}
+
+
+@app.get('/game/{game}/cards/player')
+async def game_game_cards_player_get(game: str, response: Response, token: str = Depends(verify_token)):
+    try:
+        global games
+
+        # If there is no game
+        if game not in games:
+            return Response(status_code=status.HTTP_400_BAD_REQUEST)
+        
+        # If the game has not started or if it has ended
+        if games[game].get_isStarted() == False or games[game].get_isFinished() == True:
+            return Response(status_code=status.HTTP_400_BAD_REQUEST)
+
+        # Get the player of the user
+        player = [player for player in games[game].get_players() if games[game].get_players()[player] == token]
+        if len(player) != 1:
+            return Response(status_code=status.HTTP_400_BAD_REQUEST)
+        player = player[0]
+
+        # Get the cards
+        cards = games[game].cards_player_get(player)
+
+        response.status_code = status.HTTP_200_OK
+        return cards
+    except Exception as e:
+        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+        return {'Error': e}
+
+
+@app.get('/game/{game}/cards/playing')
+async def game_game_cards_playing_get(game: str, response: Response, token: str = Depends(verify_token)):
+    try:
+        global games
+
+        # If there is no game
+        if game not in games:
+            return Response(status_code=status.HTTP_400_BAD_REQUEST)
+        
+        # If the game has not started or if it has ended
+        if games[game].get_isStarted() == False or games[game].get_isFinished() == True:
+            return Response(status_code=status.HTTP_400_BAD_REQUEST)
+
+        # Get the cards that are currently being played
+        cards = games[game].cards_playing_get()
+
+        response.status_code = status.HTTP_200_OK
+        return cards
+    except Exception as e:
+        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+        return {'Error': e}
+
+
+@app.get('/game/{game}/cards/{id}')
+async def game_game_cards_it_get(game: str, id: int, response: Response, token: str = Depends(verify_token)):
+    try:
+        global games
+
+        # If there is no game
+        if game not in games:
+            return Response(status_code=status.HTTP_400_BAD_REQUEST)
+
+        # Get the card
+        response.status_code = status.HTTP_200_OK
+        return games[game].card_get(id)
     except Exception as e:
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
         return {'Error': e}

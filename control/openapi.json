@@ -450,6 +450,63 @@
         }
       }
     },
+    "/game/{game}/cards/{id}": {
+      "get": {
+        "tags": [
+          "Game"
+        ],
+        "summary": "Get the details of the card with the specified id",
+        "description": "Get the details of the card with the specified id",
+        "security": [
+          {
+            "X-ACCESS-TOKEN": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "game",
+            "description": "Id of the game",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "zq7d24gr9n"
+            }
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "description": "Id of the card",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 1,
+              "maximum": 100,
+              "example": 3
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Card",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/card"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
     "/game/{game}/cards/player": {
       "get": {
         "tags": [
@@ -877,63 +934,6 @@
         ],
         "summary": "Set the specified card as the one being played as header card",
         "description": "Set the specified card as the one being played as header card",
-        "security": [
-          {
-            "X-ACCESS-TOKEN": []
-          }
-        ],
-        "parameters": [
-          {
-            "in": "path",
-            "name": "game",
-            "description": "Id of the game",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "example": "zq7d24gr9n"
-            }
-          },
-          {
-            "in": "path",
-            "name": "id",
-            "description": "Id of the card",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32",
-              "minimum": 1,
-              "maximum": 100,
-              "example": 3
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Card",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/card"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad request"
-          },
-          "401": {
-            "description": "Unauthorized"
-          }
-        }
-      }
-    },
-    "/game/{game}/cards/{id}": {
-      "get": {
-        "tags": [
-          "Game"
-        ],
-        "summary": "Get the details of the card with the specified id",
-        "description": "Get the details of the card with the specified id",
         "security": [
           {
             "X-ACCESS-TOKEN": []

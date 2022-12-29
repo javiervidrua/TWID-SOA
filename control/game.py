@@ -5,6 +5,7 @@ from shortuuid import ShortUUID
 
 
 class Game(metaclass=MultipleMeta):
+    # Private functions
     def __init__(self):
         response = requests.post(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game')
         self.id = response.json()['id']
@@ -15,6 +16,7 @@ class Game(metaclass=MultipleMeta):
     def __repr__(self):
         return self.id
 
+    # Getters
     def get_isStarted(self):
         return self.isStarted
 
@@ -24,6 +26,7 @@ class Game(metaclass=MultipleMeta):
     def get_players(self):
         return self.players
 
+    # Setters
     def set_player_user(self, player, user):
         if player in self.players:
             self.players[player] = user
@@ -35,3 +38,37 @@ class Game(metaclass=MultipleMeta):
 
     def finish(self):
         self.isFinished = True
+    
+    # Common functions
+    def card_get(self, id):
+        response = requests.get(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/cards/{id}')
+        return response.json()
+    
+    def cards_player_get(self, requestingPlayer):
+        # Prepare the cards object
+        cards = {}
+        for player in [player for player in self.players if self.players[player]!=None]:
+            cards[player] = {'header': None, 'hand': []}
+
+        # Obtain the cards of all players
+        for player in cards:
+            # Only show the hand of the requesting player
+            if player == requestingPlayer:
+                hand = requests.get(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/cards/player/{player}').json()
+                [cards[player]['hand'].append(card['id']) for card in hand]
+
+            # Get all the headers 
+            header = requests.get(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/cards/player/{player}/header').json()
+            if header['id'] != None:
+                cards[player]['header'] = header['id']
+
+        # Only show the header cards if everyone has selected their header card
+        if len([player for player in cards if cards[player]['header'] != None]) != len(list(cards.keys())):
+            for player in cards:
+                if player != requestingPlayer: cards[player]['header'] = None
+
+        return cards
+    
+    def cards_playing_get(self):
+        playing = requests.get(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/cards/playing').json()
+        return [card['id'] for card in playing]
