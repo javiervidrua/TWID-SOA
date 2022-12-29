@@ -80,6 +80,39 @@
         }
       }
     },
+    "/game/{game}": {
+      "delete": {
+        "tags": [
+          "Game"
+        ],
+        "summary": "Delete the specified game",
+        "description": "Delete the specified game",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "game",
+            "description": "Id of the game",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "zq7d24gr9n"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Game removed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/game"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/game/{game}/board": {
       "get": {
         "tags": [
@@ -216,7 +249,7 @@
         "tags": [
           "Board"
         ],
-        "summary": "Get the score",
+        "summary": "Get the score of the players",
         "description": "Get the score of the players",
         "parameters": [
           {

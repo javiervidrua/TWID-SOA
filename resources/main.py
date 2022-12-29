@@ -57,6 +57,25 @@ async def game_post(response: Response):
         return {'Error': e}
 
 
+@app.delete('/game/{game}')
+async def game_game_delete(game: str, response: Response):
+    try:
+        global games
+
+        # Game must exist
+        if game not in games:
+            return {}
+        
+        # Remove it
+        games.pop(game, None)
+
+        response.status_code = status.HTTP_200_OK
+        return {'id': game}
+    except Exception as e:
+        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+        return {'Error': e}
+
+
 # Board endpoints
 @app.get('/game/{game}/board')
 async def board_get(game: str, response: Response):

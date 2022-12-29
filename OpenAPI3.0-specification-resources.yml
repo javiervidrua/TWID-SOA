@@ -51,6 +51,27 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/game'
+  /game/{game}:
+    delete:
+      tags:
+        - Game
+      summary: Delete the specified game
+      description: Delete the specified game
+      parameters:
+        - in: path # can also be "query", "header" or "cookie"
+          name: game
+          description: Id of the game
+          required: true
+          schema:
+            type: string
+            example: zq7d24gr9n
+      responses:
+        '200':
+          description: Game removed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/game'
   /game/{game}/board:
     get:
       tags:
@@ -58,7 +79,7 @@ paths:
       summary: Get the resources of the board
       description: Get the resources of the board
       parameters:
-        - in: path # can also be "query", "header" or "cookie"
+        - in: path
           name: game
           description: Id of the game
           required: true

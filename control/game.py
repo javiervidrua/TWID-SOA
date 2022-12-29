@@ -15,6 +15,9 @@ class Game(metaclass=MultipleMeta):
 
     def __repr__(self):
         return self.id
+    
+    def __del__(self):
+        requests.delete(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}')
 
     # Getters
     def get_isStarted(self):
