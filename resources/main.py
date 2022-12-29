@@ -87,10 +87,17 @@ async def board_get(game: str, response: Response):
             response.status_code = status.HTTP_200_OK
             return {}
         
+        # Get the resources of the board
         board = games[game].board
+        board = board.board
+        
+        # Remove what we don't want
+        board.pop('round', None)
+        board.pop('score', None)
+        board.pop('players', None)
 
         response.status_code = status.HTTP_200_OK
-        return repr(board)
+        return board
     except Exception as e:
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
         return {'Error': e}

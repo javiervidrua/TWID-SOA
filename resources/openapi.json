@@ -1549,32 +1549,176 @@
         }
       },
       "board": {
-        "type": "array",
-        "items": {
-          "type": "object",
-          "required": [
-            "name"
-          ],
-          "properties": {
-            "name": {
-              "type": "string"
+        "type": "object",
+        "required": [
+          "regions",
+          "countries",
+          "nwo"
+        ],
+        "properties": {
+          "regions": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "region"
+              ],
+              "properties": {
+                "region": {
+                  "type": "string"
+                }
+              }
+            },
+            "example": [
+              "Europe",
+              "Asia",
+              "Africa",
+              "Middle East",
+              "South America",
+              "NC Amertica"
+            ]
+          },
+          "countries": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "name",
+                "region",
+                "stability",
+                "isConflictive",
+                "isOilProducer",
+                "influence"
+              ],
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "region": {
+                  "type": "string"
+                },
+                "stability": {
+                  "type": "integer",
+                  "format": "int32",
+                  "minimum": 1,
+                  "maximum": 5,
+                  "example": 2
+                },
+                "isConflictive": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "isOilProducer": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "influence": {
+                  "type": "object",
+                  "required": [
+                    "$player"
+                  ],
+                  "properties": {
+                    "$player": {
+                      "type": "object",
+                      "required": [
+                        "influence"
+                      ],
+                      "properties": {
+                        "influence": {
+                          "type": "integer",
+                          "format": "int32",
+                          "minimum": 0,
+                          "maximum": 100,
+                          "example": 1
+                        },
+                        "extra": {
+                          "type": "object",
+                          "properties": {
+                            "$player": {
+                              "type": "integer",
+                              "format": "int32",
+                              "minimum": 0,
+                              "maximum": 100,
+                              "example": 1
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "example": {
+                "name": "Congo",
+                "region": "Africa",
+                "stability": 2,
+                "isConflictive": true,
+                "isOilProducer": true,
+                "influence": {
+                  "US": {
+                    "influence": 2,
+                    "extra": {
+                      "China": 1
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "nwo": {
+            "type": "object",
+            "required": [
+              "track"
+            ],
+            "properties": {
+              "track": {
+                "type": "object",
+                "required": [
+                  "slot"
+                ],
+                "properties": {
+                  "slot": {
+                    "type": "object",
+                    "required": [
+                      "veto",
+                      "ahead",
+                      "supremacy",
+                      "description"
+                    ],
+                    "properties": {
+                      "veto": {
+                        "type": "string",
+                        "example": ""
+                      },
+                      "ahead": {
+                        "type": "string",
+                        "example": "US"
+                      },
+                      "supremacy": {
+                        "type": "string",
+                        "example": "US"
+                      },
+                      "description": {
+                        "type": "string",
+                        "example": "Remove supremacy to add 1 influence to an already controlled country (usable before or after any action, yours or from other player, event or operation)"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "example": {
+              "Public opinion": {
+                "State propaganda": {
+                  "veto": "",
+                  "ahead": "US",
+                  "supremacy": "US",
+                  "description": "Remove supremacy to add 1 influence to an already controlled country (usable before or after any action, yours or from other player, event or operation)"
+                }
+              }
             }
           }
-        },
-        "example": [
-          {
-            "name": "round"
-          },
-          {
-            "name": "score"
-          },
-          {
-            "name": "map"
-          },
-          {
-            "name": "nwo"
-          }
-        ]
+        }
       },
       "board-round": {
         "type": "object",
