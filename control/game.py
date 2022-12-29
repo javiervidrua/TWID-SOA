@@ -72,3 +72,13 @@ class Game(metaclass=MultipleMeta):
     def cards_playing_get(self):
         playing = requests.get(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/cards/playing').json()
         return [card['id'] for card in playing]
+
+    def board_round_get(self):
+        return requests.get(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/board/round').json()
+    
+    def board_score_get(self):
+        score = requests.get(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/board/score').json()
+        
+        # Only show the score of the players of the game. e.g: IF there are 3 players, do not show 4 scores
+        score = [playerScore for playerScore in score if playerScore['name'] in [player for player in self.players if self.players[player] != None]]
+        return score
