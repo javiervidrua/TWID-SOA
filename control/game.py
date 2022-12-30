@@ -11,6 +11,8 @@ class Game(metaclass=MultipleMeta):
         self.id = response.json()['id']
         self.players = {'US': None, 'EU': None, 'Russia': None, 'China': None}
         self.isStarted = False
+        self.isHeaderPhase = False
+        self.playingOrder = [] # Will store the order in which the players have to play in the current round (defined after the last player plays his header card)
         self.isFinished = False
 
     def __repr__(self):
@@ -37,10 +39,25 @@ class Game(metaclass=MultipleMeta):
         return False
 
     def start(self):
-        self.isStarted = True
-        
         # Remove the players that have not been chosen
-        [self.players.pop(player, None) for player in self.players if self.players[player] == None]
+        [self.players.pop(playerToRemove, None) for playerToRemove in [player for player in self.players if self.players[player] == None]]
+
+        # Only allow 2, 3 and 4 player games
+        if len(self.players) not in [2, 3, 4]:
+            return False
+
+        # Get the number of cards that each player will have
+        self.cardsPerPlayer = {2:7, 3:5, 4:4}[len(self.players)]
+
+        # Give each player as many cards as he needs
+        for player in self.players:
+            self.deal_cards(player)
+
+        # Start the game (in the header phase)
+        self.isHeaderPhase = True
+        self.isStarted = True
+
+        return True
 
     def finish(self):
         self.isFinished = True
@@ -91,3 +108,18 @@ class Game(metaclass=MultipleMeta):
 
     def board_map_get(self):
         return requests.get(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/board').json()
+    
+    def deal_cards(self, player):
+        cards = []
+
+        # Get the current number of cards of the player
+        cardsPlayer = len(requests.get(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/cards/player/{player}').json())
+
+        # Call the main deck self.cardsPerPlayer times in random order and get the first card
+        for i in range(0, self.cardsPerPlayer - cardsPlayer):
+            cards.append(requests.get(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/cards/deck/main?random=True').json()[0]['id'])
+
+        # Remove those cards from the main deck and add them to the player's hand
+        for card in cards:
+            requests.delete(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/cards/deck/main/{card}')
+            requests.post(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/cards/player/{player}/{card}')

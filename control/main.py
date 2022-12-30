@@ -196,7 +196,8 @@ async def game_game_post(game: str, response: Response, token: str = Depends(ver
         if game not in games or game not in users[token]['games'] or len([user for user in list(games[game].get_players().values()) if user != None]) == 0:
             return Response(status_code=status.HTTP_400_BAD_REQUEST)
 
-        games[game].start()
+        if not games[game].start():
+            return Response(status_code=status.HTTP_400_BAD_REQUEST)
         return Response(status_code=status.HTTP_200_OK)
     except Exception as e:
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR

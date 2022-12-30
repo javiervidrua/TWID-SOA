@@ -519,11 +519,11 @@ async def cards_deck_type_get(game: str, type: str, response: Response, random: 
 
         response.status_code = status.HTTP_200_OK
         deck = cards.cards_deck_get(type)
-        if random == False: return deck
+        if random == False: return [{'id': card} for card in deck]
 
         # If random is True, shuffle the deck
         shuffle(deck)
-        return deck
+        return [{'id': card} for card in deck]
 
     except Exception as e:
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
