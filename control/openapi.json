@@ -1032,7 +1032,7 @@
         "required": [
           "isStarted",
           "isFinished",
-          "playersAvailable"
+          "players"
         ],
         "properties": {
           "isStarted": {
@@ -1043,7 +1043,7 @@
             "type": "boolean",
             "default": false
           },
-          "pleayersAvailable": {
+          "pleayers": {
             "type": "array",
             "items": {
               "type": "string"
@@ -1053,7 +1053,7 @@
         "example": {
           "isStarted": false,
           "isFinished": false,
-          "playersAvailable": [
+          "players": [
             "US",
             "EU",
             "Russia",

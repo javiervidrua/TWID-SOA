@@ -38,6 +38,9 @@ class Game(metaclass=MultipleMeta):
 
     def start(self):
         self.isStarted = True
+        
+        # Remove the players that have not been chosen
+        [self.players.pop(player, None) for player in self.players if self.players[player] == None]
 
     def finish(self):
         self.isFinished = True

@@ -665,7 +665,7 @@ components:
       required:
         - isStarted
         - isFinished
-        - playersAvailable
+        - players
       properties:
         isStarted:
           type: boolean
@@ -673,11 +673,11 @@ components:
         isFinished:
           type: boolean
           default: False
-        pleayersAvailable:
+        pleayers:
           type: array
           items:
             type: string
-      example: {isStarted: False, isFinished: False, playersAvailable: [US, EU, Russia, China]}
+      example: {isStarted: False, isFinished: False, players: [US, EU, Russia, China]}
     game-game-board-round:
       type: object
       required:

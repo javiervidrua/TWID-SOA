@@ -179,7 +179,7 @@ async def game_game_get(game: str, response: Response, token: str = Depends(veri
         return {
             'isStarted': games[game].get_isStarted(),
             'isFinished': games[game].get_isFinished(),
-            'playersAvailable': [player for player in games[game].get_players() if games[game].get_players()[player] == None]
+            'players': [player for player in games[game].get_players() if games[game].get_players()[player] != None]
         }
     except Exception as e:
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
