@@ -38,7 +38,7 @@ def verify_token(req: Request):
     global users
 
     # If ENV_DEBUG is enabled, don't ask for a token
-    if config.ENV_DEBUG == 'True':
+    if config.ENV_DEBUG == 'True' and req.headers.get("X-ACCESS-TOKEN", None) == None:
         token = 'development-token-0000-0001'
         users[token] = users.get(token, {'games': []})
         return token
@@ -243,7 +243,6 @@ async def game_game_player_player_post(game: str, player: str, response: Respons
         if games[game].get_isStarted() == False and games[game].get_isFinished() == False and games[game].get_players()[player] == None and token not in list(games[game].get_players().values()):
             if games[game].set_player_user(player, token) == True:
                 return Response(status_code=status.HTTP_200_OK)
-            return Response(status_code=status.HTTP_400_BAD_REQUEST)
 
         # Otherwise, return bad request
         return Response(status_code=status.HTTP_400_BAD_REQUEST)
@@ -379,6 +378,34 @@ async def game_game_cards_it_get(game: str, id: int, response: Response, token: 
         # Get the card
         response.status_code = status.HTTP_200_OK
         return games[game].card_get(id)
+    except Exception as e:
+        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+        return {'Error': e}
+
+
+@app.post('/game/{game}/cards/playing/header/{id}')
+async def game_game_player_player_post(game: str, id: int, response: Response, token: str = Depends(verify_token)):
+    try:
+        global users
+        global games
+
+        # If there is no game
+        if game not in games:
+            return Response(status_code=status.HTTP_400_BAD_REQUEST)
+        
+        # Get the player of the user
+        player = [player for player in games[game].get_players() if games[game].get_players()[player] == token]
+        if len(player) != 1:
+            return Response(status_code=status.HTTP_400_BAD_REQUEST)
+        player = player[0]
+
+        # If the game has started and not ended, it's in the header phase and the user belongs to that game, set the specified card as his header card
+        if games[game].get_isStarted() == True and games[game].get_isFinished() == False and games[game].get_isHeaderPhase() == True and token in list(games[game].get_players().values()):
+            if games[game].cards_playing_header_set(player, id) == True:
+                return Response(status_code=status.HTTP_200_OK)
+
+        # Otherwise, return bad request
+        return Response(status_code=status.HTTP_400_BAD_REQUEST)
     except Exception as e:
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
         return {'Error': e}

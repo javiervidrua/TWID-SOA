@@ -10,9 +10,10 @@ class Game(metaclass=MultipleMeta):
         response = requests.post(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game')
         self.id = response.json()['id']
         self.players = {'US': None, 'EU': None, 'Russia': None, 'China': None}
+        self.playingOrder = [] # Will store the order in which the players have to play in the current round (defined after the last player plays his header card)
+        self.playingOrderCurrent = []
         self.isStarted = False
         self.isHeaderPhase = False
-        self.playingOrder = [] # Will store the order in which the players have to play in the current round (defined after the last player plays his header card)
         self.isFinished = False
 
     def __repr__(self):
@@ -22,14 +23,20 @@ class Game(metaclass=MultipleMeta):
         requests.delete(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}')
 
     # Getters
+    def get_players(self):
+        return self.players
+    
+    def get_playingOrder(self):
+        return self.playingOrder
+    
     def get_isStarted(self):
         return self.isStarted
+    
+    def get_isHeaderPhase(self):
+        return self.isHeaderPhase
 
     def get_isFinished(self):
         return self.isFinished
-
-    def get_players(self):
-        return self.players
 
     # Setters
     def set_player_user(self, player, user):
@@ -51,7 +58,7 @@ class Game(metaclass=MultipleMeta):
 
         # Give each player as many cards as he needs
         for player in self.players:
-            self.deal_cards(player)
+            self.cards_deal(player)
 
         # Start the game (in the header phase)
         self.isHeaderPhase = True
@@ -109,7 +116,7 @@ class Game(metaclass=MultipleMeta):
     def board_map_get(self):
         return requests.get(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/board').json()
     
-    def deal_cards(self, player):
+    def cards_deal(self, player):
         cards = []
 
         # Get the current number of cards of the player
@@ -117,9 +124,41 @@ class Game(metaclass=MultipleMeta):
 
         # Call the main deck self.cardsPerPlayer times in random order and get the first card
         for i in range(0, self.cardsPerPlayer - cardsPlayer):
-            cards.append(requests.get(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/cards/deck/main?random=True').json()[0]['id'])
+            card = requests.get(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/cards/deck/main?random=True').json()[0]['id']
+
+            # Cannot have the same card twice
+            while card in cards:
+                card = requests.get(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/cards/deck/main?random=True').json()[0]['id']
+            
+            cards.append(card)
 
         # Remove those cards from the main deck and add them to the player's hand
         for card in cards:
             requests.delete(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/cards/deck/main/{card}')
             requests.post(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/cards/player/{player}/{card}')
+
+    def cards_playing_header_set(self, player, id):
+        requests.post(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/cards/player/{player}/header/{id}')
+
+        # Check if all the players have their header cards set
+        count = len(self.players)
+        for player in self.players:
+            if requests.get(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/cards/player/{player}/header').json()['id'] != None:
+                count -= 1
+
+        # If so,
+        if count == 0:
+            # End the header phase
+            self.isHeaderPhase = False
+
+            # Set the playing order
+            order = {}
+            for player in self.players:
+                header = requests.get(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/cards/player/{player}/header').json()['id']
+                order[header] = player
+
+            for card in sorted(list(order.keys())):
+                self.playingOrder.append(order[card])
+                self.playingOrderCurrent.append(order[card])
+                # self.playingOrder and self.playingOrderCurrent will look something like ['US', 'Russia'...]
+            
