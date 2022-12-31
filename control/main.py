@@ -179,6 +179,7 @@ async def game_game_get(game: str, response: Response, token: str = Depends(veri
         return {
             'isStarted': games[game].get_isStarted(),
             'isFinished': games[game].get_isFinished(),
+            'isHeaderPhase': games[game].get_isHeaderPhase(),
             'players': [player for player in games[game].get_players() if games[game].get_players()[player] != None]
         }
     except Exception as e:
@@ -400,9 +401,9 @@ async def game_game_player_player_post(game: str, id: int, response: Response, t
         player = player[0]
 
         # If the game has started and not ended, it's in the header phase and the user belongs to that game, set the specified card as his header card
-        if games[game].get_isStarted() == True and games[game].get_isFinished() == False and games[game].get_isHeaderPhase() == True and token in list(games[game].get_players().values()):
-            if games[game].cards_playing_header_set(player, id) == True:
-                return Response(status_code=status.HTTP_200_OK)
+        if games[game].get_isStarted() == True and games[game].get_isFinished() == False and games[game].get_isHeaderPhase() == True and token in list(games[game].get_players().values()) and id in games[game].cards_player_get(player)[player]['hand']:
+            games[game].cards_playing_header_set(player, id)
+            return Response(status_code=status.HTTP_200_OK)
 
         # Otherwise, return bad request
         return Response(status_code=status.HTTP_400_BAD_REQUEST)
