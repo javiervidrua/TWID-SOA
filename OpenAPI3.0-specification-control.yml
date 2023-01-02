@@ -673,11 +673,18 @@ components:
         isFinished:
           type: boolean
           default: False
+        isHeaderPhase:
+          type: boolean
+          default: False
+        playingOrder:
+          type: array
+          items:
+            type: string
         pleayers:
           type: array
           items:
             type: string
-      example: {isStarted: False, isFinished: False, players: [US, EU, Russia, China]}
+      example: {isStarted: False, isFinished: False, isHeaderPhase: False, playingOrder: [], players: [US, EU, Russia, China]}
     game-game-board-round:
       type: object
       required:

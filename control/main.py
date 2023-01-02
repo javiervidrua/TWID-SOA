@@ -180,6 +180,7 @@ async def game_game_get(game: str, response: Response, token: str = Depends(veri
             'isStarted': games[game].get_isStarted(),
             'isFinished': games[game].get_isFinished(),
             'isHeaderPhase': games[game].get_isHeaderPhase(),
+            'playingOrder': games[game].get_playingOrder(),
             'players': [player for player in games[game].get_players() if games[game].get_players()[player] != None]
         }
     except Exception as e:
@@ -379,6 +380,34 @@ async def game_game_cards_it_get(game: str, id: int, response: Response, token: 
         # Get the card
         response.status_code = status.HTTP_200_OK
         return games[game].card_get(id)
+    except Exception as e:
+        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+        return {'Error': e}
+
+
+@app.post('/game/{game}/cards/playing/text/{id}')
+async def game_game_player_player_post(game: str, id: int, response: Response, token: str = Depends(verify_token)):
+    try:
+        global users
+        global games
+
+        # If there is no game
+        if game not in games:
+            return Response(status_code=status.HTTP_400_BAD_REQUEST)
+        
+        # Get the player of the user
+        player = [player for player in games[game].get_players() if games[game].get_players()[player] == token]
+        if len(player) != 1:
+            return Response(status_code=status.HTTP_400_BAD_REQUEST)
+        player = player[0]
+
+        # If the game has started and not ended, it's not in the header phase and the user belongs to that game, play the specified card by its text
+        if games[game].get_isStarted() == True and games[game].get_isFinished() == False and games[game].get_isHeaderPhase() == False and token in list(games[game].get_players().values()) and id in games[game].cards_player_get(player)[player]['hand']:
+            if games[game].cards_play_text(player, id) == True:
+                return games[game].card_get(id)
+
+        # Otherwise, return bad request
+        return Response(status_code=status.HTTP_400_BAD_REQUEST)
     except Exception as e:
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
         return {'Error': e}

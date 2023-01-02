@@ -1,7 +1,6 @@
 import config
 import requests
 from multimeta import MultipleMeta  # https://stackoverflow.com/a/49936625
-from shortuuid import ShortUUID
 
 
 class Game(metaclass=MultipleMeta):
@@ -53,7 +52,7 @@ class Game(metaclass=MultipleMeta):
         if len(self.players) not in [2, 3, 4]:
             return False
 
-        # Get the number of cards that each player will have
+        # Get the number of cards that each player will have (depends on the number of players)
         self.cardsPerPlayer = {2:7, 3:5, 4:4}[len(self.players)]
 
         # Give each player as many cards as he needs
@@ -155,10 +154,36 @@ class Game(metaclass=MultipleMeta):
             order = {}
             for player in self.players:
                 header = requests.get(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/cards/player/{player}/header').json()['id']
+                print(header)
+                header = self.card_get(header)['points']
+                print(header)
                 order[header] = player
 
-            for card in sorted(list(order.keys())):
+            for card in sorted(list(order.keys()))[::-1]:
                 self.playingOrder.append(order[card])
                 self.playingOrderCurrent.append(order[card])
                 # self.playingOrder and self.playingOrderCurrent will look something like ['US', 'Russia'...]
+
+    def is_players_turn(self, player):
+        if len(self.playingOrderCurrent) > 0 and self.playingOrderCurrent[0] == player:
+            return True
+        return False
+
+    def cards_play_text(self, player, id):
+        # PENDING IMPLEMENTATION
+        print(self.playingOrderCurrent)
+        # If not the player's turn or (header card is set and is trying to play another one), error out
+        if self.is_players_turn(player) == False or (self.cards_player_get(player)[player]['header'] != None and self.cards_player_get(player)[player]['header'] != id):
+            return False
+        
+        # Check that the card exists (status==200 and body=={})
+        card = requests.get(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/cards/{id}')
+        if card.status_code != 200 or card.json() == {}:
+            return False
+
+        # Carry out the pertinent operations according ot the card
+
+        # Pass the turn to the next player
+
+        return True
             

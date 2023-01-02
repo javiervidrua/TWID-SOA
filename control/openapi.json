@@ -1043,6 +1043,16 @@
             "type": "boolean",
             "default": false
           },
+          "isHeaderPhase": {
+            "type": "boolean",
+            "default": false
+          },
+          "playingOrder": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
           "pleayers": {
             "type": "array",
             "items": {
@@ -1053,6 +1063,8 @@
         "example": {
           "isStarted": false,
           "isFinished": false,
+          "isHeaderPhase": false,
+          "playingOrder": [],
           "players": [
             "US",
             "EU",
