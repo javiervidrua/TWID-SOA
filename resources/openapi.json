@@ -1800,7 +1800,8 @@
           "stability",
           "isConflictive",
           "isOilProducer",
-          "influence"
+          "influence",
+          "adjacent"
         ],
         "properties": {
           "stability": {
@@ -1852,6 +1853,12 @@
                 }
               }
             }
+          },
+          "adjacent": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           }
         },
         "example": {
@@ -1865,7 +1872,10 @@
                 "China": 1
               }
             }
-          }
+          },
+          "adjacent": [
+            "India"
+          ]
         }
       },
       "board-nwo": {

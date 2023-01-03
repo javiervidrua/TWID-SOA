@@ -1176,6 +1176,7 @@ components:
         - isConflictive
         - isOilProducer
         - influence
+        - adjacent
       properties:
         stability:
           type: integer
@@ -1214,7 +1215,11 @@ components:
                       minimum: 0
                       maximum: 100
                       example: 1
-      example: {"stability": 2, "isConflictive": true, "isOilProducer": true, "influence": {"US": {"influence": 2, "extra": {"China": 1}}}}
+        adjacent:
+          type: array
+          items:
+            type: string
+      example: {"stability": 2, "isConflictive": true, "isOilProducer": true, "influence": {"US": {"influence": 2, "extra": {"China": 1}}}, "adjacent": ["India"]}
     board-nwo:
       type: array
       items:

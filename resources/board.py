@@ -80,7 +80,7 @@ class Board(metaclass=MultipleMeta):
         return False
     
     def map_region_country_get(self, region, country):
-        return next(({'stability': item['stability'], 'isConflictive': item['isConflictive'], 'isOilProducer': item['isOilProducer'], 'influence': item['influence']} for item in self.board['countries'] if item['region'] == region and item['name'] == country), {}) # https://stackoverflow.com/questions/58380706/python-list-comprehension-filter-single-element-in-the-list
+        return next(({'stability': item['stability'], 'isConflictive': item['isConflictive'], 'isOilProducer': item['isOilProducer'], 'influence': item['influence'], 'adjacent': item['adjacent']} for item in self.board['countries'] if item['region'] == region and item['name'] == country), {}) # https://stackoverflow.com/questions/58380706/python-list-comprehension-filter-single-element-in-the-list
     
     def map_region_country_put(self, region, country, newCountry):
         # If the regions and all of the countries exist
