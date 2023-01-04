@@ -16,6 +16,24 @@ class Game(metaclass=MultipleMeta):
         self.isHeaderPhase = False
         self.isFinished = False
 
+    def __init__(self, id: str):
+        self.id = id
+        self.players = {'US': None, 'EU': None, 'Russia': None, 'China': None}
+        self.playingOrder = [] # Will store the order in which the players have to play in the current round (defined after the last player plays his header card)
+        self.playingOrderCurrent = []
+        self.isStarted = False
+        self.isHeaderPhase = False
+        self.isFinished = False
+
+    def __init__(self, id: str, playerUS: str, playerEU: str):
+        self.id = id
+        self.players = {'US': playerUS, 'EU': playerEU}
+        self.playingOrder = ['US', 'EU'] # Will store the order in which the players have to play in the current round (defined after the last player plays his header card)
+        self.playingOrderCurrent = ['US', 'EU']
+        self.isStarted = True
+        self.isHeaderPhase = False
+        self.isFinished = False
+
     def __repr__(self):
         return self.id
     
@@ -92,8 +110,8 @@ class Game(metaclass=MultipleMeta):
             if header['id'] != None:
                 cards[player]['header'] = header['id']
 
-        # Only show the header cards if everyone has selected their header card
-        if len([player for player in cards if cards[player]['header'] != None]) != len(list(cards.keys())):
+        # Remove cards if we are not in the header phase and if everyone has header=null
+        if self.get_isHeaderPhase() == True or len([player for player in cards if cards[player]['header'] == None]) == len(self.playingOrder):
             for player in cards:
                 if player != requestingPlayer: cards[player]['header'] = None
 
@@ -170,6 +188,20 @@ class Game(metaclass=MultipleMeta):
             return True
         return False
     
+    def is_player_with_edge(self, player, country):
+        if country['influence'] == {}:
+            return False
+        else:
+            # Get the influence of the player
+            influence = country['influence'].get(player, {'influence': 0})['influence']
+
+            # Check if another player has more or the same influence
+            for anotherPlayer in [eachPlayer for eachPlayer in country['influence'] if eachPlayer != player]:
+                if country['influence'][anotherPlayer]['influence'] >= influence:
+                    return False
+            
+            return True
+
     def is_another_player_with_edge(self, player, country):
         if country['influence'] == {}:
             return False
@@ -186,7 +218,7 @@ class Game(metaclass=MultipleMeta):
 
     def check_if_next_players_turn_and_if_next_round(self):
         # If there are players left to play his turn
-        if len(self.playingOrderCurrent > 0):
+        if len(self.playingOrderCurrent) > 0:
             # Pass the turn to the next player
             self.playingOrderCurrent.pop(0)
         # If there are no players left
@@ -203,7 +235,7 @@ class Game(metaclass=MultipleMeta):
 
     def cards_play_text(self, player, id):
         # PENDING IMPLEMENTATION
-        print(self.playingOrderCurrent)
+
         # If not the player's turn or (header card is set and is trying to play another one), error out
         if self.is_players_turn(player) == False or (self.cards_player_get(player)[player]['header'] != None and self.cards_player_get(player)[player]['header'] != id):
             return False
@@ -213,9 +245,9 @@ class Game(metaclass=MultipleMeta):
         if card.status_code != 200 or card.json() == {}:
             return False
 
-        # Carry out the pertinent operations according ot the card
+        # Carry out the pertinent operations according to the card
         card = card.json()
-        if card.id == 1:
+        if card['id'] == 1:
             # Roll a dice
             diceRoll = random.choice([1, 2, 3, 4, 5, 6])
 
@@ -230,233 +262,241 @@ class Game(metaclass=MultipleMeta):
             diceRoll -= subtract
 
             # If modified dice throw in 3-6
+            print(f'Modified dice throw: {diceRoll}')
             if diceRoll >= 3:
                 # Gain 1 VP
                 score = requests.get(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/board/score/{player}').json()
                 score['score'] += 1
-                requests.put(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/board/score/{player}', score)
+                requests.put(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/board/score/{player}', json=score)
 
                 # If there is influence in Angola
                 countryInfo = requests.get(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/board/map/Africa/Angola').json()
                 if countryInfo['influence'] != {}:
                     # Remove 1 influence from each other player in Angola
-                    for anotherPlayer in [eachPlayer for eachPlayer in country['influence'] if eachPlayer != player]:
+                    for anotherPlayer in [eachPlayer for eachPlayer in countryInfo['influence'] if eachPlayer != player]:
                         if countryInfo['influence'][anotherPlayer]['influence'] > 0: countryInfo['influence'][anotherPlayer]['influence'] -= 1
-                    requests.put(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/board/map/Africa/Angola', countryInfo)
+                    requests.put(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/board/map/Africa/Angola', json=countryInfo)
 
                     # Let's be honest, no one is going to have more than 5 influence over the rest of the players
                     for i in range(0, 5):
                         # Check if another player has the edge in Angola
                         countryInfo = requests.get(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/board/map/Africa/Angola').json()
                         
+                        # Create the influence object for the player
+                        if countryInfo['influence'].get('influence', None) == None:
+                            countryInfo['influence'][player] = {'influence': 0, 'extra': {}}
+                            requests.put(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/board/map/Africa/Angola', json=countryInfo)
+                        
                         # Add 1 influence to player in Angola
                         if self.is_another_player_with_edge(player, countryInfo):
                             countryInfo['influence'][player]['influence'] += 1
-                            requests.put(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/board/map/Africa/Angola', countryInfo)
+                            requests.put(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/board/map/Africa/Angola', json=countryInfo)
                         else:
                             break
                     
                     # Add 1 influence to player in Angola, so he now has the edge in the country
-                    countryInfo['influence'][player]['influence'] += 1
-                    requests.put(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/board/map/Africa/Angola', countryInfo)
-        if card.id == 2:
+                    countryInfo = requests.get(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/board/map/Africa/Angola').json()
+                    if not self.is_player_with_edge(player, countryInfo):
+                        countryInfo['influence'][player]['influence'] += 1
+                        requests.put(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/board/map/Africa/Angola', json=countryInfo)
+        elif card['id'] == 2:
             pass
-        if card.id == 3:
+        elif card['id'] == 3:
             pass
-        if card.id == 4:
+        elif card['id'] == 4:
             pass
-        if card.id == 5:
+        elif card['id'] == 5:
             pass
-        if card.id == 6:
+        elif card['id'] == 6:
             pass
-        if card.id == 7:
+        elif card['id'] == 7:
             pass
-        if card.id == 8:
+        elif card['id'] == 8:
             pass
-        if card.id == 9:
+        elif card['id'] == 9:
             pass
-        if card.id == 10:
+        elif card['id'] == 10:
             pass
-        if card.id == 11:
+        elif card['id'] == 11:
             pass
-        if card.id == 12:
+        elif card['id'] == 12:
             pass
-        if card.id == 13:
+        elif card['id'] == 13:
             pass
-        if card.id == 14:
+        elif card['id'] == 14:
             pass
-        if card.id == 15:
+        elif card['id'] == 15:
             pass
-        if card.id == 16:
+        elif card['id'] == 16:
             pass
-        if card.id == 17:
+        elif card['id'] == 17:
             pass
-        if card.id == 18:
+        elif card['id'] == 18:
             pass
-        if card.id == 19:
+        elif card['id'] == 19:
             pass
-        if card.id == 20:
+        elif card['id'] == 20:
             pass
-        if card.id == 21:
+        elif card['id'] == 21:
             pass
-        if card.id == 22:
+        elif card['id'] == 22:
             pass
-        if card.id == 23:
+        elif card['id'] == 23:
             pass
-        if card.id == 24:
+        elif card['id'] == 24:
             pass
-        if card.id == 25:
+        elif card['id'] == 25:
             pass
-        if card.id == 26:
+        elif card['id'] == 26:
             pass
-        if card.id == 27:
+        elif card['id'] == 27:
             pass
-        if card.id == 28:
+        elif card['id'] == 28:
             pass
-        if card.id == 29:
+        elif card['id'] == 29:
             pass
-        if card.id == 30:
+        elif card['id'] == 30:
             pass
-        if card.id == 31:
+        elif card['id'] == 31:
             pass
-        if card.id == 32:
+        elif card['id'] == 32:
             pass
-        if card.id == 33:
+        elif card['id'] == 33:
             pass
-        if card.id == 34:
+        elif card['id'] == 34:
             pass
-        if card.id == 35:
+        elif card['id'] == 35:
             pass
-        if card.id == 36:
+        elif card['id'] == 36:
             pass
-        if card.id == 37:
+        elif card['id'] == 37:
             pass
-        if card.id == 38:
+        elif card['id'] == 38:
             pass
-        if card.id == 39:
+        elif card['id'] == 39:
             pass
-        if card.id == 40:
+        elif card['id'] == 40:
             pass
-        if card.id == 41:
+        elif card['id'] == 41:
             pass
-        if card.id == 42:
+        elif card['id'] == 42:
             pass
-        if card.id == 43:
+        elif card['id'] == 43:
             pass
-        if card.id == 44:
+        elif card['id'] == 44:
             pass
-        if card.id == 45:
+        elif card['id'] == 45:
             pass
-        if card.id == 46:
+        elif card['id'] == 46:
             pass
-        if card.id == 47:
+        elif card['id'] == 47:
             pass
-        if card.id == 48:
+        elif card['id'] == 48:
             pass
-        if card.id == 49:
+        elif card['id'] == 49:
             pass
-        if card.id == 50:
+        elif card['id'] == 50:
             pass
-        if card.id == 51:
+        elif card['id'] == 51:
             pass
-        if card.id == 52:
+        elif card['id'] == 52:
             pass
-        if card.id == 53:
+        elif card['id'] == 53:
             pass
-        if card.id == 54:
+        elif card['id'] == 54:
             pass
-        if card.id == 55:
+        elif card['id'] == 55:
             pass
-        if card.id == 56:
+        elif card['id'] == 56:
             pass
-        if card.id == 57:
+        elif card['id'] == 57:
             pass
-        if card.id == 58:
+        elif card['id'] == 58:
             pass
-        if card.id == 59:
+        elif card['id'] == 59:
             pass
-        if card.id == 60:
+        elif card['id'] == 60:
             pass
-        if card.id == 61:
+        elif card['id'] == 61:
             pass
-        if card.id == 62:
+        elif card['id'] == 62:
             pass
-        if card.id == 63:
+        elif card['id'] == 63:
             pass
-        if card.id == 64:
+        elif card['id'] == 64:
             pass
-        if card.id == 65:
+        elif card['id'] == 65:
             pass
-        if card.id == 66:
+        elif card['id'] == 66:
             pass
-        if card.id == 67:
+        elif card['id'] == 67:
             pass
-        if card.id == 68:
+        elif card['id'] == 68:
             pass
-        if card.id == 69:
+        elif card['id'] == 69:
             pass
-        if card.id == 70:
+        elif card['id'] == 70:
             pass
-        if card.id == 71:
+        elif card['id'] == 71:
             pass
-        if card.id == 72:
+        elif card['id'] == 72:
             pass
-        if card.id == 73:
+        elif card['id'] == 73:
             pass
-        if card.id == 74:
+        elif card['id'] == 74:
             pass
-        if card.id == 75:
+        elif card['id'] == 75:
             pass
-        if card.id == 76:
+        elif card['id'] == 76:
             pass
-        if card.id == 77:
+        elif card['id'] == 77:
             pass
-        if card.id == 78:
+        elif card['id'] == 78:
             pass
-        if card.id == 79:
+        elif card['id'] == 79:
             pass
-        if card.id == 80:
+        elif card['id'] == 80:
             pass
-        if card.id == 81:
+        elif card['id'] == 81:
             pass
-        if card.id == 82:
+        elif card['id'] == 82:
             pass
-        if card.id == 83:
+        elif card['id'] == 83:
             pass
-        if card.id == 84:
+        elif card['id'] == 84:
             pass
-        if card.id == 85:
+        elif card['id'] == 85:
             pass
-        if card.id == 86:
+        elif card['id'] == 86:
             pass
-        if card.id == 87:
+        elif card['id'] == 87:
             pass
-        if card.id == 88:
+        elif card['id'] == 88:
             pass
         # These next ones do not exist (yet)
-        # if card.id == 89:
+        # elif card['id'] == 89:
         #     pass
-        # if card.id == 90:
+        # elif card['id'] == 90:
         #     pass
-        # if card.id == 91:
+        # elif card['id'] == 91:
         #     pass
-        # if card.id == 92:
+        # elif card['id'] == 92:
         #     pass
-        # if card.id == 93:
+        # elif card['id'] == 93:
         #     pass
-        # if card.id == 94:
+        # elif card['id'] == 94:
         #     pass
-        # if card.id == 95:
+        # elif card['id'] == 95:
         #     pass
-        # if card.id == 96:
+        # elif card['id'] == 96:
         #     pass
-        # if card.id == 97:
+        # elif card['id'] == 97:
         #     pass
-        if card.id == 98:
+        elif card['id'] == 98:
             pass
-        if card.id == 99:
+        elif card['id'] == 99:
             pass
-        if card.id == 100:
+        elif card['id'] == 100:
             pass
         else:
             return False

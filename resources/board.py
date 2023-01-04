@@ -91,18 +91,18 @@ class Board(metaclass=MultipleMeta):
                     # Check if all the values are valid
                     wrongValues = False
                     for indexPlayer in newCountry['influence']:
-                        if newCountry['influence'][indexPlayer]['influence'] not in range(1, 100+1):
+                        if newCountry['influence'][indexPlayer]['influence'] not in range(0, 100+1):
                             wrongValues = True
                             break
                         
                         # Check if all the values in the extra field are valid
                         for indexPlayerExtra in newCountry['influence'][indexPlayer]['extra']:
-                            if newCountry['influence'][indexPlayer]['extra'][indexPlayerExtra] not in range(1, 100+1):
+                            if newCountry['influence'][indexPlayer]['extra'][indexPlayerExtra] not in range(0, 100+1):
                                 wrongValues = True
                                 break
 
                     # If the stability and the influence have a valid value
-                    if not wrongValues and newCountry['stability'] in range(1, 5+1):
+                    if not wrongValues and newCountry['stability'] in range(0, 5+1):
                         self.board['countries'][index].update(newCountry) # https://stackoverflow.com/questions/405489/python-update-object-from-dictionary
                         return True
 

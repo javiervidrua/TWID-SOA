@@ -36,11 +36,21 @@ async def authentication_exception_handler(request: Request, exc: Authentication
 # Function to verify that the user has a valid access token
 def verify_token(req: Request):
     global users
+    global games
 
     # If ENV_DEBUG is enabled, don't ask for a token
     if config.ENV_DEBUG == 'True' and req.headers.get("X-ACCESS-TOKEN", None) == None:
         token = 'development-token-0000-0001'
         users[token] = users.get(token, {'games': []})
+        
+        # # These next few lines are used to pre-create a game ready to play the header card as text
+        # # Only uncomment when necessary
+        # users[token] = users.get(token, {'games': ['asdfghjkll']})
+        # # This causes the before created Game to lose all its references and __del__() gets called
+        # # games['asdfghjkll'] = games.get('asdfghjkll', Game('asdfghjkll', 'development-token-0000-0001', 'development-token-0000-0002'))
+        # # So we have to use this
+        # if games.get('asdfghjkll', None) == None: games['asdfghjkll'] = Game('asdfghjkll', 'development-token-0000-0001', 'development-token-0000-0002')
+        
         return token
 
     # Get the token from the headers
@@ -120,6 +130,7 @@ async def auth_signout_post(request: Request, response: Response, token: str = D
 async def game_get(response: Response, token: str = Depends(verify_token)):
     try:
         global users
+        global games
 
         # Get the games of the user, the ones he created and the ones he is part of
         userGames = [gameId for gameId in users[token]['games']]

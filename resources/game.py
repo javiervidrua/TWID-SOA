@@ -9,5 +9,10 @@ class Game(metaclass=MultipleMeta):
         self.cards = Cards()
         self.id = ShortUUID().random(length=10) # https://stackoverflow.com/questions/24796654/python-uuid4-how-to-limit-the-length-of-unique-chars
 
+    def __init__(self, id: str):
+        self.board = Board()
+        self.cards = Cards()
+        self.id = id
+
     def __repr__(self):
         return self.id

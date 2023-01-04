@@ -18,6 +18,8 @@ def custom_openapi():
 
 # Definitions
 app.openapi = custom_openapi
+# # This next line is used to pre-create a game ready to play and be used by the control service. Only uncomment when necessary
+# games = {'asdfghjkll': Game('asdfghjkll')}
 games = {}
 board = None
 cards = None
@@ -233,7 +235,7 @@ async def board_score_player_put(game: str, player: str, body: validators.BodyBo
 
 
 @app.delete('/game/{game}/board/score/{player}')
-async def board_score_pLayer_delete(game: str, player: str, response: Response):
+async def board_score_player_delete(game: str, player: str, response: Response):
     try:
         global games
 
