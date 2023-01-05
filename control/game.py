@@ -14,6 +14,7 @@ class Game(metaclass=MultipleMeta):
         self.playingOrderCurrent = []
         self.isStarted = False
         self.isHeaderPhase = False
+        self.isPostHeaderPhase = False
         self.isFinished = False
 
     def __init__(self, id: str):
@@ -23,6 +24,7 @@ class Game(metaclass=MultipleMeta):
         self.playingOrderCurrent = []
         self.isStarted = False
         self.isHeaderPhase = False
+        self.isPostHeaderPhase = False
         self.isFinished = False
 
     def __init__(self, id: str, playerUS: str, playerEU: str):
@@ -32,6 +34,7 @@ class Game(metaclass=MultipleMeta):
         self.playingOrderCurrent = ['US', 'EU']
         self.isStarted = True
         self.isHeaderPhase = False
+        self.isPostHeaderPhase = True
         self.isFinished = False
 
     def __repr__(self):
@@ -166,8 +169,9 @@ class Game(metaclass=MultipleMeta):
 
         # If so,
         if count == 0:
-            # End the header phase
+            # End the header phase and start the postheader phase
             self.isHeaderPhase = False
+            self.isPostHeaderPhase = True
 
             # Set the playing order
             order = {}
@@ -216,31 +220,51 @@ class Game(metaclass=MultipleMeta):
             
             return False
 
-    def check_if_next_players_turn_and_if_next_round(self):
-        # If there are players left to play his turn
-        if len(self.playingOrderCurrent) > 0:
+    def after_play_actions(self, player, card):
+        id = card['id']
+        # Remove the card from the player's hand
+        requests.delete(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/cards/player/{player}/{id}')
+        
+        # Remove the card from the player's header (if header == card)
+        if self.cards_player_get(player)[player]['header'] == id:
+            requests.delete(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/cards/player/{player}/header')
+
+        # TODO: Check if the card has to be kept on the board (put this card in play), and if so, add it to /cards/playing and do not send it to any deck
+        # TODO: For this, add flag = True in the if section for the cards that have to be kept on the board
+        # If card['remove'] == true, send card to the removed deck, otherwise send to the discarded deck
+        if card['remove'] == True:
+            requests.post(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/cards/deck/removed/{id}')
+        else:
+            requests.post(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/cards/deck/discarded/{id}')
+
+    def after_turn_actions(self, player):
+        # If:
+        #   - There are players left, isPostHeaderPhase
+        #   - There are players left, not isPostHeaderPhase, player has 1 card left
+        if len(self.playingOrderCurrent) > 0 and (self.isPostHeaderPhase == True or self.isPostHeaderPhase == False and len(self.cards_player_get(player)[player]['hand']) == 1 ):
             # Pass the turn to the next player
             self.playingOrderCurrent.pop(0)
         # If there are no players left
         else:
-            # The round has ended, new round must begin
-            requests.post(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/board/round')
+            # If we are not in the post header phase, that means that this is the end of an actual round
+            if self.isPostHeaderPhase == False:
+                # New round must begin
+                requests.post(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/board/round')
 
-            # Deal each player as many cards as he needs
-            for eachPlayer in self.players:
-                self.cards_deal(eachPlayer)
+                # Deal each player as many cards as he needs
+                for eachPlayer in self.players:
+                    self.cards_deal(eachPlayer)
 
             # Reconstruct the playing order
             self.playingOrderCurrent = [eachPlayer for eachPlayer in self.playingOrder]
 
     def cards_play_text(self, player, id):
         # PENDING IMPLEMENTATION
-
         # If not the player's turn or (header card is set and is trying to play another one), error out
         if self.is_players_turn(player) == False or (self.cards_player_get(player)[player]['header'] != None and self.cards_player_get(player)[player]['header'] != id):
             return False
         
-        # Check that the card exists (status==200 and body=={})
+        # Check that the card exists (status == 200 and body != {})
         card = requests.get(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/cards/{id}')
         if card.status_code != 200 or card.json() == {}:
             return False
@@ -501,26 +525,12 @@ class Game(metaclass=MultipleMeta):
         else:
             return False
         
-        # Remove the card from the player's hand
-        requests.delete(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/cards/player/{player}/{id}')
-        
-        # Remove the card from the player's header (if header == card)
-        isHeader = False
-        if self.cards_player_get(player)[player]['header'] == id:
-            isHeader = True
-            requests.delete(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/cards/player/{player}/header')
+        # Perform the after play logic
+        self.after_play_actions(player, card)
 
-        # TODO: Check if the card has to be kept on the board (put this card in play), and if so, add it to /cards/playing and do not send it to any deck
-        # TODO: For this, add flag = True in the if section for the cards that have to be kept on the board
-        # If card['remove'] == true, send card to the removed deck, otherwise send to the discarded deck
-        if card['remove'] == True:
-            requests.post(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/cards/deck/removed/{id}')
-        else:
-            requests.post(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/cards/deck/discarded/{id}')
-
-        # If the header card was played or if the player only has 1 card left
-        if isHeader == True or len(self.cards_player_get(player)[player]['hand']) == 1:
-            self.check_if_next_players_turn_and_if_next_round()
+        # Perform the after turn logic
+        self.after_turn_actions(player)
 
         return True
-            
+    
+    # TODO: Add check if self.isPostHeaderPhase and self.isHeaderPhase to all the play card handler functions
