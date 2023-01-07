@@ -803,6 +803,71 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/cards'
+  /game/{game}/cards/playing/{id}:
+    post:
+      tags:
+        - Cards
+      summary: Add the specified card to the cards that are currently being played
+      description: Add the specified card to the cards that are currently being played
+      parameters:
+        - in: path
+          name: game
+          description: Id of the game
+          required: true
+          schema:
+            type: string
+            example: zq7d24gr9n
+        - in: path
+          name: id
+          description: Id of the card
+          required: true
+          schema:
+            type: integer
+            format: int32
+            minimum: 1
+            maximum: 100
+            example: 23
+      responses:
+        '200':
+          description: Cards
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/cards'
+    delete:
+      tags:
+        - Cards
+      summary: Remove the specified card to the cards that are currently being played
+      description: Remove the specified card to the cards that are currently being played
+      parameters:
+        - in: path
+          name: game
+          description: Id of the game
+          required: true
+          schema:
+            type: string
+            example: zq7d24gr9n
+        - in: path
+          name: id
+          description: Id of the card
+          required: true
+          schema:
+            type: integer
+            format: int32
+            minimum: 1
+            maximum: 100
+            example: 23
+      responses:
+        '200':
+          description: Cards
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/cards'
   /game/{game}/cards/player/{player}:
     get:
       tags:

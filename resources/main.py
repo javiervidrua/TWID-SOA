@@ -507,6 +507,7 @@ async def cards_deck_get(game: str, response: Response):
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
         return {'Error': e}
 
+
 @app.get('/game/{game}/cards/deck/{type}')
 async def cards_deck_type_get(game: str, type: str, response: Response, random: bool=False):
     try:
@@ -530,6 +531,7 @@ async def cards_deck_type_get(game: str, type: str, response: Response, random: 
     except Exception as e:
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
         return {'Error': e}
+
 
 @app.post('/game/{game}/cards/deck/{type}/{id}')
 async def cards_deck_type_id_post(game: str, type: str, id: int, response: Response):
@@ -555,6 +557,7 @@ async def cards_deck_type_id_post(game: str, type: str, id: int, response: Respo
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
         return {'Error': e}
 
+
 @app.delete('/game/{game}/cards/deck/{type}/{id}')
 async def cards_deck_type_id_delete(game: str, type: str, id: int, response: Response):
     try:
@@ -579,6 +582,7 @@ async def cards_deck_type_id_delete(game: str, type: str, id: int, response: Res
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
         return {'Error': e}
 
+
 @app.get('/game/{game}/cards/playing')
 async def cards_playing_get(game: str, response: Response):
     try:
@@ -596,6 +600,57 @@ async def cards_playing_get(game: str, response: Response):
     except Exception as e:
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
         return {'Error': e}
+
+
+@app.post('/game/{game}/cards/playing/{id}')
+async def cards_playing_post(game: str, id: int, response: Response):
+    try:
+        global games
+
+        # If there is no game
+        if game not in games.keys():
+            response.status_code = status.HTTP_200_OK
+            return {}
+        
+        cards = games[game].cards
+
+        # If success adding the card to the playing cards
+        if cards.cards_playing_add(id):
+            response.status_code = status.HTTP_200_OK
+            return cards.cards_get(id)
+
+        # If no success adding the card to the playing cards
+        response.status_code = status.HTTP_400_BAD_REQUEST
+        return {}
+    except Exception as e:
+        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+        return {'Error': e}
+
+
+@app.delete('/game/{game}/cards/playing/{id}')
+async def cards_playing_delete(game: str, id: int, response: Response):
+    try:
+        global games
+
+        # If there is no game
+        if game not in games.keys():
+            response.status_code = status.HTTP_200_OK
+            return {}
+        
+        cards = games[game].cards
+
+        # If success removing the card from the playing cards
+        if cards.cards_playing_remove(id):
+            response.status_code = status.HTTP_200_OK
+            return cards.cards_get(id)
+
+        # If no success removing the card from the playing cards
+        response.status_code = status.HTTP_400_BAD_REQUEST
+        return {}
+    except Exception as e:
+        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+        return {'Error': e}
+
 
 # Has to be below the /cards/deck and /cards/playing as otherwise FastAPI wouldn't know if /cards/deck or /cards/playing or /cards/{id} was called
 @app.get('/game/{game}/cards/{id}')
@@ -616,6 +671,7 @@ async def cards_id_get(game: str, id: int, response: Response):
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
         return {'Error': e}
 
+
 @app.get('/game/{game}/cards/player/{player}')
 async def cards_player_player_get(game: str, player: str, response: Response):
     try:
@@ -634,6 +690,7 @@ async def cards_player_player_get(game: str, player: str, response: Response):
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
         return {'Error': e}
 
+
 @app.get('/game/{game}/cards/player/{player}/header')
 async def cards_player_player_header_get(game: str, player: str, response: Response):
     try:
@@ -651,6 +708,7 @@ async def cards_player_player_header_get(game: str, player: str, response: Respo
     except Exception as e:
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
         return {'Error': e}
+
 
 @app.delete('/game/{game}/cards/player/{player}/header')
 async def cards_player_player_header_delete(game: str, player: str, response: Response):
@@ -677,6 +735,7 @@ async def cards_player_player_header_delete(game: str, player: str, response: Re
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
         return {'Error': e}
 
+
 # These next 2 have to be below the /cards/player/{player}/header for the same reason as before
 @app.post('/game/{game}/cards/player/{player}/{id}')
 async def cards_player_player_id_post(game: str, player: str, id: int, response: Response):
@@ -702,6 +761,7 @@ async def cards_player_player_id_post(game: str, player: str, id: int, response:
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
         return {'Error': e}
 
+
 @app.delete('/game/{game}/cards/player/{player}/{id}')
 async def cards_player_player_id_delete(game: str, player: str, id: int, response: Response):
     try:
@@ -725,6 +785,7 @@ async def cards_player_player_id_delete(game: str, player: str, id: int, respons
     except Exception as e:
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
         return {'Error': e}
+
 
 @app.post('/game/{game}/cards/player/{player}/header/{id}')
 async def cards_player_player_header_post(game: str, player: str, id: int, response: Response):

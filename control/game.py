@@ -232,13 +232,15 @@ class Game(metaclass=MultipleMeta):
         if self.cards_player_get(player)[player]['header'] == id:
             requests.delete(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/cards/player/{player}/header')
 
-        # TODO: Check if the card has to be kept on the board (put this card in play), and if so, add it to /cards/playing and do not send it to any deck
-        # TODO: For this, add flag = True in the if section for the cards that have to be kept on the board
-        # If card['remove'] == true, send card to the removed deck, otherwise send to the discarded deck
-        if card['remove'] == True:
-            requests.post(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/cards/deck/removed/{id}')
+        # If the card has to be kept on the board, send it to playing
+        if card['inPlay'] == True:
+            requests.post(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/cards/playing/{id}')
         else:
-            requests.post(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/cards/deck/discarded/{id}')
+            # If card['remove'] == true, send card to the removed deck, otherwise send to the discarded deck
+            if card['remove'] == True:
+                requests.post(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/cards/deck/removed/{id}')
+            else:
+                requests.post(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/cards/deck/discarded/{id}')
 
     def after_turn_actions(self, player):
         # If:

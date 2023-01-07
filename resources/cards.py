@@ -41,6 +41,18 @@ class Cards(metaclass=MultipleMeta):
     def cards_playing_get(self):
         return self.cards['playing']
     
+    def cards_playing_add(self, id):
+        if id not in self.cards['playing']:
+            self.cards['playing'].append(id)
+            return True
+        return False
+    
+    def cards_playing_remove(self, id):
+        if id in self.cards['playing']:
+            self.cards['playing'].remove(id)
+            return True
+        return False
+    
     def cards_player_get(self, player):
         if player in list(self.cards['player'].keys()):
             return self.cards['player'][player]['hand']

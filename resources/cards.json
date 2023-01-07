@@ -11,6 +11,7 @@
             "type": "Military",
             "subtype": "War",
             "remove": true,
+            "inPlay": false,
             "image": "images/angolanCivilWar.jpeg",
             "background": "#DDDDFF"
         },
@@ -24,6 +25,7 @@
             "type": "Political",
             "subtype": "Economy",
             "remove": false,
+            "inPlay": false,
             "image": "images/antiGlobalizationMovement.jpg",
             "background": "#DDDDFF"
         },
@@ -37,6 +39,7 @@
             "faction": "E",
             "type": "Economy",
             "remove": true,
+            "inPlay": false,
             "image": "images/blackMonday.jpg",
             "background": "#DDDDFF"
         },
@@ -50,6 +53,7 @@
             "type": "Political",
             "subtype": "Personality",
             "remove": true,
+            "inPlay": false,
             "image": "images/Boris_Yeltsin.jpg",
             "background": "#DDDDFF"
         },
@@ -64,6 +68,7 @@
             "type": "Military",
             "subtype": "War",
             "remove": false,
+            "inPlay": false,
             "image": "images/chechenWars.jpg",
             "background": "#DDDDFF"
         },
@@ -78,6 +83,7 @@
             "type": "Military",
             "subtype": "War",
             "remove": false,
+            "inPlay": false,
             "image": "images/congoWars.jpg",
             "background": "#DDDDFF"
         },
@@ -91,6 +97,7 @@
             "faction": "W",
             "type": "Political",
             "remove": true,
+            "inPlay": true,
             "image": "images/democracyInNigeria.jpg",
             "background": "#DDDDFF"
         },
@@ -103,6 +110,7 @@
             "faction": "E/W",
             "type": "Economy",
             "remove": false,
+            "inPlay": false,
             "image": "images/economicCrisis.jpg",
             "background": "#DDDDFF"
         },
@@ -117,6 +125,7 @@
             "type": "Economy",
             "subtype": "Treaty",
             "remove": true,
+            "inPlay": true,
             "image": "images/eeaAgreement.jpg",
             "background": "#DDDDFF"
         },
@@ -130,6 +139,7 @@
             "type": "Political",
             "subtype": "Personality",
             "remove": true,
+            "inPlay": true,
             "image": "images/elJefe.jpg",
             "background": "#DDDDFF"
         },
@@ -142,6 +152,7 @@
             "faction": "E",
             "type": "Political",
             "remove": false,
+            "inPlay": false,
             "image": "images/embassyAsylum.jpg",
             "background": "#DDDDFF"
         },
@@ -154,6 +165,7 @@
             "faction": "W",
             "type": "Military",
             "remove": false,
+            "inPlay": false,
             "image": "images/empireOfWar.jpg",
             "background": "#DDDDFF"
         },
@@ -165,6 +177,7 @@
             "points": "P",
             "type": "Punctuation",
             "remove": false,
+            "inPlay": false,
             "image": "images/europe.jpg",
             "background": "#DDDDFF"
         },
@@ -178,6 +191,7 @@
             "faction": "W",
             "type": "Political",
             "remove": true,
+            "inPlay": false,
             "image": "images/Thefalloftheberlinwall1989.JPG",
             "background": "#DDDDFF"
         },
@@ -191,6 +205,7 @@
             "faction": "E",
             "type": "Military",
             "remove": true,
+            "inPlay": true,
             "image": "images/fsb.png",
             "background": "#DDDDFF"
         },
@@ -203,6 +218,7 @@
             "faction": "E/W",
             "type": "Political",
             "remove": false,
+            "inPlay": false,
             "image": "images/g20.jpeg",
             "background": "#DDDDFF"
         },
@@ -215,6 +231,7 @@
             "faction": "W",
             "type": "Economy",
             "remove": false,
+            "inPlay": false,
             "image": "images/imfIntervention.jpg",
             "background": "#DDDDFF"
         },
@@ -227,6 +244,7 @@
             "faction": "E",
             "type": "Political",
             "remove": false,
+            "inPlay": false,
             "image": "images/immigrants.jpg",
             "background": "#DDDDFF"
         },
@@ -240,6 +258,7 @@
             "type": "Military",
             "subtype": "War",
             "remove": false,
+            "inPlay": false,
             "image": "images/israeliPalestinianWars.jpg",
             "background": "#DDDDFF"
         },
@@ -252,6 +271,7 @@
             "faction": "E",
             "type": "Economy",
             "remove": true,
+            "inPlay": false,
             "image": "images/katrina.jpg",
             "background": "#DDDDFF"
         },
@@ -266,6 +286,7 @@
             "type": "Military",
             "subtype": "Terrorism",
             "remove": true,
+            "inPlay": false,
             "image": "images/khobarTowersAttack.jpg",
             "background": "#DDDDFF"
         },
@@ -279,6 +300,7 @@
             "type": "Political",
             "subtype": "Economy",
             "remove": true,
+            "inPlay": false,
             "image": "images/maastritchTreaty.jpg",
             "background": "#DDDDFF"
         },
@@ -291,6 +313,7 @@
             "faction": "E",
             "type": "Economy",
             "remove": false,
+            "inPlay": false,
             "image": "images/madeInChina.jpg",
             "background": "#DDDDFF"
         },
@@ -302,6 +325,7 @@
             "points": "P",
             "type": "Punctuation",
             "remove": false,
+            "inPlay": false,
             "image": "images/middleEast.png",
             "background": "#DDDDFF"
         },
@@ -316,6 +340,7 @@
             "type": "Political",
             "subtype": "Personality",
             "remove": true,
+            "inPlay": true,
             "image": "images/muammarGaddafi.jpg",
             "background": "#DDDDFF"
         },
@@ -328,6 +353,7 @@
             "faction": "E",
             "type": "Political",
             "remove": false,
+            "inPlay": false,
             "image": "images/neocolonialism.jpg",
             "background": "#DDDDFF"
         },
@@ -340,6 +366,7 @@
             "faction": "W",
             "type": "Economy",
             "remove": false,
+            "inPlay": true,
             "image": "images/neoliberalism.jpg",
             "background": "#DDDDFF"
         },
@@ -354,6 +381,7 @@
             "type": "Political",
             "subtype": "Treaty",
             "remove": true,
+            "inPlay": false,
             "image": "images/northernAdhesion.jpg",
             "background": "#DDDDFF"
         },
@@ -366,6 +394,7 @@
             "faction": "E",
             "type": "Economy",
             "remove": false,
+            "inPlay": false,
             "image": "images/oilCrisis.jpg",
             "background": "#DDDDFF"
         },
@@ -378,6 +407,7 @@
             "faction": "E",
             "type": "Economy",
             "remove": false,
+            "inPlay": false,
             "image": "images/oilThirst.jpg",
             "background": "#DDDDFF"
         },
@@ -389,6 +419,7 @@
             "points": "P",
             "type": "Punctuation",
             "remove": false,
+            "inPlay": false,
             "image": "images/opec.jpg",
             "background": "#DDDDFF"
         },
@@ -402,6 +433,7 @@
             "type": "Military",
             "subtype": "Personality",
             "remove": true,
+            "inPlay": true,
             "image": "images/osamaBinLaden.jpg",
             "background": "#DDDDFF"
         },
@@ -415,6 +447,7 @@
             "type": "Political",
             "subtype": "Economy",
             "remove": false,
+            "inPlay": false,
             "image": "images/partyCongress.jpeg",
             "background": "#DDDDFF"
         },
@@ -427,6 +460,7 @@
             "faction": "E/W",
             "type": "Economy",
             "remove": false,
+            "inPlay": false,
             "image": "images/petrodollars.jpg",
             "background": "#DDDDFF"
         },
@@ -440,6 +474,7 @@
             "type": "Political",
             "subtype": "Personality",
             "remove": true,
+            "inPlay": false,
             "image": "images/rupertMurdoch.jpg",
             "background": "#DDDDFF"
         },
@@ -452,6 +487,7 @@
             "faction": "E",
             "type": "Economy",
             "remove": false,
+            "inPlay": false,
             "image": "images/russianOligarchs.jpg",
             "background": "#DDDDFF"
         },
@@ -464,6 +500,7 @@
             "faction": "E",
             "type": "Military",
             "remove": true,
+            "inPlay": false,
             "image": "images/rwandanGenocide.png",
             "background": "#DDDDFF"
         },
@@ -476,6 +513,7 @@
             "faction": "W",
             "type": "Economy",
             "remove": false,
+            "inPlay": false,
             "image": "images/shockDoctrine.jpg",
             "background": "#DDDDFF"
         },
@@ -490,6 +528,7 @@
             "type": "Political",
             "subtype": "Personality",
             "remove": true,
+            "inPlay": false,
             "image": "images/slobodanMilosevic.jpg",
             "background": "#DDDDFF"
         },
@@ -503,6 +542,7 @@
             "type": "Military",
             "subtype": "War",
             "remove": true,
+            "inPlay": true,
             "image": "images/somaliCivilWar.jpg",
             "background": "#DDDDFF"
         },
@@ -517,6 +557,7 @@
             "type": "Military",
             "subtype": "War",
             "remove": true,
+            "inPlay": true,
             "image": "images/southLebanonConflict.jpg",
             "background": "#DDDDFF"
         },
@@ -530,6 +571,7 @@
             "type": "Military",
             "subtype": "War",
             "remove": true,
+            "inPlay": false,
             "image": "images/sudanCivilWars.jpg",
             "background": "#DDDDFF"
         },
@@ -543,6 +585,7 @@
             "faction": "W",
             "type": "Military",
             "remove": true,
+            "inPlay": false,
             "image": "images/tiannanmenProtests.jpg",
             "background": "#DDDDFF"
         },
@@ -555,6 +598,7 @@
             "faction": "E",
             "type": "Political",
             "remove": false,
+            "inPlay": false,
             "image": "images/uncomfortableDemocracies.jpg",
             "background": "#DDDDFF"
         },
@@ -568,6 +612,7 @@
             "type": "Political",
             "subtype": "Military",
             "remove": true,
+            "inPlay": false,
             "image": "images/wolfowitzDoctrine.jpg",
             "background": "#DDDDFF"
         },
@@ -582,6 +627,7 @@
             "type": "Military",
             "subtype": "War",
             "remove": true,
+            "inPlay": false,
             "image": "images/yugoslavWars.jpg",
             "background": "#DDDDFF"
         },
@@ -596,6 +642,7 @@
             "type": "Military",
             "subtype": "Terrorism",
             "remove": true,
+            "inPlay": false,
             "image": "images/911attacks.jpg",
             "background": "#DDDDDD"
         },
@@ -610,6 +657,7 @@
             "type": "Military",
             "subtype": "Political",
             "remove": true,
+            "inPlay": false,
             "image": "images/Bush_and_Putin_signing_SORT.jpg",
             "background": "#DDDDDD"
         },
@@ -624,6 +672,7 @@
             "type": "Political",
             "subtype": "Military",
             "remove": true,
+            "inPlay": false,
             "image": "images/abuGhraib.jpg",
             "background": "#DDDDDD"
         },
@@ -635,6 +684,7 @@
             "points": "P",
             "type": "Punctuation",
             "remove": false,
+            "inPlay": false,
             "image": "images/africa.jpg",
             "background": "#DDDDDD"
         },
@@ -649,6 +699,7 @@
             "type": "Political",
             "subtype": "Treaty",
             "remove": true,
+            "inPlay": true,
             "image": "images/africanUnion.jpg",
             "background": "#DDDDDD"
         },
@@ -662,6 +713,7 @@
             "type": "Military",
             "subtype": "Terrorism",
             "remove": true,
+            "inPlay": true,
             "image": "images/alQaeda.jpg",
             "background": "#DDDDDD"
         },
@@ -676,6 +728,7 @@
             "type": "Political",
             "subtype": "Treaty",
             "remove": true,
+            "inPlay": false,
             "image": "images/alba.jpg",
             "background": "#DDDDDD"
         },
@@ -690,6 +743,7 @@
             "type": "Political",
             "subtype": "Revolution",
             "remove": true,
+            "inPlay": false,
             "image": "images/arabSpring.jpg",
             "background": "#DDDDDD"
         },
@@ -701,6 +755,7 @@
             "points": "P",
             "type": "Punctuation",
             "remove": false,
+            "inPlay": false,
             "image": "images/asia.jpg",
             "background": "#DDDDDD"
         },
@@ -714,6 +769,7 @@
             "type": "Political",
             "subtype": "Economy",
             "remove": true,
+            "inPlay": false,
             "image": "images/austerityPlans.jpg",
             "background": "#DDDDDD"
         },
@@ -727,6 +783,7 @@
             "type": "Political",
             "subtype": "Economy",
             "remove": false,
+            "inPlay": false,
             "image": "images/brics.jpg",
             "background": "#DDDDDD"
         },
@@ -738,6 +795,7 @@
             "points": "P",
             "type": "Punctuation",
             "remove": false,
+            "inPlay": false,
             "image": "images/ncamerica.jpg",
             "background": "#DDDDDD"
         },
@@ -750,6 +808,7 @@
             "faction": "E/W",
             "type": "Economy",
             "remove": false,
+            "inPlay": false,
             "image": "images/climateChange.png",
             "background": "#DDDDDD"
         },
@@ -764,6 +823,7 @@
             "type": "Political",
             "subtype": "Revolution",
             "remove": true,
+            "inPlay": false,
             "image": "images/colorRevolution.jpg",
             "background": "#DDDDDD"
         },
@@ -778,6 +838,7 @@
             "type": "Political",
             "subtype": "Treaty",
             "remove": true,
+            "inPlay": false,
             "image": "images/easternAdhesion.jpg",
             "background": "#DDDDDD"
         },
@@ -790,6 +851,7 @@
             "faction": "W",
             "type": "Economy",
             "remove": false,
+            "inPlay": false,
             "image": "images/economicRescue.jpg",
             "background": "#DDDDDD"
         },
@@ -803,6 +865,7 @@
             "faction": "W",
             "type": "Political",
             "remove": false,
+            "inPlay": false,
             "image": "images/FOIA.jpg",
             "background": "#DDDDDD"
         },
@@ -816,6 +879,7 @@
             "faction": "W",
             "type": "Political",
             "remove": true,
+            "inPlay": false,
             "image": "images/fuckTheEU.jpg",
             "background": "#DDDDDD"
         },
@@ -828,6 +892,7 @@
             "faction": "E/W",
             "type": "Economy",
             "remove": false,
+            "inPlay": false,
             "image": "images/globalization.jpg",
             "background": "#DDDDDD"
         },
@@ -840,6 +905,7 @@
             "faction": "W",
             "type": "Military",
             "remove": true,
+            "inPlay": true,
             "image": "images/guantanamo.png",
             "background": "#DDDDDD"
         },
@@ -853,6 +919,7 @@
             "type": "Military",
             "subtype": "Political",
             "remove": true,
+            "inPlay": true,
             "image": "images/hezbollah.jpg",
             "background": "#DDDDDD"
         },
@@ -867,6 +934,7 @@
             "type": "Political",
             "subtype": "Personality",
             "remove": true,
+            "inPlay": false,
             "image": "images/huJintao.jpg",
             "background": "#DDDDDD"
         },
@@ -880,6 +948,7 @@
             "type": "Political",
             "subtype": "Personality",
             "remove": true,
+            "inPlay": true,
             "image": "images/HugoChavez.jpg",
             "background": "#DDDDDD"
         },
@@ -894,6 +963,7 @@
             "type": "Military",
             "subtype": "War",
             "remove": true,
+            "inPlay": false,
             "image": "images/invasionOfAfghanistan.jpg",
             "background": "#DDDDDD"
         },
@@ -907,6 +977,7 @@
             "faction": "E",
             "type": "Military",
             "remove": true,
+            "inPlay": false,
             "image": "images/invasionOfCrimea.jpg",
             "background": "#DDDDDD"
         },
@@ -921,6 +992,7 @@
             "type": "Military",
             "subtype": "War",
             "remove": true,
+            "inPlay": false,
             "image": "images/iraqWars.jpg",
             "background": "#DDDDDD"
         },
@@ -934,6 +1006,7 @@
             "type": "Political",
             "subtype": "Personality",
             "remove": true,
+            "inPlay": false,
             "image": "images/julianAssange.jpg",
             "background": "#DDDDDD"
         },
@@ -948,6 +1021,7 @@
             "type": "Political",
             "subtype": "Personality",
             "remove": true,
+            "inPlay": true,
             "image": "images/Kim_Jong_il.jpg",
             "background": "#DDDDDD"
         },
@@ -962,6 +1036,7 @@
             "type": "Political",
             "subtype": "Treaty",
             "remove": true,
+            "inPlay": false,
             "image": "images/kyotoProtocol.jpg",
             "background": "#DDDDDD"
         },
@@ -975,6 +1050,7 @@
             "type": "Military",
             "subtype": "War",
             "remove": true,
+            "inPlay": false,
             "image": "images/lybianCivilWar.jpg",
             "background": "#DDDDDD"
         },
@@ -989,6 +1065,7 @@
             "type": "Political",
             "subtype": "Military",
             "remove": true,
+            "inPlay": false,
             "image": "images/newSTART.jpeg",
             "background": "#DDDDDD"
         },
@@ -1001,6 +1078,7 @@
             "faction": "W",
             "type": "Economy",
             "remove": true,
+            "inPlay": false,
             "image": "images/nordStream1.jpg",
             "background": "#DDDDDD"
         },
@@ -1014,6 +1092,7 @@
             "type": "Political/Military",
             "subtype": "Economy",
             "remove": false,
+            "inPlay": false,
             "image": "images/nwo.jpg",
             "background": "#DDDDDD"
         },
@@ -1027,6 +1106,7 @@
             "faction": "E",
             "type": "Military",
             "remove": true,
+            "inPlay": false,
             "image": "images/prism.png",
             "background": "#DDDDDD"
         },
@@ -1041,6 +1121,7 @@
             "type": "Political",
             "subtype": "Treaty",
             "remove": true,
+            "inPlay": false,
             "image": "images/secondEasternAdhesion.jpg",
             "background": "#DDDDDD"
         },
@@ -1052,6 +1133,7 @@
             "points": "P",
             "type": "Punctuation",
             "remove": false,
+            "inPlay": false,
             "image": "images/southAmerica.jpg",
             "background": "#DDDDDD"
         },
@@ -1066,6 +1148,7 @@
             "type": "Military",
             "subtype": "War",
             "remove": true,
+            "inPlay": false,
             "image": "images/syrianCivilWar.png",
             "background": "#DDDDDD"
         },
@@ -1080,6 +1163,7 @@
             "type": "Political",
             "subtype": "Personality",
             "remove": true,
+            "inPlay": true,
             "image": "images/theKirchners.jpg",
             "background": "#DDDDDD"
         },
@@ -1092,6 +1176,7 @@
             "faction": "E/W",
             "type": "Military",
             "remove": false,
+            "inPlay": false,
             "image": "images/theMotherOfAllWars.webp",
             "background": "#DDDDDD"
         },
@@ -1106,6 +1191,7 @@
             "type": "Political",
             "subtype": "Personality",
             "remove": true,
+            "inPlay": false,
             "image": "images/viktorYuschenko.jpg",
             "background": "#DDDDDD"
         },
@@ -1119,6 +1205,7 @@
             "type": "Political",
             "subtype": "Personality",
             "remove": true,
+            "inPlay": true,
             "image": "images/vladimirPutin.jpg",
             "background": "#DDDDDD"
         },
@@ -1132,6 +1219,7 @@
             "type": "Military",
             "subtype": "Terrorism",
             "remove": true,
+            "inPlay": true,
             "image": "images/warOnTerror.jpg",
             "background": "#DDDDDD"
         },
@@ -1143,6 +1231,7 @@
             "points": 2,
             "faction": "E/W",
             "remove": false,
+            "inPlay": false,
             "image": "images/conspiracyTheory.jpeg",
             "background": "#DDDDFF"
         },
@@ -1156,6 +1245,7 @@
             "type": "Political",
             "subtype": "Personality",
             "remove": true,
+            "inPlay": false,
             "image": "images/silvioBerlusconi.jpg",
             "background": "#DDDDFF"
         },
@@ -1170,6 +1260,7 @@
             "type": "Military",
             "subtype": "Terrorism",
             "remove": true,
+            "inPlay": false,
             "image": "images/madridBombings.jpg",
             "background": "#DDDDDD"
         }
