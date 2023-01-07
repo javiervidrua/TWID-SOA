@@ -34,7 +34,7 @@ class Game(metaclass=MultipleMeta):
         self.playingOrderCurrent = ['US', 'EU']
         self.isStarted = True
         self.isHeaderPhase = False
-        self.isPostHeaderPhase = True
+        self.isPostHeaderPhase = False
         self.isFinished = False
 
     def __repr__(self):
@@ -55,6 +55,9 @@ class Game(metaclass=MultipleMeta):
     
     def get_isHeaderPhase(self):
         return self.isHeaderPhase
+
+    def get_isPostHeaderPhase(self):
+        return self.isPostHeaderPhase
 
     def get_isFinished(self):
         return self.isFinished
@@ -257,6 +260,108 @@ class Game(metaclass=MultipleMeta):
 
             # Reconstruct the playing order
             self.playingOrderCurrent = [eachPlayer for eachPlayer in self.playingOrder]
+
+    def cards_play_influence(self, player, id, body, validate=False):
+        # Get all the countries of the map
+        countriesAll = self.board_map_get()['countries']
+        
+        #
+        # Count all the points that the user wants to use
+        pointCount = 0
+        for target in body['targets']:
+            # Get the name and the object of the country
+            targetName = next(iter(target['target'])) # https://stackoverflow.com/questions/30362391/how-do-you-find-the-first-key-in-a-dictionary
+            targetObject = next(filter(lambda x: x['name'] == targetName, countriesAll))
+
+            # Check if the country that the player wants to influence already has player influence or is adjacent to one that is
+            isCountryAdjacentOrWithInfluence = False
+            if player not in targetObject['influence']:
+                # If no influence in this country, check the adjacent countries
+                for eachCountry in targetObject['adjacent']:
+                    country = next(filter(lambda x: x['name'] == eachCountry, countriesAll))
+                    if player in country['influence'] and country['influence'][player]['influence'] > 0:
+                        isCountryAdjacentOrWithInfluence = True
+            else:
+                isCountryAdjacentOrWithInfluence = True
+
+            # Return if player has no influence in this or in the adjacent countries
+            if isCountryAdjacentOrWithInfluence == False:
+                return False
+
+            # Count the influence points + stability of the country
+            pointCount += target['target'][targetName]
+            pointCount += targetObject['stability']
+
+            # If extra target was specified, count those points too
+            if target['targetExtra'] != None:
+                for extraTarget in target['targetExtra']:
+                    # A player cannot have extra influence on himself
+                    if extraTarget == player:
+                        return False
+
+                    pointCount += target['targetExtra'][extraTarget]
+            
+            # Count if another player has the edge (more influence than the actual player)
+            if len([eachPlayer for eachPlayer in targetObject['influence'] if eachPlayer != player and targetObject['influence'].get(eachPlayer, {'influence': 0})['influence'] > targetObject['influence'].get(player, {'influence': 0})['influence']]) > 0:
+                pointCount += 1
+
+        #
+        # Check if the card exists and if the point count is the same
+        card = self.card_get(id)
+        if card == {} or pointCount != card['points']:
+            return False
+
+        #
+        # Apply modifications to each country (if there are no prohibitions)
+        countries = {}
+        for target in body['targets']:
+            targetName = next(iter(target['target']))
+            targetObject = next(filter(lambda x: x['name'] == targetName, countriesAll))
+            
+            # Add the country to the list of countries
+            countries[targetName] = targetObject
+
+            # Initialize the country if empty
+            if countries[targetName]['influence'].get(player, None) == None:
+                countries[targetName]['influence'][player] = {'influence': 0, 'extra': {}}
+
+            influencePointsToSum = target['target'][targetName]
+            
+            # Check if there is another player with extra influence over this player. If one slot is occupied, can only occupy the other. If both slots are occupied, cannot play influence or destabilization ops at all
+            influencePointsUsed = 0
+            for eachPlayer, eachInfluence in countries[targetName]['influence'].items():
+                # Sum the extra influence of other players over this player
+                if 'extra' in eachInfluence:
+                    if player in eachInfluence['extra']:
+                        influencePointsUsed += eachInfluence['extra'][player]
+            
+            # Check if the current influence + the extra influence from other players + the influence to sum is > 2
+            if countries[targetName]['influence'][player]['influence'] + influencePointsUsed + influencePointsToSum > 2:
+                return False
+
+            # Modify the player's influence over the country using the request body
+            countries[targetName]['influence'][player]['influence'] += influencePointsToSum
+
+            # Modify the extra influence of the country using the request body
+            if target['targetExtra']:
+                for extraTarget in target['targetExtra']:
+                    # Check if the country has x influence so x+target['targetExtra'][extraTarget] is <=2
+                    if countries[targetName]['influence'].get(extraTarget, {'influence': 0, 'extra': {}})['influence'] + target['targetExtra'][extraTarget] > 2:
+                        return False
+
+                    # Add the extra influence
+                    countries[targetName]['influence'][player]['extra'] = {extraTarget: target['targetExtra'][extraTarget]}
+
+        #
+        # If only validate, return here
+        if validate == True: return True
+
+        # If all went good, update the countries in the resources service
+        for eachCountry in countries:
+            region = countries[eachCountry]['region']
+            requests.put(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/board/map/{region}/{eachCountry}', json=countries[eachCountry])
+        
+        return True
 
     def cards_play_text(self, player, id):
         # PENDING IMPLEMENTATION
@@ -532,5 +637,3 @@ class Game(metaclass=MultipleMeta):
         self.after_turn_actions(player)
 
         return True
-    
-    # TODO: Add check if self.isPostHeaderPhase and self.isHeaderPhase to all the play card handler functions

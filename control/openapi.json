@@ -637,6 +637,16 @@
               "maximum": 100,
               "example": 3
             }
+          },
+          {
+            "in": "query",
+            "name": "validate",
+            "description": "Specify if only validate the play",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
           }
         ],
         "responses": {
@@ -1416,7 +1426,12 @@
               "type": "object",
               "properties": {
                 "target": {
-                  "type": "string"
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "integer"
+                    }
+                  }
                 },
                 "targetExtra": {
                   "type": "object",
@@ -1433,7 +1448,9 @@
         "example": {
           "targets": [
             {
-              "target": "Congo",
+              "target": {
+                "Congo": 1
+              },
               "targetExtra": {
                 "US": 1
               }

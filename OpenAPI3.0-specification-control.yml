@@ -401,6 +401,13 @@ paths:
             minimum: 1
             maximum: 100
             example: 3
+        - in: query
+          name: validate
+          description: Specify if only validate the play
+          required: false
+          schema:
+            type: boolean
+            default: false
       responses:
         '200':
           description: Card
@@ -900,13 +907,16 @@ components:
             type: object
             properties:
               target:
-                type: string
+                type: object
+                properties:
+                  name:
+                    type: integer
               targetExtra:
                 type: object
                 properties:
                   name:
                     type: integer
-      example: {"targets": [{"target": "Congo", "targetExtra": {"US": 1}}]}
+      example: {"targets": [{"target": {"Congo": 1}, "targetExtra": {"US": 1}}]}
     card-playing-destabilization:
       type: object
       required:
