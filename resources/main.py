@@ -1,5 +1,6 @@
 import json
 from random import shuffle
+from copy import deepcopy
 from board import Board
 from cards import Cards
 from game import Game
@@ -91,7 +92,7 @@ async def board_get(game: str, response: Response):
         
         # Get the resources of the board
         board = games[game].board
-        board = board.board
+        board = deepcopy(board.board)
         
         # Remove what we don't want
         board.pop('round', None)

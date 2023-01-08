@@ -15,6 +15,7 @@ class Game(metaclass=MultipleMeta):
         self.isStarted = False
         self.isHeaderPhase = False
         self.isPostHeaderPhase = False
+        self.destabilization = None
         self.isFinished = False
 
     def __init__(self, id: str):
@@ -25,6 +26,7 @@ class Game(metaclass=MultipleMeta):
         self.isStarted = False
         self.isHeaderPhase = False
         self.isPostHeaderPhase = False
+        self.destabilization = None
         self.isFinished = False
 
     def __init__(self, id: str, playerUS: str, playerEU: str):
@@ -35,6 +37,7 @@ class Game(metaclass=MultipleMeta):
         self.isStarted = True
         self.isHeaderPhase = False
         self.isPostHeaderPhase = False
+        self.destabilization = None
         self.isFinished = False
 
     def __repr__(self):
@@ -58,6 +61,9 @@ class Game(metaclass=MultipleMeta):
 
     def get_isPostHeaderPhase(self):
         return self.isPostHeaderPhase
+
+    def get_destabilization(self):
+        return self.destabilization
 
     def get_isFinished(self):
         return self.isFinished
@@ -243,15 +249,21 @@ class Game(metaclass=MultipleMeta):
                 requests.post(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/cards/deck/discarded/{id}')
 
     def after_turn_actions(self, player):
-        # If:
-        #   - There are players left, isPostHeaderPhase
-        #   - There are players left, not isPostHeaderPhase, player has 1 card left
-        if len(self.playingOrderCurrent) > 0 and (self.isPostHeaderPhase == True or self.isPostHeaderPhase == False and len(self.cards_player_get(player)[player]['hand']) == 1 ):
-            # Pass the turn to the next player
-            self.playingOrderCurrent.pop(0)
-        # If there are no players left
+        # If postHeaderPhase
+        if self.isPostHeaderPhase == True:
+            # If players left, pass the turn
+            if len(self.playingOrderCurrent) > 0:
+                self.playingOrderCurrent.pop(0)
+        # If not postHeaderPhase
         else:
-            # If we are not in the post header phase, that means that this is the end of an actual round
+            # If players left and the actual player has only 1 card in his hand, pass the turn
+            if len(self.playingOrderCurrent) > 0:
+                if len(self.cards_player_get(player)[player]['hand']) == 1:
+                    self.playingOrderCurrent.pop(0)
+        
+        # If there are no players left to play in this turn
+        if len(self.playingOrderCurrent) == 0:
+            # If not in the postHeaderPhase
             if self.isPostHeaderPhase == False:
                 # New round must begin
                 requests.post(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/board/round')
@@ -259,11 +271,17 @@ class Game(metaclass=MultipleMeta):
                 # Deal each player as many cards as he needs
                 for eachPlayer in self.players:
                     self.cards_deal(eachPlayer)
-
-            # Reconstruct the playing order
-            self.playingOrderCurrent = [eachPlayer for eachPlayer in self.playingOrder]
+            
+            # Always reconstruct the playing order
+            if len(self.playingOrderCurrent) == 0:
+                self.playingOrderCurrent = [eachPlayer for eachPlayer in self.playingOrder]
 
     def cards_play_influence(self, player, id, body, validate=False):
+        # Check if the card exists
+        card = self.card_get(id)
+        if card == {}:
+            return False
+
         # Get all the countries of the map
         countriesAll = self.board_map_get()['countries']
         
@@ -306,12 +324,6 @@ class Game(metaclass=MultipleMeta):
             # Count if another player has the edge (more influence than the actual player)
             if len([eachPlayer for eachPlayer in targetObject['influence'] if eachPlayer != player and targetObject['influence'].get(eachPlayer, {'influence': 0})['influence'] > targetObject['influence'].get(player, {'influence': 0})['influence']]) > 0:
                 pointCount += 1
-
-        #
-        # Check if the card exists and if the point count is the same
-        card = self.card_get(id)
-        if card == {} or pointCount != card['points']:
-            return False
 
         #
         # Apply modifications to each country (if there are no prohibitions)
@@ -363,6 +375,146 @@ class Game(metaclass=MultipleMeta):
             region = countries[eachCountry]['region']
             requests.put(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/board/map/{region}/{eachCountry}', json=countries[eachCountry])
         
+        # Perform the after play logic
+        self.after_play_actions(player, card)
+
+        # Perform the after turn logic
+        self.after_turn_actions(player)
+        
+        return True
+
+    def cards_play_destabilization(self, player, id, body, validate=False):
+        # Check if the card exists
+        card = self.card_get(id)
+        if card == {}:
+            return False
+        
+        # Check that the requested country exists and get its data
+        country = body['target']
+        countriesAll = self.board_map_get()['countries']
+        country = [eachCountry for eachCountry in countriesAll if eachCountry['name'] == country]
+        if len(country) < 1: return False
+        country = country[0]
+
+        # The target country cannot be a country that belongs to another player
+        if country['name'] in ['United States', 'United Kingdom', 'Benelux', 'Denmark', 'Germany', 'France', 'Spain', 'Italy', 'Greece', 'Russia', 'China']: return False
+
+        # There has to be influence from another player
+        if country['influence'] == {} or len([anotherPlayer for anotherPlayer in country['influence'] if anotherPlayer != player]) == 0: return False
+
+        #
+        # If this is the first request
+        if self.destabilization == None:
+            # Do the dice throw and all the operations
+            diceRoll = random.choice([1, 2, 3, 4, 5, 6]) + card['points'] - country['stability'] * 2
+
+            # If the country is conflictive, lose 1 VP
+            if country['isConflictive'] == True:
+                newScore = [score for score in self.board_score_get() if score['name'] == player][0]['score'] - 1
+                # TODO: Implement function to update the score of a player. Parameter: {player: increment} e.g. {'US': -1} e.g. {'US': 2}
+                # TODO: Call the function with the increment in score
+
+            # If only validate
+            if validate == True: return diceRoll
+
+            # If player was lucky
+            if diceRoll > 0:
+                # Set self.destabilization
+                self.destabilization = {'country': country['name'], 'result': diceRoll}
+
+                # Do not remove the player's card or do anything with the turn
+
+                return True
+            else:
+                # The player lost this card, so we continue with the game
+                
+                # Perform the after play logic
+                self.after_play_actions(player, card)
+
+                # Perform the after turn logic
+                self.after_turn_actions(player)
+
+                # Return the result of the dice throw
+                return diceRoll
+
+        #
+        # If this is the second request
+        else:
+            if self.destabilization['country'] != body['target']: return False
+
+            # Cannot add influence to contrary block
+            west = ['US', 'EU']
+            east = ['China', 'Russia']
+            if body['add'] == None: body['add'] = []
+            if body['remove'] == None: body['remove'] = []
+            countriesAddInfluence = [next(iter(target)) for target in body['add']]
+            countriesRemoveInfluence = [next(iter(target)) for target in body['remove']]
+            if player in west:
+                if any (target in east for target in countriesAddInfluence): # https://stackoverflow.com/questions/62115746/can-i-check-if-a-list-contains-any-item-from-another-list
+                    return False
+                if any (target in west for target in countriesRemoveInfluence):
+                    return False
+            else:
+                if any (target in west for target in countriesAddInfluence):
+                    return False
+                if any (target in east for target in countriesRemoveInfluence):
+                    return False
+
+            #
+            #
+            pointCount = 0
+            # Check the influence to add
+            for target in body['add']:
+                # Cannot have more than 2 of influence
+                if country['influence'].get(next(iter(target)), {'influence': 0})['influence'] + target[next(iter(target))] > 2:
+                    return False
+                
+                # Update the influence
+                if country['influence'].get(next(iter(target)), None) == None:
+                    country['influence'][next(iter(target))] = {'influence': 0, 'extra': {}}
+                newInfluence = country['influence'][next(iter(target))]['influence'] + target[next(iter(target))]
+                country['influence'][next(iter(target))]['influence'] = newInfluence
+
+                # Update the point count
+                pointCount += target[next(iter(target))]
+            
+            # Check the influence to remove
+            for target in body['remove']:
+                # Cannot have less than 0 of influence
+                if country['influence'].get(next(iter(target)), {'influence': 0})['influence'] - target[next(iter(target))] < 0:
+                    return False
+                
+                # Update the influence
+                if country['influence'].get(next(iter(target)), None) == None:
+                    country['influence'][next(iter(target))] = {'influence': 0, 'extra': {}}
+                newInfluence = country['influence'][next(iter(target))]['influence'] - target[next(iter(target))]
+                country['influence'][next(iter(target))]['influence'] = newInfluence
+
+                # Update the point count
+                pointCount += target[next(iter(target))]
+            
+            # Cannot spend more points than diceRoll
+            if pointCount > self.destabilization['result']:
+                return False
+            
+            #
+            # If only validate
+            if validate == True: return True
+
+            # Update the country
+            countryName = country['name']
+            countryRegion = country['region']
+            requests.put(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/board/map/{countryRegion}/{countryName}', json=country)
+            
+            # Unset the destabilization for the next destabilization play
+            self.destabilization = None
+            
+            # Perform the after play logic
+            self.after_play_actions(player, card)
+
+            # Perform the after turn logic
+            self.after_turn_actions(player)
+        
         return True
 
     def cards_play_text(self, player, id):
@@ -371,9 +523,9 @@ class Game(metaclass=MultipleMeta):
         if self.is_players_turn(player) == False or (self.cards_player_get(player)[player]['header'] != None and self.cards_player_get(player)[player]['header'] != id):
             return False
         
-        # Check that the card exists (status == 200 and body != {})
-        card = requests.get(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/cards/{id}')
-        if card.status_code != 200 or card.json() == {}:
+        # Check if the card exists
+        card = self.card_get(id)
+        if card == {}:
             return False
 
         # Carry out the pertinent operations according to the card

@@ -397,7 +397,7 @@ async def game_game_cards_it_get(game: str, id: int, response: Response, token: 
 
 
 @app.post('/game/{game}/cards/playing/influence/{id}')
-async def game_game_player_player_post(game: str, id: int, body: validators.GameGameCardsPlayingInfluence, response: Response, token: str = Depends(verify_token), validate: bool=False):
+async def game_game_cards_playing_influence_id_post(game: str, id: int, body: validators.GameGameCardsPlayingInfluence, response: Response, token: str = Depends(verify_token), validate: bool=False):
     try:
         global users
         global games
@@ -424,8 +424,45 @@ async def game_game_player_player_post(game: str, id: int, body: validators.Game
         return {'Error': e}
 
 
+@app.post('/game/{game}/cards/playing/destabilization/{id}')
+async def game_game_cards_playing_destabilization_id_post(game: str, id: int, body: validators.GameGameCardsPlayingDestabilization, response: Response, token: str = Depends(verify_token), validate: bool=False):
+    try:
+        global users
+        global games
+
+        # If there is no game
+        if game not in games:
+            return Response(status_code=status.HTTP_400_BAD_REQUEST)
+        
+        # Get the player of the user
+        player = [player for player in games[game].get_players() if games[game].get_players()[player] == token]
+        if len(player) != 1:
+            return Response(status_code=status.HTTP_400_BAD_REQUEST)
+        player = player[0]
+
+        # If the game has started and not ended, it's not in the header phase, it's not in the postHeader phase and the user belongs to that game, play the specified card by destabilization
+        if games[game].get_isStarted() == True and games[game].get_isFinished() == False and games[game].get_isHeaderPhase() == False and games[game].get_isPostHeaderPhase() == False and token in list(games[game].get_players().values()) and id in games[game].cards_player_get(player)[player]['hand']:
+            result = games[game].cards_play_destabilization(player, id, json.loads(body.json()), validate)
+            if result == True:
+                destabilization = games[game].get_destabilization()
+                # If second request
+                if destabilization == None:
+                    return games[game].card_get(id)
+                # If first request
+                else:
+                    return destabilization['result']
+            elif result != False:
+                return result
+
+        # Otherwise, return bad request
+        return Response(status_code=status.HTTP_400_BAD_REQUEST)
+    except Exception as e:
+        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+        return {'Error': e}
+
+
 @app.post('/game/{game}/cards/playing/text/{id}')
-async def game_game_player_player_post(game: str, id: int, response: Response, token: str = Depends(verify_token)):
+async def game_game_cards_playing_text_id_post(game: str, id: int, response: Response, token: str = Depends(verify_token)):
     try:
         global users
         global games
@@ -453,7 +490,7 @@ async def game_game_player_player_post(game: str, id: int, response: Response, t
 
 
 @app.post('/game/{game}/cards/playing/header/{id}')
-async def game_game_player_player_post(game: str, id: int, response: Response, token: str = Depends(verify_token)):
+async def game_game_cards_playing_header_id_post(game: str, id: int, response: Response, token: str = Depends(verify_token)):
     try:
         global users
         global games

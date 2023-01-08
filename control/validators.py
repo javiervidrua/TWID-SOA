@@ -35,3 +35,8 @@ class GameGameCardsPlayingInfluence(BaseModel):
         if len(v) == 0:
             raise ValueError("'targets' field cannot have 0 length")
         return v
+
+class GameGameCardsPlayingDestabilization(BaseModel):
+    target: str
+    add: Optional[List[Dict[str, int]]]
+    remove: Optional[List[Dict[str, int]]]
