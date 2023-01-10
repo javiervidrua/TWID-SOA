@@ -1083,6 +1083,7 @@ components:
       type: object
       required:
         - regions
+        - regionScoring
         - countries
         - nwo
       properties:
@@ -1096,6 +1097,9 @@ components:
               region:
                 type: string
           example: ["Europe", "Asia", "Africa", "Middle East", "South America", "NC Amertica"]
+        regionScoring:
+          type: object
+          example: {"regionScoring":{"NC America":{"presence":0,"domination":1,"control":3},"South America":{"presence":0,"domination":1,"control":2},"Europe":{"presence":2,"domination":2,"control":3},"Africa":{"presence":1,"domination":1,"control":2},"Middle East":{"presence":2,"domination":2,"control":2},"Asia":{"presence":1,"domination":2,"control":2}}}
         countries:
           type: array
           items:
