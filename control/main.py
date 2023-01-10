@@ -443,6 +443,8 @@ async def game_game_cards_playing_destabilization_id_post(game: str, id: int, bo
         # If the game has started and not ended, it's not in the header phase, it's not in the postHeader phase and the user belongs to that game, play the specified card by destabilization
         if games[game].get_isStarted() == True and games[game].get_isFinished() == False and games[game].get_isHeaderPhase() == False and games[game].get_isPostHeaderPhase() == False and token in list(games[game].get_players().values()) and id in games[game].cards_player_get(player)[player]['hand']:
             result = games[game].cards_play_destabilization(player, id, json.loads(body.json()), validate)
+            
+            # If no validate
             if result == True:
                 destabilization = games[game].get_destabilization()
                 # If second request
@@ -451,7 +453,8 @@ async def game_game_cards_playing_destabilization_id_post(game: str, id: int, bo
                 # If first request
                 else:
                     return destabilization['result']
-            elif result != False:
+            # If validate
+            elif type(result) == int:
                 return result
 
         # Otherwise, return bad request

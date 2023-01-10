@@ -21,7 +21,7 @@ class Game(metaclass=MultipleMeta):
     def __init__(self, id: str):
         self.id = id
         self.players = {'US': None, 'EU': None, 'Russia': None, 'China': None}
-        self.playingOrder = [] # Will store the order in which the players have to play in the current round (defined after the last player plays his header card)
+        self.playingOrder = []
         self.playingOrderCurrent = []
         self.isStarted = False
         self.isHeaderPhase = False
@@ -32,7 +32,7 @@ class Game(metaclass=MultipleMeta):
     def __init__(self, id: str, playerUS: str, playerEU: str):
         self.id = id
         self.players = {'US': playerUS, 'EU': playerEU}
-        self.playingOrder = ['US', 'EU'] # Will store the order in which the players have to play in the current round (defined after the last player plays his header card)
+        self.playingOrder = ['US', 'EU']
         self.playingOrderCurrent = ['US', 'EU']
         self.isStarted = True
         self.isHeaderPhase = False
@@ -46,6 +46,7 @@ class Game(metaclass=MultipleMeta):
     def __del__(self):
         requests.delete(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}')
 
+    #
     # Getters
     def get_players(self):
         return self.players
@@ -68,6 +69,7 @@ class Game(metaclass=MultipleMeta):
     def get_isFinished(self):
         return self.isFinished
 
+    #
     # Setters
     def set_player_user(self, player, user):
         if player in self.players:
@@ -88,7 +90,7 @@ class Game(metaclass=MultipleMeta):
 
         # Give each player as many cards as he needs
         for player in self.players:
-            self.cards_deal(player)
+            self.deal_cards_player(player)
 
         # Start the game (in the header phase)
         self.isHeaderPhase = True
@@ -99,7 +101,111 @@ class Game(metaclass=MultipleMeta):
     def finish(self):
         self.isFinished = True
     
-    # Common functions
+    #
+    # Helper functions
+    def deal_cards_player(self, player):
+        cards = []
+
+        # Get the current number of cards of the player
+        cardsPlayer = len(requests.get(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/cards/player/{player}').json())
+
+        # Call the main deck self.cardsPerPlayer times in random order and get the first card
+        for i in range(0, self.cardsPerPlayer - cardsPlayer):
+            card = requests.get(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/cards/deck/main?random=True').json()[0]['id']
+
+            # Cannot have the same card twice
+            while card in cards:
+                card = requests.get(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/cards/deck/main?random=True').json()[0]['id']
+            
+            cards.append(card)
+
+        # Remove those cards from the main deck and add them to the player's hand
+        for card in cards:
+            requests.delete(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/cards/deck/main/{card}')
+            requests.post(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/cards/player/{player}/{card}')
+    
+    def is_players_turn(self, player):
+        if len(self.playingOrderCurrent) > 0 and self.playingOrderCurrent[0] == player:
+            return True
+        return False
+    
+    def is_player_with_edge(self, player, country):
+        if country['influence'] == {}:
+            return False
+        else:
+            # Get the influence of the player
+            influence = country['influence'].get(player, {'influence': 0})['influence']
+
+            # Check if another player has more or the same influence
+            for anotherPlayer in [eachPlayer for eachPlayer in country['influence'] if eachPlayer != player]:
+                if country['influence'][anotherPlayer]['influence'] >= influence:
+                    return False
+            
+            return True
+
+    def is_another_player_with_edge(self, player, country):
+        if country['influence'] == {}:
+            return False
+        else:
+            # Get the influence of the player
+            influence = country['influence'].get(player, {'influence': 0})['influence']
+
+            # Check if another player has more influence
+            for anotherPlayer in [eachPlayer for eachPlayer in country['influence'] if eachPlayer != player]:
+                if country['influence'][anotherPlayer]['influence'] > influence:
+                    return True
+            
+            return False
+
+    def handle_players_card(self, player, card):
+        id = card['id']
+        # Remove the card from the player's hand
+        requests.delete(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/cards/player/{player}/{id}')
+        
+        # Remove the card from the player's header (if header == card)
+        if self.cards_player_get(player)[player]['header'] == id:
+            requests.delete(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/cards/player/{player}/header')
+
+        # If the card has to be kept on the board, send it to playing
+        if card['inPlay'] == True:
+            requests.post(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/cards/playing/{id}')
+        else:
+            # If card['remove'] == true, send card to the removed deck, otherwise send to the discarded deck
+            if card['remove'] == True:
+                requests.post(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/cards/deck/removed/{id}')
+            else:
+                requests.post(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/cards/deck/discarded/{id}')
+
+    def handle_players_play(self, player):
+        # If postHeaderPhase
+        if self.isPostHeaderPhase == True:
+            # If players left, pass the turn
+            if len(self.playingOrderCurrent) > 0:
+                self.playingOrderCurrent.pop(0)
+        # If not postHeaderPhase
+        else:
+            # If players left and the actual player has only 1 card in his hand, pass the turn
+            if len(self.playingOrderCurrent) > 0:
+                if len(self.cards_player_get(player)[player]['hand']) == 1:
+                    self.playingOrderCurrent.pop(0)
+        
+        # If there are no players left to play in this turn
+        if len(self.playingOrderCurrent) == 0:
+            # If not in the postHeaderPhase
+            if self.isPostHeaderPhase == False:
+                # New round must begin
+                requests.post(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/board/round')
+
+                # Deal each player as many cards as he needs
+                for eachPlayer in self.players:
+                    self.deal_cards_player(eachPlayer)
+            
+            # Always reconstruct the playing order
+            if len(self.playingOrderCurrent) == 0:
+                self.playingOrderCurrent = [eachPlayer for eachPlayer in self.playingOrder]
+
+    #
+    # Logic functions
     def card_get(self, id):
         response = requests.get(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/cards/{id}')
         return response.json()
@@ -146,27 +252,6 @@ class Game(metaclass=MultipleMeta):
     def board_map_get(self):
         return requests.get(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/board').json()
     
-    def cards_deal(self, player):
-        cards = []
-
-        # Get the current number of cards of the player
-        cardsPlayer = len(requests.get(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/cards/player/{player}').json())
-
-        # Call the main deck self.cardsPerPlayer times in random order and get the first card
-        for i in range(0, self.cardsPerPlayer - cardsPlayer):
-            card = requests.get(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/cards/deck/main?random=True').json()[0]['id']
-
-            # Cannot have the same card twice
-            while card in cards:
-                card = requests.get(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/cards/deck/main?random=True').json()[0]['id']
-            
-            cards.append(card)
-
-        # Remove those cards from the main deck and add them to the player's hand
-        for card in cards:
-            requests.delete(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/cards/deck/main/{card}')
-            requests.post(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/cards/player/{player}/{card}')
-
     def cards_playing_header_set(self, player, id):
         requests.post(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/cards/player/{player}/header/{id}')
 
@@ -186,95 +271,13 @@ class Game(metaclass=MultipleMeta):
             order = {}
             for player in self.players:
                 header = requests.get(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/cards/player/{player}/header').json()['id']
-                print(header)
                 header = self.card_get(header)['points']
-                print(header)
                 order[header] = player
 
             for card in sorted(list(order.keys()))[::-1]:
                 self.playingOrder.append(order[card])
                 self.playingOrderCurrent.append(order[card])
                 # self.playingOrder and self.playingOrderCurrent will look something like ['US', 'Russia'...]
-
-    def is_players_turn(self, player):
-        if len(self.playingOrderCurrent) > 0 and self.playingOrderCurrent[0] == player:
-            return True
-        return False
-    
-    def is_player_with_edge(self, player, country):
-        if country['influence'] == {}:
-            return False
-        else:
-            # Get the influence of the player
-            influence = country['influence'].get(player, {'influence': 0})['influence']
-
-            # Check if another player has more or the same influence
-            for anotherPlayer in [eachPlayer for eachPlayer in country['influence'] if eachPlayer != player]:
-                if country['influence'][anotherPlayer]['influence'] >= influence:
-                    return False
-            
-            return True
-
-    def is_another_player_with_edge(self, player, country):
-        if country['influence'] == {}:
-            return False
-        else:
-            # Get the influence of the player
-            influence = country['influence'].get(player, {'influence': 0})['influence']
-
-            # Check if another player has more influence
-            for anotherPlayer in [eachPlayer for eachPlayer in country['influence'] if eachPlayer != player]:
-                if country['influence'][anotherPlayer]['influence'] > influence:
-                    return True
-            
-            return False
-
-    def after_play_actions(self, player, card):
-        id = card['id']
-        # Remove the card from the player's hand
-        requests.delete(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/cards/player/{player}/{id}')
-        
-        # Remove the card from the player's header (if header == card)
-        if self.cards_player_get(player)[player]['header'] == id:
-            requests.delete(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/cards/player/{player}/header')
-
-        # If the card has to be kept on the board, send it to playing
-        if card['inPlay'] == True:
-            requests.post(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/cards/playing/{id}')
-        else:
-            # If card['remove'] == true, send card to the removed deck, otherwise send to the discarded deck
-            if card['remove'] == True:
-                requests.post(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/cards/deck/removed/{id}')
-            else:
-                requests.post(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/cards/deck/discarded/{id}')
-
-    def after_turn_actions(self, player):
-        # If postHeaderPhase
-        if self.isPostHeaderPhase == True:
-            # If players left, pass the turn
-            if len(self.playingOrderCurrent) > 0:
-                self.playingOrderCurrent.pop(0)
-        # If not postHeaderPhase
-        else:
-            # If players left and the actual player has only 1 card in his hand, pass the turn
-            if len(self.playingOrderCurrent) > 0:
-                if len(self.cards_player_get(player)[player]['hand']) == 1:
-                    self.playingOrderCurrent.pop(0)
-        
-        # If there are no players left to play in this turn
-        if len(self.playingOrderCurrent) == 0:
-            # If not in the postHeaderPhase
-            if self.isPostHeaderPhase == False:
-                # New round must begin
-                requests.post(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/board/round')
-
-                # Deal each player as many cards as he needs
-                for eachPlayer in self.players:
-                    self.cards_deal(eachPlayer)
-            
-            # Always reconstruct the playing order
-            if len(self.playingOrderCurrent) == 0:
-                self.playingOrderCurrent = [eachPlayer for eachPlayer in self.playingOrder]
 
     def cards_play_influence(self, player, id, body, validate=False):
         # Check if the card exists
@@ -375,11 +378,11 @@ class Game(metaclass=MultipleMeta):
             region = countries[eachCountry]['region']
             requests.put(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/board/map/{region}/{eachCountry}', json=countries[eachCountry])
         
-        # Perform the after play logic
-        self.after_play_actions(player, card)
+        # Handle the player's played card
+        self.handle_players_card(player, card)
 
-        # Perform the after turn logic
-        self.after_turn_actions(player)
+        # Handle the player's play
+        self.handle_players_play(player)
         
         return True
 
@@ -415,7 +418,9 @@ class Game(metaclass=MultipleMeta):
                 # TODO: Call the function with the increment in score
 
             # If only validate
-            if validate == True: return diceRoll
+            if validate == True:
+                print('returning the dice roll')
+                return diceRoll
 
             # If player was lucky
             if diceRoll > 0:
@@ -428,11 +433,11 @@ class Game(metaclass=MultipleMeta):
             else:
                 # The player lost this card, so we continue with the game
                 
-                # Perform the after play logic
-                self.after_play_actions(player, card)
+                # Handle the player's played card
+                self.handle_players_card(player, card)
 
-                # Perform the after turn logic
-                self.after_turn_actions(player)
+                # Handle the player's play
+                self.handle_players_play(player)
 
                 # Return the result of the dice throw
                 return diceRoll
@@ -509,11 +514,11 @@ class Game(metaclass=MultipleMeta):
             # Unset the destabilization for the next destabilization play
             self.destabilization = None
             
-            # Perform the after play logic
-            self.after_play_actions(player, card)
+            # Handle the player's played card
+            self.handle_players_card(player, card)
 
-            # Perform the after turn logic
-            self.after_turn_actions(player)
+            # Handle the player's play
+            self.handle_players_play(player)
         
         return True
 
@@ -784,10 +789,10 @@ class Game(metaclass=MultipleMeta):
         else:
             return False
         
-        # Perform the after play logic
-        self.after_play_actions(player, card)
+        # Handle the player's played card
+        self.handle_players_card(player, card)
 
-        # Perform the after turn logic
-        self.after_turn_actions(player)
+        # Handle the player's play
+        self.handle_players_play(player)
 
         return True
