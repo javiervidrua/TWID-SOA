@@ -714,16 +714,6 @@
               "maximum": 100,
               "example": 3
             }
-          },
-          {
-            "in": "query",
-            "name": "validate",
-            "description": "Specify if only validate the play",
-            "required": false,
-            "schema": {
-              "type": "boolean",
-              "default": false
-            }
           }
         ],
         "responses": {
@@ -828,7 +818,7 @@
         "tags": [
           "Game"
         ],
-        "summary": "Play the specified punctuation card. Score",
+        "summary": "Play the specified punctuation card. Score it",
         "description": "Play the specified punctuation card. Score it",
         "security": [
           {
@@ -858,6 +848,16 @@
               "maximum": 100,
               "example": 3
             }
+          },
+          {
+            "in": "query",
+            "name": "validate",
+            "description": "Specify if only validate the play",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
           }
         ],
         "responses": {
@@ -877,6 +877,16 @@
           "401": {
             "description": "Unauthorized"
           }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/card-playing-score"
+              }
+            }
+          },
+          "description": "Region to score"
         }
       }
     },
@@ -1513,6 +1523,18 @@
               "China": 1
             }
           ]
+        }
+      },
+      "card-playing-score": {
+        "type": "object",
+        "required": [
+          "region"
+        ],
+        "properties": {
+          "region": {
+            "type": "string",
+            "example": "NC America"
+          }
         }
       },
       "card-playing-text": {

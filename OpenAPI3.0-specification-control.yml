@@ -522,7 +522,7 @@ paths:
     post:
       tags:
         - Game
-      summary: Play the specified punctuation card. Score
+      summary: Play the specified punctuation card. Score it
       description: Play the specified punctuation card. Score it
       security:
         - X-ACCESS-TOKEN: []
@@ -544,6 +544,13 @@ paths:
             minimum: 1
             maximum: 100
             example: 3
+        - in: query
+          name: validate
+          description: Specify if only validate the play
+          required: false
+          schema:
+            type: boolean
+            default: false
       responses:
         '200':
           description: Card
@@ -555,6 +562,12 @@ paths:
           description: Bad request
         '401':
           description: Unauthorized
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/card-playing-score'
+        description: Region to score
   /game/{game}/cards/playing/nwo/{id}:
     post:
       tags:
@@ -940,6 +953,14 @@ components:
               name:
                 type: integer
       example: {"target": "Congo","add": [{"US": 2}], "remove": [{"China": 1}]}
+    card-playing-score:
+      type: object
+      required:
+        - region
+      properties:
+        region:
+          type: string
+          example: NC America
     card-playing-text:
       type: object
       properties:

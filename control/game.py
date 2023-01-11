@@ -82,8 +82,7 @@ class Game(metaclass=MultipleMeta):
         [self.players.pop(playerToRemove, None) for playerToRemove in [player for player in self.players if self.players[player] == None]]
 
         # Only allow 2, 3 and 4 player games
-        if len(self.players) not in [2, 3, 4]:
-            return False
+        if len(self.players) not in [2, 3, 4]: return False
 
         # Get the number of cards that each player will have (depends on the number of players)
         self.cardsPerPlayer = {2:7, 3:5, 4:4}[len(self.players)]
@@ -156,6 +155,44 @@ class Game(metaclass=MultipleMeta):
                     return True
             
             return False
+    
+    def increment_player_score(self, player, increment):
+        score = self.board_score_get()
+
+        # Increment the score
+        if increment !=0:
+            for eachPlayer in score:
+                if eachPlayer['name'] == player:
+                    eachPlayer['score'] += increment
+
+                    # If score is negative, share the VP among the rest of the players, starting from the player of his block if any
+                    if eachPlayer['score'] < 0:
+                        rest = eachPlayer['score'] * -1
+                        eachPlayer['score'] = 0
+
+                        # Sort the players from lowest to highest score
+                        score = sorted(score, key=lambda x: x['score'])
+
+                        # Start from your block if any
+                        for key, val in {'US': 'EU', 'EU': 'US', 'China': 'Russia', 'Russia': 'China'}.items():
+                            if player == key and val in self.playingOrder:
+                                startingPlayer = next(filter(lambda x: x['name'] == val, score))
+                                score = list(filter(lambda x: x['name'] != val, score))
+                                score.insert(0, startingPlayer) # https://stackoverflow.com/questions/17911091/append-integer-to-beginning-of-list-in-python
+
+                        # Add the points
+                        while rest > 0:
+                            for eachPlayer in range(0, len(score)):
+                                score[eachPlayer]['score'] += 1
+                                rest -= 1
+                                if rest < 1: break
+                        
+                        # Update the scores
+                        for eachUpdatedPlayer in score:
+                            requests.put(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/board/score/' + eachUpdatedPlayer['name'], json={'score': eachUpdatedPlayer['score']})
+                    else:
+                        # Update the score of the player
+                        requests.put(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/board/score/{player}', json={'score': eachPlayer['score']})
 
     def handle_players_card(self, player, card):
         id = card['id']
@@ -280,10 +317,12 @@ class Game(metaclass=MultipleMeta):
                 # self.playingOrder and self.playingOrderCurrent will look something like ['US', 'Russia'...]
 
     def cards_play_influence(self, player, id, body, validate=False):
+        # If not the player's turn
+        if self.is_players_turn(player) == False: return False
+
         # Check if the card exists
         card = self.card_get(id)
-        if card == {}:
-            return False
+        if card == {}: return False
 
         # Get all the countries of the map
         countriesAll = self.board_map_get()['countries']
@@ -308,8 +347,7 @@ class Game(metaclass=MultipleMeta):
                 isCountryAdjacentOrWithInfluence = True
 
             # Return if player has no influence in this or in the adjacent countries
-            if isCountryAdjacentOrWithInfluence == False:
-                return False
+            if isCountryAdjacentOrWithInfluence == False: return False
 
             # Count the influence points + stability of the country
             pointCount += target['target'][targetName]
@@ -319,8 +357,7 @@ class Game(metaclass=MultipleMeta):
             if target['targetExtra'] != None:
                 for extraTarget in target['targetExtra']:
                     # A player cannot have extra influence on himself
-                    if extraTarget == player:
-                        return False
+                    if extraTarget == player: return False
 
                     pointCount += target['targetExtra'][extraTarget]
             
@@ -353,8 +390,7 @@ class Game(metaclass=MultipleMeta):
                         influencePointsUsed += eachInfluence['extra'][player]
             
             # Check if the current influence + the extra influence from other players + the influence to sum is > 2
-            if countries[targetName]['influence'][player]['influence'] + influencePointsUsed + influencePointsToSum > 2:
-                return False
+            if countries[targetName]['influence'][player]['influence'] + influencePointsUsed + influencePointsToSum > 2: return False
 
             # Modify the player's influence over the country using the request body
             countries[targetName]['influence'][player]['influence'] += influencePointsToSum
@@ -363,8 +399,7 @@ class Game(metaclass=MultipleMeta):
             if target['targetExtra']:
                 for extraTarget in target['targetExtra']:
                     # Check if the country has x influence so x+target['targetExtra'][extraTarget] is <=2
-                    if countries[targetName]['influence'].get(extraTarget, {'influence': 0, 'extra': {}})['influence'] + target['targetExtra'][extraTarget] > 2:
-                        return False
+                    if countries[targetName]['influence'].get(extraTarget, {'influence': 0, 'extra': {}})['influence'] + target['targetExtra'][extraTarget] > 2: return False
 
                     # Add the extra influence
                     countries[targetName]['influence'][player]['extra'] = {extraTarget: target['targetExtra'][extraTarget]}
@@ -387,10 +422,12 @@ class Game(metaclass=MultipleMeta):
         return True
 
     def cards_play_destabilization(self, player, id, body, validate=False):
+        # If not the player's turn
+        if self.is_players_turn(player) == False: return False
+
         # Check if the card exists
         card = self.card_get(id)
-        if card == {}:
-            return False
+        if card == {}: return False
         
         # Check that the requested country exists and get its data
         country = body['target']
@@ -400,7 +437,7 @@ class Game(metaclass=MultipleMeta):
         country = country[0]
 
         # The target country cannot be a country that belongs to another player
-        if country['name'] in ['United States', 'United Kingdom', 'Benelux', 'Denmark', 'Germany', 'France', 'Spain', 'Italy', 'Greece', 'Russia', 'China']: return False
+        if country['name'] in ['United States', 'United Kingdom', 'Benelux', 'Denmark', 'Germany', 'France', 'Spain/Portugal', 'Italy', 'Greece', 'Russia', 'China']: return False
 
         # There has to be influence from another player
         if country['influence'] == {} or len([anotherPlayer for anotherPlayer in country['influence'] if anotherPlayer != player]) == 0: return False
@@ -413,9 +450,8 @@ class Game(metaclass=MultipleMeta):
 
             # If the country is conflictive, lose 1 VP
             if country['isConflictive'] == True:
-                newScore = [score for score in self.board_score_get() if score['name'] == player][0]['score'] - 1
-                # TODO: Implement function to update the score of a player. Parameter: {player: increment} e.g. {'US': -1} e.g. {'US': 2}
-                # TODO: Call the function with the increment in score
+                # newScore = [score for score in self.board_score_get() if score['name'] == player][0]['score'] - 1 # We don't need this
+                self.increment_player_score(player, -1)
 
             # If only validate
             if validate == True:
@@ -471,8 +507,7 @@ class Game(metaclass=MultipleMeta):
             # Check the influence to add
             for target in body['add']:
                 # Cannot have more than 2 of influence
-                if country['influence'].get(next(iter(target)), {'influence': 0})['influence'] + target[next(iter(target))] > 2:
-                    return False
+                if country['influence'].get(next(iter(target)), {'influence': 0})['influence'] + target[next(iter(target))] > 2: return False
                 
                 # Update the influence
                 if country['influence'].get(next(iter(target)), None) == None:
@@ -486,8 +521,7 @@ class Game(metaclass=MultipleMeta):
             # Check the influence to remove
             for target in body['remove']:
                 # Cannot have less than 0 of influence
-                if country['influence'].get(next(iter(target)), {'influence': 0})['influence'] - target[next(iter(target))] < 0:
-                    return False
+                if country['influence'].get(next(iter(target)), {'influence': 0})['influence'] - target[next(iter(target))] < 0: return False
                 
                 # Update the influence
                 if country['influence'].get(next(iter(target)), None) == None:
@@ -499,8 +533,7 @@ class Game(metaclass=MultipleMeta):
                 pointCount += target[next(iter(target))]
             
             # Cannot spend more points than diceRoll
-            if pointCount > self.destabilization['result']:
-                return False
+            if pointCount > self.destabilization['result']: return False
             
             #
             # If only validate
@@ -523,15 +556,12 @@ class Game(metaclass=MultipleMeta):
         return True
 
     def cards_play_text(self, player, id):
-        # PENDING IMPLEMENTATION
         # If not the player's turn or (header card is set and is trying to play another one), error out
-        if self.is_players_turn(player) == False or (self.cards_player_get(player)[player]['header'] != None and self.cards_player_get(player)[player]['header'] != id):
-            return False
+        if self.is_players_turn(player) == False or (self.cards_player_get(player)[player]['header'] != None and self.cards_player_get(player)[player]['header'] != id): return False
         
         # Check if the card exists
         card = self.card_get(id)
-        if card == {}:
-            return False
+        if card == {}: return False
 
         # Carry out the pertinent operations according to the card
         card = card.json()
@@ -587,6 +617,7 @@ class Game(metaclass=MultipleMeta):
                     if not self.is_player_with_edge(player, countryInfo):
                         countryInfo['influence'][player]['influence'] += 1
                         requests.put(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/board/map/Africa/Angola', json=countryInfo)
+        # TODO: IMPLEMENT LOGIC FOR THE REST OF THE CARDS
         elif card['id'] == 2:
             pass
         elif card['id'] == 3:
@@ -795,4 +826,116 @@ class Game(metaclass=MultipleMeta):
         # Handle the player's play
         self.handle_players_play(player)
 
+        return True
+    
+    def cards_play_score(self, player, id, body, validate=False):
+        # If not the player's turn
+        if self.is_players_turn(player) == False: return False
+        
+        # Check if the card exists
+        card = self.card_get(id)
+        if card == {}: return False
+        
+        # It has to be a punctuation card
+        if card['description'].startswith('PROMO.') == False: return False
+
+        # Get the board
+        board = self.board_map_get()
+
+        # The region has to exist
+        if body['region'] not in board['regions']: return False
+
+        # If only validate, return here
+        if validate == True: return True
+        
+        # Get the countries of the specified region
+        countries = [country for country in board['countries'] if country['region'] == body['region']]
+
+        #
+        # Evaluate presence
+        for eachPlayer in self.playingOrder:
+            countriesEdged = [country for country in countries if self.is_player_with_edge(eachPlayer, country)]
+            if len(countriesEdged) > 0:
+                self.increment_player_score(eachPlayer, board['regionScoring'][body['region']]['presence'])
+
+        #
+        # Evaluate domination
+        domination = {}
+        for eachPlayer in self.playingOrder:
+            countriesEdged = [country for country in countries if self.is_player_with_edge(eachPlayer, country)]
+            
+            conflictive = False
+            nonConflictive = False
+
+            for country in countriesEdged:
+                if country['isConflictive']: conflictive = True
+                if not country['isConflictive']: nonConflictive = True
+            
+            # Store the number of countries that the player has the edge in and if at least one country is conflictive and at least another one is not, from within the countries that he has the edge in
+            domination[player] = {'count': len(countriesEdged), 'domination': False}
+            if conflictive and nonConflictive: domination[player]['domination': True]
+
+        # If there is a player with more countries edged than any other
+        points = [domination[player]['count'] for player in domination]
+        if points.count(max(points)) == 1:
+            
+            for key, val in domination.items():
+                
+                # Find the player more countries edged than any other
+                if val['count'] == max(points):
+                    
+                    if val['domination'] == True:
+                        self.increment_player_score(key, board['regionScoring'][body['region']]['domination'])
+
+        #
+        # Evaluate control
+        control = {}
+        for eachPlayer in self.playingOrder:
+            countriesEdged = [country for country in countries if self.is_player_with_edge(eachPlayer, country)]
+
+            nonConflictive = False
+
+            for country in countriesEdged:
+                if not country['isConflictive']: nonConflictive = True
+            
+            # Store the number of countries that the player has the edge in and if at least one country is non conflictive, from within the countries that he has the edge in
+            control[player] = {'count': len(countriesEdged), 'control': False}
+            if conflictive and nonConflictive: control[player]['control': True]
+
+        # If there is a player with more countries edged than any other
+        points = [control[player]['count'] for player in control]
+        if points.count(max(points)) == 1:
+            
+            for key, val in control.items():
+                
+                # Find the player more countries edged than any other
+                if val['count'] == max(points):
+                    
+                    # If player has edge in non conflictive country and also has edge in all confilctive countries
+                    if val['control'] == True and val['count'] >= len([country for country in countries if country['isConflictive']]):
+                        self.increment_player_score(key, board['regionScoring'][body['region']]['control'])
+
+        #
+        # Evaluate conflictive countries
+        for eachPlayer in self.playingOrder:
+            conflictiveCountriesEdged = [country for country in countries if self.is_player_with_edge(eachPlayer, country) and country['isConflictive']]
+            self.increment_player_score(eachPlayer, len(conflictiveCountriesEdged))
+
+        #
+        # Evaluate countries edged by another players that are adjacent to the player's superpower countries. The player also loses 1 VP per each of his superpower countries edged by another player
+        for key, val in {'US': ['United States'], 'EU': ['United Kingdom', 'Benelux', 'Denmark', 'Germany', 'France', 'Spain/Portugal', 'Italy', 'Greece'], 'China': ['China'], 'Russia': ['Russia']}.items():
+            if key not in self.playingOrder: continue
+
+            pointsToLose = -len([country for country in countries if self.is_another_player_with_edge(key, country) and any(c in country['adjacent'] for c in val)])
+            pointsToLose -= len([c for c in val if self.is_another_player_with_edge(key, next(iter([country for country in board['countries'] if country['name'] == c])))])
+            if pointsToLose != 0:
+                self.increment_player_score(key, pointsToLose)
+        
+        #
+        # Handle the player's played card
+        self.handle_players_card(player, card)
+
+        # Handle the player's play
+        self.handle_players_play(player)
+        
         return True

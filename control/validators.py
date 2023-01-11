@@ -40,3 +40,6 @@ class GameGameCardsPlayingDestabilization(BaseModel):
     target: str
     add: Optional[List[Dict[str, int]]]
     remove: Optional[List[Dict[str, int]]]
+
+class GameGameCardsPlayingScore(BaseModel):
+    region: str
