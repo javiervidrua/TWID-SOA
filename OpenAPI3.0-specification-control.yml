@@ -594,6 +594,13 @@ paths:
             minimum: 1
             maximum: 100
             example: 3
+        - in: query
+          name: validate
+          description: Specify if only validate the play
+          required: false
+          schema:
+            type: boolean
+            default: false
       responses:
         '200':
           description: Card

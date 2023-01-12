@@ -831,7 +831,7 @@ class Game(metaclass=MultipleMeta):
     def cards_play_score(self, player, id, body, validate=False):
         # If not the player's turn
         if self.is_players_turn(player) == False: return False
-        
+
         # Check if the card exists
         card = self.card_get(id)
         if card == {}: return False
@@ -931,6 +931,56 @@ class Game(metaclass=MultipleMeta):
             if pointsToLose != 0:
                 self.increment_player_score(key, pointsToLose)
         
+        #
+        # Handle the player's played card
+        self.handle_players_card(player, card)
+
+        # Handle the player's play
+        self.handle_players_play(player)
+        
+        return True
+
+    def cards_play_nwo(self, player, id, body, validate=False):
+        # If not the player's turn
+        if self.is_players_turn(player) == False: return False
+        
+        # Check if the card exists
+        card = self.card_get(id)
+        if card == {}: return False
+
+        # Get the board
+        board = self.board_map_get()
+
+        # The nwo track slot has to exist
+        slotsNames = []
+        [slotsNames.extend(list(slot.keys())) for slot in list(board['nwo'].values())]
+        if body['name'] not in slotsNames: return False
+
+        # Find the track and the slot
+        for track in board['nwo']:
+            for slot in board['nwo'][track]:
+                
+                if slot == body['name']:
+                    
+                    # Check if there is a veto against this player or if there is another player in the ahead field
+                    if board['nwo'][track][slot]['veto'] == player or board['nwo'][track][slot]['ahead'] in [anotherPlayer for anotherPlayer in self.playingOrder if anotherPlayer != player]:
+                        return False
+
+                    # If only validate, return here
+                    if validate == True: return True
+
+                    # Remove the veto and the ahead from the nwo track slot
+                    board['nwo'][track][slot]['veto'] = board['nwo'][track][slot]['ahead'] = ''
+
+                    # If there was supremacy, remove it, otherwise, give it to the player
+                    if board['nwo'][track][slot]['supremacy'] != '':
+                        board['nwo'][track][slot]['supremacy'] = ''
+                    else:
+                        board['nwo'][track][slot]['supremacy'] = player
+
+                    # Update the track slot
+                    requests.put(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/board/nwo/{track}/{slot}', json=board['nwo'][track][slot])
+
         #
         # Handle the player's played card
         self.handle_players_card(player, card)

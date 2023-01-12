@@ -43,3 +43,6 @@ class GameGameCardsPlayingDestabilization(BaseModel):
 
 class GameGameCardsPlayingScore(BaseModel):
     region: str
+
+class GameGameCardsPlayingNwo(BaseModel):
+    name: str
