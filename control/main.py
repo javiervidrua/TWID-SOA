@@ -1,3 +1,4 @@
+import logging
 import json
 from game import Game
 import validators
@@ -7,6 +8,17 @@ from uuid import uuid4
 # https://fastapi.tiangolo.com/advanced/response-change-status-code/
 from fastapi import FastAPI, Request, Response, status, HTTPException, Depends
 app = FastAPI()
+
+
+# Define the logger
+logger = logging.getLogger('control_logger')
+level = config.ENV_LOGGING_LEVEL
+logger.setLevel(level)
+ch = logging.StreamHandler()
+ch.setLevel(level)
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+ch.setFormatter(formatter)
+logger.addHandler(ch)
 
 
 # Custom OpenAPI 3.0 specification file
@@ -38,18 +50,11 @@ def verify_token(req: Request):
     global users
     global games
 
-    # If ENV_DEBUG is enabled, don't ask for a token
+    # If ENV_DEBUG is enabled, don't ask for a token if not provided, set the predefined one
     if config.ENV_DEBUG == 'True' and req.headers.get("X-ACCESS-TOKEN", None) == None:
+        logger.info('Access token not provided, setting predefined one')
         token = 'development-token-0000-0001'
         users[token] = users.get(token, {'games': []})
-        
-        # # These next few lines are used to pre-create a game ready to play the header card as text
-        # # Only uncomment when necessary
-        # users[token] = users.get(token, {'games': ['asdfghjkll']})
-        # # This causes the before created Game to lose all its references and __del__() gets called
-        # # games['asdfghjkll'] = games.get('asdfghjkll', Game('asdfghjkll', 'development-token-0000-0001', 'development-token-0000-0002'))
-        # # So we have to use this
-        # if games.get('asdfghjkll', None) == None: games['asdfghjkll'] = Game('asdfghjkll', 'development-token-0000-0001', 'development-token-0000-0002')
         
         return token
 
@@ -58,13 +63,31 @@ def verify_token(req: Request):
 
     # If the token is not valid, raise exception
     if 'Bearer ' not in token or token.split('Bearer ')[1] not in users:
+        logger.error(f'Invalid access token {token}')
         raise AuthenticationException()
     return token.split('Bearer ')[1]
+
+# Function to debug the status of the service
+def debug(game, player):
+    logger.debug('get_players(): ' + str(game.get_players()))
+    logger.debug('get_playingOrder(): ' + str(game.get_playingOrder()))
+    logger.debug('get_playingOrderCurrent(): ' + str(game.get_playingOrderCurrent()))
+    logger.debug('get_isStarted(): ' + str(game.get_isStarted()))
+    logger.debug('get_isHeaderPhase(): ' + str(game.get_isHeaderPhase()))
+    logger.debug('get_isPostHeaderPhase(): ' + str(game.get_isPostHeaderPhase()))
+    logger.debug('get_destabilization(): ' + str(game.get_destabilization()))
+    logger.debug('get_isFinished(): ' + str(game.get_isFinished()))
+    logger.debug('cards_playing_get(): ' + str(game.cards_playing_get()))
+    logger.debug('cards_player_get(): ' + str(game.cards_player_get(player)))
+    logger.debug('board_round_get(): ' + str(game.board_round_get()))
+    logger.debug('board_score_get(): ' + str(game.board_score_get()))
+    # logger.debug('board_map_get(): ' + str(game.board_map_get()))
 
 
 # Auth endpoints
 @app.post('/auth/signin/guest')
 async def auth_signing_guest_post(request: Request, response: Response):
+    logger.info(f'/auth/signin/guest')
     try:
         global users
         global usersLogs
@@ -83,10 +106,11 @@ async def auth_signing_guest_post(request: Request, response: Response):
         usersLogs[ip]['count'] = usersLogs[ip].get('count', 0) + 1
 
         # Log
-        print(f'LOG:      auth/signin/guest: {usersLogs[ip]}')
+        logger.info(f'Token request by IP {ip}')
 
         # Allow maximum of 10 requests per 24 hours
         if usersLogs[ip]['count'] > 10:
+            logger.info(f'Blocked IP {ip}')
             return Response(status_code=status.HTTP_429_TOO_MANY_REQUESTS)
 
         # Create a new uuid4 (a new user) # https://stackoverflow.com/questions/534839/how-to-create-a-guid-uuid-in-python
@@ -102,6 +126,7 @@ async def auth_signing_guest_post(request: Request, response: Response):
 
 @app.post('/auth/signout')
 async def auth_signout_post(request: Request, response: Response, token: str = Depends(verify_token)):
+    logger.info(f'/auth/signout')
     try:
         global users
         global usersLogs
@@ -113,7 +138,7 @@ async def auth_signout_post(request: Request, response: Response, token: str = D
         usersLogs[ip]['count'] = usersLogs[ip]['count'] - 1
 
         # Log
-        print(f'LOG:      auth/signout: {usersLogs[ip]}')
+        logger.info(f'Token deletion by IP {ip}')
 
         # Remove the uuid4 (the user id) from the users object (sign the user out)
         users.pop(token, None)
@@ -128,6 +153,7 @@ async def auth_signout_post(request: Request, response: Response, token: str = D
 # Game endpoints
 @app.get('/game')
 async def game_get(response: Response, token: str = Depends(verify_token)):
+    logger.info(f'/game')
     try:
         global users
         global games
@@ -152,6 +178,7 @@ async def game_get(response: Response, token: str = Depends(verify_token)):
 
 @app.post('/game')
 async def game_post(response: Response, token: str = Depends(verify_token)):
+    logger.info(f'/game')
     try:
         global users
         global games
@@ -178,6 +205,7 @@ async def game_post(response: Response, token: str = Depends(verify_token)):
 
 @app.get('/game/{game}')
 async def game_game_get(game: str, response: Response, token: str = Depends(verify_token)):
+    logger.info(f'/game/{game}')
     try:
         global users
         global games
@@ -191,7 +219,7 @@ async def game_game_get(game: str, response: Response, token: str = Depends(veri
             'isStarted': games[game].get_isStarted(),
             'isFinished': games[game].get_isFinished(),
             'isHeaderPhase': games[game].get_isHeaderPhase(),
-            'playingOrder': games[game].get_playingOrder(),
+            'playingOrder': games[game].get_playingOrderCurrent(),
             'players': [player for player in games[game].get_players() if games[game].get_players()[player] != None]
         }
     except Exception as e:
@@ -201,6 +229,7 @@ async def game_game_get(game: str, response: Response, token: str = Depends(veri
 
 @app.post('/game/{game}')
 async def game_game_post(game: str, response: Response, token: str = Depends(verify_token)):
+    logger.info(f'/game/{game}')
     try:
         global users
         global games
@@ -219,6 +248,7 @@ async def game_game_post(game: str, response: Response, token: str = Depends(ver
 
 @app.delete('/game/{game}')
 async def game_game_delete(game: str, response: Response, token: str = Depends(verify_token)):
+    logger.info(f'/game/{game}')
     try:
         global users
         global games
@@ -240,6 +270,7 @@ async def game_game_delete(game: str, response: Response, token: str = Depends(v
 
 @app.post('/game/{game}/player/{player}')
 async def game_game_player_player_post(game: str, player: str, response: Response, token: str = Depends(verify_token)):
+    logger.info(f'/game/{game}/player/{player}')
     try:
         global users
         global games
@@ -266,6 +297,7 @@ async def game_game_player_player_post(game: str, player: str, response: Respons
 
 @app.get('/game/{game}/board/round')
 async def game_game_board_round_get(game: str, response: Response, token: str = Depends(verify_token)):
+    logger.info(f'/game/{game}/board/round')
     try:
         global games
 
@@ -287,6 +319,7 @@ async def game_game_board_round_get(game: str, response: Response, token: str = 
 
 @app.get('/game/{game}/board/score')
 async def game_game_board_score_get(game: str, response: Response, token: str = Depends(verify_token)):
+    logger.info(f'/game/{game}/board/score')
     try:
         global games
 
@@ -308,6 +341,7 @@ async def game_game_board_score_get(game: str, response: Response, token: str = 
 
 @app.get('/game/{game}/board/map')
 async def game_game_board_map_get(game: str, response: Response, token: str = Depends(verify_token)):
+    logger.info(f'/game/{game}/board/map')
     try:
         global games
 
@@ -329,6 +363,7 @@ async def game_game_board_map_get(game: str, response: Response, token: str = De
 
 @app.get('/game/{game}/cards/player')
 async def game_game_cards_player_get(game: str, response: Response, token: str = Depends(verify_token)):
+    logger.info(f'/game/{game}/cards/player')
     try:
         global games
 
@@ -358,6 +393,7 @@ async def game_game_cards_player_get(game: str, response: Response, token: str =
 
 @app.get('/game/{game}/cards/playing')
 async def game_game_cards_playing_get(game: str, response: Response, token: str = Depends(verify_token)):
+    logger.info(f'/game/{game}/cards/playing')
     try:
         global games
 
@@ -381,6 +417,7 @@ async def game_game_cards_playing_get(game: str, response: Response, token: str 
 
 @app.get('/game/{game}/cards/{id}')
 async def game_game_cards_it_get(game: str, id: int, response: Response, token: str = Depends(verify_token)):
+    logger.info(f'/game/{game}/cards/{id}')
     try:
         global games
 
@@ -398,6 +435,7 @@ async def game_game_cards_it_get(game: str, id: int, response: Response, token: 
 
 @app.post('/game/{game}/cards/playing/influence/{id}')
 async def game_game_cards_playing_influence_id_post(game: str, id: int, body: validators.GameGameCardsPlayingInfluence, response: Response, token: str = Depends(verify_token), validate: bool=False):
+    logger.info(f'/game/{game}/cards/playing/influence/{id}')
     try:
         global users
         global games
@@ -412,9 +450,15 @@ async def game_game_cards_playing_influence_id_post(game: str, id: int, body: va
             return Response(status_code=status.HTTP_400_BAD_REQUEST)
         player = player[0]
 
+        # Debug
+        debug(games[game], player)
+
         # If the game has started and not ended, it's not in the header phase, it's not in the postHeader phase and the user belongs to that game, play the specified card by influence
         if games[game].get_isStarted() == True and games[game].get_isFinished() == False and games[game].get_isHeaderPhase() == False and games[game].get_isPostHeaderPhase() == False and token in list(games[game].get_players().values()) and id in games[game].cards_player_get(player)[player]['hand']:
             if games[game].cards_play_influence(player, id, json.loads(body.json()), validate) == True:
+                # Debug
+                debug(games[game], player)
+                
                 return games[game].card_get(id)
 
         # Otherwise, return bad request
@@ -426,6 +470,7 @@ async def game_game_cards_playing_influence_id_post(game: str, id: int, body: va
 
 @app.post('/game/{game}/cards/playing/destabilization/{id}')
 async def game_game_cards_playing_destabilization_id_post(game: str, id: int, body: validators.GameGameCardsPlayingDestabilization, response: Response, token: str = Depends(verify_token), validate: bool=False):
+    logger.info(f'/game/{game}/cards/playing/destabilization/{id}')
     try:
         global users
         global games
@@ -440,9 +485,15 @@ async def game_game_cards_playing_destabilization_id_post(game: str, id: int, bo
             return Response(status_code=status.HTTP_400_BAD_REQUEST)
         player = player[0]
 
+        # Debug
+        debug(games[game], player)
+
         # If the game has started and not ended, it's not in the header phase, it's not in the postHeader phase and the user belongs to that game, play the specified card by destabilization
         if games[game].get_isStarted() == True and games[game].get_isFinished() == False and games[game].get_isHeaderPhase() == False and games[game].get_isPostHeaderPhase() == False and token in list(games[game].get_players().values()) and id in games[game].cards_player_get(player)[player]['hand']:
             result = games[game].cards_play_destabilization(player, id, json.loads(body.json()), validate)
+
+            # Debug
+            debug(games[game], player)
             
             # If no validate
             if result == True:
@@ -466,6 +517,7 @@ async def game_game_cards_playing_destabilization_id_post(game: str, id: int, bo
 
 @app.post('/game/{game}/cards/playing/text/{id}')
 async def game_game_cards_playing_text_id_post(game: str, id: int, response: Response, token: str = Depends(verify_token)):
+    logger.info(f'/game/{game}/cards/playing/text/{id}')
     try:
         global users
         global games
@@ -480,9 +532,15 @@ async def game_game_cards_playing_text_id_post(game: str, id: int, response: Res
             return Response(status_code=status.HTTP_400_BAD_REQUEST)
         player = player[0]
 
-        # If the game has started and not ended, it's not in the header phase, it's in the postHeader phase and the user belongs to that game, play the specified card by its text
-        if games[game].get_isStarted() == True and games[game].get_isFinished() == False and games[game].get_isHeaderPhase() == False and games[game].get_isPostHeaderPhase() == True and token in list(games[game].get_players().values()) and id in games[game].cards_player_get(player)[player]['hand']:
+        # Debug
+        debug(games[game], player)
+
+        # If the game has started and not ended, it's not in the header phase (we don't care about the postHeader phase) and the user belongs to that game, play the specified card by its text
+        if games[game].get_isStarted() == True and games[game].get_isFinished() == False and games[game].get_isHeaderPhase() == False and token in list(games[game].get_players().values()) and id in games[game].cards_player_get(player)[player]['hand']:
             if games[game].cards_play_text(player, id) == True:
+                # Debug
+                debug(games[game], player)
+                
                 return games[game].card_get(id)
 
         # Otherwise, return bad request
@@ -494,6 +552,7 @@ async def game_game_cards_playing_text_id_post(game: str, id: int, response: Res
 
 @app.post('/game/{game}/cards/playing/score/{id}')
 async def game_game_cards_playing_score_id_post(game: str, id: int, body: validators.GameGameCardsPlayingScore, response: Response, token: str = Depends(verify_token), validate: bool=False):
+    logger.info(f'/game/{game}/cards/playing/score/{id}')
     try:
         global users
         global games
@@ -508,9 +567,15 @@ async def game_game_cards_playing_score_id_post(game: str, id: int, body: valida
             return Response(status_code=status.HTTP_400_BAD_REQUEST)
         player = player[0]
 
+        # Debug
+        debug(games[game], player)
+
         # If the game has started and not ended, it's not in the header phase, it's in the postHeader phase and the user belongs to that game, play the specified card by its score
         if games[game].get_isStarted() == True and games[game].get_isFinished() == False and games[game].get_isHeaderPhase() == False and games[game].get_isPostHeaderPhase() == False and token in list(games[game].get_players().values()) and id in games[game].cards_player_get(player)[player]['hand']:
             if games[game].cards_play_score(player, id, json.loads(body.json()), validate) == True:
+                # Debug
+                debug(games[game], player)
+
                 return games[game].card_get(id)
 
         # Otherwise, return bad request
@@ -522,6 +587,7 @@ async def game_game_cards_playing_score_id_post(game: str, id: int, body: valida
 
 @app.post('/game/{game}/cards/playing/nwo/{id}')
 async def game_game_cards_playing_nwo_id_post(game: str, id: int, body: validators.GameGameCardsPlayingNwo, response: Response, token: str = Depends(verify_token), validate: bool=False):
+    logger.info(f'/game/{game}/cards/playing/nwo/{id}')
     try:
         global users
         global games
@@ -536,9 +602,15 @@ async def game_game_cards_playing_nwo_id_post(game: str, id: int, body: validato
             return Response(status_code=status.HTTP_400_BAD_REQUEST)
         player = player[0]
 
+        # Debug
+        debug(games[game], player)
+
         # If the game has started and not ended, it's not in the header phase, it's in the postHeader phase and the user belongs to that game, play the specified card by its nwo
         if games[game].get_isStarted() == True and games[game].get_isFinished() == False and games[game].get_isHeaderPhase() == False and games[game].get_isPostHeaderPhase() == False and token in list(games[game].get_players().values()) and id in games[game].cards_player_get(player)[player]['hand']:
             if games[game].cards_play_nwo(player, id, json.loads(body.json()), validate) == True:
+                # Debug
+                debug(games[game], player)
+
                 return games[game].card_get(id)
 
         # Otherwise, return bad request
@@ -550,6 +622,7 @@ async def game_game_cards_playing_nwo_id_post(game: str, id: int, body: validato
 
 @app.post('/game/{game}/cards/playing/header/{id}')
 async def game_game_cards_playing_header_id_post(game: str, id: int, response: Response, token: str = Depends(verify_token)):
+    logger.info(f'/game/{game}/cards/playing/header/{id}')
     try:
         global users
         global games
@@ -564,9 +637,16 @@ async def game_game_cards_playing_header_id_post(game: str, id: int, response: R
             return Response(status_code=status.HTTP_400_BAD_REQUEST)
         player = player[0]
 
+        # Debug
+        debug(games[game], player)
+
         # If the game has started and not ended, it's in the header phase and the user belongs to that game, set the specified card as his header card
         if games[game].get_isStarted() == True and games[game].get_isFinished() == False and games[game].get_isHeaderPhase() == True and token in list(games[game].get_players().values()) and id in games[game].cards_player_get(player)[player]['hand']:
             games[game].cards_playing_header_set(player, id)
+            
+            # Debug
+            debug(games[game], player)
+            
             return Response(status_code=status.HTTP_200_OK)
 
         # Otherwise, return bad request

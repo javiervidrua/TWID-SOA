@@ -1,7 +1,12 @@
+import logging
 import config
 import requests
 import random
 from multimeta import MultipleMeta  # https://stackoverflow.com/a/49936625
+
+
+# Define the logger
+logger = logging.getLogger('control_logger')
 
 
 class Game(metaclass=MultipleMeta):
@@ -29,17 +34,6 @@ class Game(metaclass=MultipleMeta):
         self.destabilization = None
         self.isFinished = False
 
-    def __init__(self, id: str, playerUS: str, playerEU: str):
-        self.id = id
-        self.players = {'US': playerUS, 'EU': playerEU}
-        self.playingOrder = ['US', 'EU']
-        self.playingOrderCurrent = ['US', 'EU']
-        self.isStarted = True
-        self.isHeaderPhase = False
-        self.isPostHeaderPhase = False
-        self.destabilization = None
-        self.isFinished = False
-
     def __repr__(self):
         return self.id
     
@@ -53,6 +47,9 @@ class Game(metaclass=MultipleMeta):
     
     def get_playingOrder(self):
         return self.playingOrder
+    
+    def get_playingOrderCurrent(self):
+        return self.playingOrderCurrent
     
     def get_isStarted(self):
         return self.isStarted
@@ -107,6 +104,21 @@ class Game(metaclass=MultipleMeta):
 
         # Get the current number of cards of the player
         cardsPlayer = len(requests.get(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/cards/player/{player}').json())
+
+        # If the main deck has less than self.cardsPerPlayer-cardsPlayer cards, put the discarded cards back into the main deck
+        if len(requests.get(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/cards/deck/main?random=True').json()) < self.cardsPerPlayer - cardsPlayer:
+            logger.debug(f'There are not enough cards in the main deck to be able to deal to player {player}, shuffleling discarded deck into the main deck')
+            for card in requests.get(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/cards/deck/discarded').json():
+                requests.delete(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/cards/deck/discarded/' + str(card['id']))
+                requests.post(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/cards/deck/main/' + str(card['id']))
+
+        # If the current round is round 5 and there are no cards of the post era in the main deck, add them to it
+        mainDeckCards = [card['id'] for card in requests.get(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/cards/deck/main').json()]
+        postEraCards = [47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 100]
+        if not any (card in postEraCards for card in mainDeckCards) and requests.get(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/board/round').json()['round'] == 5:
+            logger.debug(f'Round 5, shuffleing post era cards into the main deck')
+            for card in postEraCards:
+                requests.post(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/cards/deck/main/{card}')
 
         # Call the main deck self.cardsPerPlayer times in random order and get the first card
         for i in range(0, self.cardsPerPlayer - cardsPlayer):
@@ -214,32 +226,60 @@ class Game(metaclass=MultipleMeta):
                 requests.post(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/cards/deck/discarded/{id}')
 
     def handle_players_play(self, player):
+        logger.debug(f'handle_players_play(): ' + f'Called with player={player}')
         # If postHeaderPhase
         if self.isPostHeaderPhase == True:
+            logger.debug(f'handle_players_play(): ' + 'Is post header phase')
             # If players left, pass the turn
             if len(self.playingOrderCurrent) > 0:
+                logger.debug(f'handle_players_play(): ' + 'There are players left, passing the turn to the next one')
                 self.playingOrderCurrent.pop(0)
         # If not postHeaderPhase
         else:
+            logger.debug(f'handle_players_play(): ' + 'Is NOT post header phase')
             # If players left and the actual player has only 1 card in his hand, pass the turn
             if len(self.playingOrderCurrent) > 0:
+                logger.debug(f'handle_players_play(): ' + 'There are players left')
+                logger.debug(f'handle_players_play(): Cards of the player {player}: ' + str(self.cards_player_get(player)[player]))
                 if len(self.cards_player_get(player)[player]['hand']) == 1:
+                    logger.debug(f'handle_players_play(): ' + 'the current player has only 1 card left in his hand, passing the turn to the next one')
                     self.playingOrderCurrent.pop(0)
         
         # If there are no players left to play in this turn
+        logger.debug(f'handle_players_play(): Playing order current: ' + str(self.playingOrderCurrent))
         if len(self.playingOrderCurrent) == 0:
+            logger.debug(f'handle_players_play(): ' + 'There are no players left to play')
             # If not in the postHeaderPhase
             if self.isPostHeaderPhase == False:
+                
+                # If round == 8, finish the game
+                if requests.get(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/board/round').json()['round'] >= 8:
+                    logger.debug(f'handle_players_play(): Finishing the game')
+                    return self.finish()
+                
+                logger.debug(f'handle_players_play(): ' + 'Starting a new round')
                 # New round must begin
                 requests.post(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/board/round')
 
                 # Deal each player as many cards as he needs
                 for eachPlayer in self.players:
+                    logger.debug(f'handle_players_play(): ' + f'Dealing cards to player {eachPlayer}')
                     self.deal_cards_player(eachPlayer)
+                
+                # Start the next round in the header phase
+                logger.debug(f'handle_players_play(): Setting the header phase')
+                self.isHeaderPhase = True
             
+            # If post header phase, end it
+            else:
+                logger.debug(f'handle_players_play(): Unsetting the post header phase')
+                self.isPostHeaderPhase = False
+
             # Always reconstruct the playing order
+            logger.debug(f'handle_players_play(): ' + 'Reconstructing the playing order')
             if len(self.playingOrderCurrent) == 0:
                 self.playingOrderCurrent = [eachPlayer for eachPlayer in self.playingOrder]
+                logger.debug(f'handle_players_play(): ' + f'New playing order: {str(self.playingOrderCurrent)}')
 
     #
     # Logic functions
@@ -305,15 +345,17 @@ class Game(metaclass=MultipleMeta):
             self.isPostHeaderPhase = True
 
             # Set the playing order
-            order = {}
+            order = []
+            self.playingOrder = []
+            self.playingOrderCurrent = []
             for player in self.players:
                 header = requests.get(f'http://{config.ENV_URL_SERVICE_RESOURCES}/game/{self.id}/cards/player/{player}/header').json()['id']
                 header = self.card_get(header)['points']
-                order[header] = player
+                order.append({'player': player, 'points': header})
 
-            for card in sorted(list(order.keys()))[::-1]:
-                self.playingOrder.append(order[card])
-                self.playingOrderCurrent.append(order[card])
+            for card in sorted(order, key=lambda x: x['points'])[::-1]:
+                self.playingOrder.append(card['player'])
+                self.playingOrderCurrent.append(card['player'])
                 # self.playingOrder and self.playingOrderCurrent will look something like ['US', 'Russia'...]
 
     def cards_play_influence(self, player, id, body, validate=False):
@@ -564,7 +606,6 @@ class Game(metaclass=MultipleMeta):
         if card == {}: return False
 
         # Carry out the pertinent operations according to the card
-        card = card.json()
         if card['id'] == 1:
             # Roll a dice
             diceRoll = random.choice([1, 2, 3, 4, 5, 6])
@@ -837,7 +878,7 @@ class Game(metaclass=MultipleMeta):
         if card == {}: return False
         
         # It has to be a punctuation card
-        if card['description'].startswith('PROMO.') == False: return False
+        if card['type'] == 'Punctuation': return False
 
         # Get the board
         board = self.board_map_get()

@@ -19,8 +19,6 @@ def custom_openapi():
 
 # Definitions
 app.openapi = custom_openapi
-# # This next line is used to pre-create a game ready to play and be used by the control service. Only uncomment when necessary
-# games = {'asdfghjkll': Game('asdfghjkll')}
 games = {}
 board = None
 cards = None
@@ -38,7 +36,7 @@ async def game_get(response: Response):
             return []
 
         response.status_code = status.HTTP_200_OK
-        return [{'id':gameId} for gameId in list(games.keys())]
+        return [{'id': gameId} for gameId in list(games.keys())]
     except Exception as e:
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
         return {'Error': e}
@@ -597,7 +595,7 @@ async def cards_playing_get(game: str, response: Response):
         cards = games[game].cards
 
         response.status_code = status.HTTP_200_OK
-        return cards.cards_playing_get()
+        return [{'id': card} for card in cards.cards_playing_get()]
     except Exception as e:
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
         return {'Error': e}
