@@ -62,7 +62,7 @@ def verify_token(req: Request):
     token = req.headers.get("X-ACCESS-TOKEN", None)
 
     # If the token is not valid, raise exception
-    if 'Bearer ' not in token or token.split('Bearer ')[1] not in users:
+    if token == None or 'Bearer ' not in token or token.split('Bearer ')[1] not in users:
         logger.error(f'Invalid access token {token}')
         raise AuthenticationException()
     return token.split('Bearer ')[1]

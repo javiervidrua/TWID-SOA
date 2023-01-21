@@ -4,7 +4,11 @@ servers:
   - description: Local server
     url: http://localhost:8001
   - description: Local server 2
-    url: http://localhost:4442
+    url: http://localhost:4001
+  - description: Production server
+    url: https://prodiasv30.fis.usal.es:443
+  - description: Production server local
+    url: https://localhost:443
 
 info:
   description: TWID-SOA API for the control service.
