@@ -878,7 +878,7 @@ class Game(metaclass=MultipleMeta):
         if card == {}: return False
         
         # It has to be a punctuation card
-        if card['type'] == 'Punctuation': return False
+        if card['type'] != 'Punctuation': return False
 
         # Get the board
         board = self.board_map_get()
