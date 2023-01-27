@@ -1,0 +1,3874 @@
+{
+	"info": {
+		"_postman_id": "47005e1c-d7f5-4db0-ad25-22ccb51672e7",
+		"name": "TWID-SOA-API-control",
+		"description": "TWID-SOA API for the control service.\n\nContact Support:\n Email: javiervidrua@gmail.com",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "Sign in as guest. Session lasts 24 hours.",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/auth/signin/guest",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"signin",
+								"guest"
+							]
+						},
+						"description": "Sign in as guest. Session lasts 24 hours."
+					},
+					"response": [
+						{
+							"name": "Signed in",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/auth/signin/guest",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"auth",
+										"signin",
+										"guest"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"access_token\": \"829863b3-3ba3-4357-a819-fa62ee39b426\",\n  \"token_type\": \"Bearer\"\n}"
+						},
+						{
+							"name": "Too many requests",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/auth/signin/guest",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"auth",
+										"signin",
+										"guest"
+									]
+								}
+							},
+							"status": "Too Many Requests",
+							"code": 429,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "text/plain"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Sign out",
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "key",
+									"value": "X-ACCESS-TOKEN",
+									"type": "string"
+								},
+								{
+									"key": "value",
+									"value": "<API Key>",
+									"type": "string"
+								},
+								{
+									"key": "in",
+									"value": "header",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/auth/signout",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"signout"
+							]
+						},
+						"description": "Sign out"
+					},
+					"response": [
+						{
+							"name": "Signed out",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"description": "Added as a part of security scheme: apikey",
+										"key": "X-ACCESS-TOKEN",
+										"value": "<API Key>"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/auth/signout",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"auth",
+										"signout"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"access_token\": \"829863b3-3ba3-4357-a819-fa62ee39b426\",\n  \"token_type\": \"Bearer\"\n}"
+						},
+						{
+							"name": "Unauthorized",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"description": "Added as a part of security scheme: apikey",
+										"key": "X-ACCESS-TOKEN",
+										"value": "<API Key>"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/auth/signout",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"auth",
+										"signout"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "text/plain"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "game",
+			"item": [
+				{
+					"name": "{game}",
+					"item": [
+						{
+							"name": "board",
+							"item": [
+								{
+									"name": "Get the round",
+									"request": {
+										"auth": {
+											"type": "apikey",
+											"apikey": [
+												{
+													"key": "key",
+													"value": "X-ACCESS-TOKEN",
+													"type": "string"
+												},
+												{
+													"key": "value",
+													"value": "<API Key>",
+													"type": "string"
+												},
+												{
+													"key": "in",
+													"value": "header",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/game/:game/board/round",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"game",
+												":game",
+												"board",
+												"round"
+											],
+											"variable": [
+												{
+													"key": "game",
+													"value": "zq7d24gr9n",
+													"description": "(Required) Id of the game"
+												}
+											]
+										},
+										"description": "Get the round"
+									},
+									"response": [
+										{
+											"name": "Round number",
+											"originalRequest": {
+												"method": "GET",
+												"header": [
+													{
+														"description": "Added as a part of security scheme: apikey",
+														"key": "X-ACCESS-TOKEN",
+														"value": "<API Key>"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/game/:game/board/round",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"game",
+														":game",
+														"board",
+														"round"
+													],
+													"variable": [
+														{
+															"key": "game",
+															"value": "zq7d24gr9n",
+															"description": "(Required) Id of the game"
+														}
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"round\": 1\n}"
+										},
+										{
+											"name": "Bad request",
+											"originalRequest": {
+												"method": "GET",
+												"header": [
+													{
+														"description": "Added as a part of security scheme: apikey",
+														"key": "X-ACCESS-TOKEN",
+														"value": "<API Key>"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/game/:game/board/round",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"game",
+														":game",
+														"board",
+														"round"
+													],
+													"variable": [
+														{
+															"key": "game",
+															"value": "zq7d24gr9n",
+															"description": "(Required) Id of the game"
+														}
+													]
+												}
+											},
+											"status": "Bad Request",
+											"code": 400,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "text/plain"
+												}
+											],
+											"cookie": [],
+											"body": ""
+										},
+										{
+											"name": "Unauthorized",
+											"originalRequest": {
+												"method": "GET",
+												"header": [
+													{
+														"description": "Added as a part of security scheme: apikey",
+														"key": "X-ACCESS-TOKEN",
+														"value": "<API Key>"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/game/:game/board/round",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"game",
+														":game",
+														"board",
+														"round"
+													],
+													"variable": [
+														{
+															"key": "game",
+															"value": "zq7d24gr9n",
+															"description": "(Required) Id of the game"
+														}
+													]
+												}
+											},
+											"status": "Unauthorized",
+											"code": 401,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "text/plain"
+												}
+											],
+											"cookie": [],
+											"body": ""
+										}
+									]
+								},
+								{
+									"name": "Get the score of the players",
+									"request": {
+										"auth": {
+											"type": "apikey",
+											"apikey": [
+												{
+													"key": "key",
+													"value": "X-ACCESS-TOKEN",
+													"type": "string"
+												},
+												{
+													"key": "value",
+													"value": "<API Key>",
+													"type": "string"
+												},
+												{
+													"key": "in",
+													"value": "header",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/game/:game/board/score",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"game",
+												":game",
+												"board",
+												"score"
+											],
+											"variable": [
+												{
+													"key": "game",
+													"value": "zq7d24gr9n",
+													"description": "(Required) Id of the game"
+												}
+											]
+										},
+										"description": "Get the score of the players"
+									},
+									"response": [
+										{
+											"name": "Score of the players",
+											"originalRequest": {
+												"method": "GET",
+												"header": [
+													{
+														"description": "Added as a part of security scheme: apikey",
+														"key": "X-ACCESS-TOKEN",
+														"value": "<API Key>"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/game/:game/board/score",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"game",
+														":game",
+														"board",
+														"score"
+													],
+													"variable": [
+														{
+															"key": "game",
+															"value": "zq7d24gr9n",
+															"description": "(Required) Id of the game"
+														}
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "[\n  {\n    \"name\": \"US\",\n    \"score\": 4\n  },\n  {\n    \"name\": \"US\",\n    \"score\": 4\n  }\n]"
+										},
+										{
+											"name": "Bad request",
+											"originalRequest": {
+												"method": "GET",
+												"header": [
+													{
+														"description": "Added as a part of security scheme: apikey",
+														"key": "X-ACCESS-TOKEN",
+														"value": "<API Key>"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/game/:game/board/score",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"game",
+														":game",
+														"board",
+														"score"
+													],
+													"variable": [
+														{
+															"key": "game",
+															"value": "zq7d24gr9n",
+															"description": "(Required) Id of the game"
+														}
+													]
+												}
+											},
+											"status": "Bad Request",
+											"code": 400,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "text/plain"
+												}
+											],
+											"cookie": [],
+											"body": ""
+										},
+										{
+											"name": "Unauthorized",
+											"originalRequest": {
+												"method": "GET",
+												"header": [
+													{
+														"description": "Added as a part of security scheme: apikey",
+														"key": "X-ACCESS-TOKEN",
+														"value": "<API Key>"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/game/:game/board/score",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"game",
+														":game",
+														"board",
+														"score"
+													],
+													"variable": [
+														{
+															"key": "game",
+															"value": "zq7d24gr9n",
+															"description": "(Required) Id of the game"
+														}
+													]
+												}
+											},
+											"status": "Unauthorized",
+											"code": 401,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "text/plain"
+												}
+											],
+											"cookie": [],
+											"body": ""
+										}
+									]
+								},
+								{
+									"name": "Get the map",
+									"request": {
+										"auth": {
+											"type": "apikey",
+											"apikey": [
+												{
+													"key": "key",
+													"value": "X-ACCESS-TOKEN",
+													"type": "string"
+												},
+												{
+													"key": "value",
+													"value": "<API Key>",
+													"type": "string"
+												},
+												{
+													"key": "in",
+													"value": "header",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/game/:game/board/map",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"game",
+												":game",
+												"board",
+												"map"
+											],
+											"variable": [
+												{
+													"key": "game",
+													"value": "zq7d24gr9n",
+													"description": "(Required) Id of the game"
+												}
+											]
+										},
+										"description": "Get the map"
+									},
+									"response": [
+										{
+											"name": "Map resources",
+											"originalRequest": {
+												"method": "GET",
+												"header": [
+													{
+														"description": "Added as a part of security scheme: apikey",
+														"key": "X-ACCESS-TOKEN",
+														"value": "<API Key>"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/game/:game/board/map",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"game",
+														":game",
+														"board",
+														"map"
+													],
+													"variable": [
+														{
+															"key": "game",
+															"value": "zq7d24gr9n",
+															"description": "(Required) Id of the game"
+														}
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"regions\": [\n    {\n      \"region\": \"proident\"\n    },\n    {\n      \"region\": \"esse dolore Lorem in\"\n    }\n  ],\n  \"countries\": [\n    {\n      \"name\": \"nulla in occaecat\",\n      \"region\": \"pariatur in magna consectetur cupidatat\",\n      \"stability\": 2,\n      \"isConflictive\": true,\n      \"isOilProducer\": true,\n      \"influence\": {\n        \"$player\": {\n          \"influence\": 1,\n          \"extra\": {\n            \"$player\": 1\n          }\n        }\n      }\n    },\n    {\n      \"name\": \"eu exercita\",\n      \"region\": \"in officia ut\",\n      \"stability\": 2,\n      \"isConflictive\": true,\n      \"isOilProducer\": true,\n      \"influence\": {\n        \"$player\": {\n          \"influence\": 1,\n          \"extra\": {\n            \"$player\": 1\n          }\n        }\n      }\n    }\n  ],\n  \"nwo\": {\n    \"track\": {\n      \"slot\": {\n        \"veto\": \"\",\n        \"ahead\": \"US\",\n        \"supremacy\": \"US\",\n        \"description\": \"Remove supremacy to add 1 influence to an already controlled country (usable before or after any action, yours or from other player, event or operation)\"\n      }\n    }\n  }\n}"
+										},
+										{
+											"name": "Bad request",
+											"originalRequest": {
+												"method": "GET",
+												"header": [
+													{
+														"description": "Added as a part of security scheme: apikey",
+														"key": "X-ACCESS-TOKEN",
+														"value": "<API Key>"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/game/:game/board/map",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"game",
+														":game",
+														"board",
+														"map"
+													],
+													"variable": [
+														{
+															"key": "game",
+															"value": "zq7d24gr9n",
+															"description": "(Required) Id of the game"
+														}
+													]
+												}
+											},
+											"status": "Bad Request",
+											"code": 400,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "text/plain"
+												}
+											],
+											"cookie": [],
+											"body": ""
+										},
+										{
+											"name": "Unauthorized",
+											"originalRequest": {
+												"method": "GET",
+												"header": [
+													{
+														"description": "Added as a part of security scheme: apikey",
+														"key": "X-ACCESS-TOKEN",
+														"value": "<API Key>"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/game/:game/board/map",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"game",
+														":game",
+														"board",
+														"map"
+													],
+													"variable": [
+														{
+															"key": "game",
+															"value": "zq7d24gr9n",
+															"description": "(Required) Id of the game"
+														}
+													]
+												}
+											},
+											"status": "Unauthorized",
+											"code": 401,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "text/plain"
+												}
+											],
+											"cookie": [],
+											"body": ""
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "cards",
+							"item": [
+								{
+									"name": "playing",
+									"item": [
+										{
+											"name": "Get the cards that are currently being played",
+											"request": {
+												"auth": {
+													"type": "apikey",
+													"apikey": [
+														{
+															"key": "key",
+															"value": "X-ACCESS-TOKEN",
+															"type": "string"
+														},
+														{
+															"key": "value",
+															"value": "<API Key>",
+															"type": "string"
+														},
+														{
+															"key": "in",
+															"value": "header",
+															"type": "string"
+														}
+													]
+												},
+												"method": "GET",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "application/json"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/game/:game/cards/playing",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"game",
+														":game",
+														"cards",
+														"playing"
+													],
+													"variable": [
+														{
+															"key": "game",
+															"value": "zq7d24gr9n",
+															"description": "(Required) Id of the game"
+														}
+													]
+												},
+												"description": "Get the cards that are currently being played"
+											},
+											"response": [
+												{
+													"name": "Players cards",
+													"originalRequest": {
+														"method": "GET",
+														"header": [
+															{
+																"description": "Added as a part of security scheme: apikey",
+																"key": "X-ACCESS-TOKEN",
+																"value": "<API Key>"
+															}
+														],
+														"url": {
+															"raw": "{{baseUrl}}/game/:game/cards/playing",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"game",
+																":game",
+																"cards",
+																"playing"
+															],
+															"variable": [
+																{
+																	"key": "game",
+																	"value": "zq7d24gr9n",
+																	"description": "(Required) Id of the game"
+																}
+															]
+														}
+													},
+													"status": "OK",
+													"code": 200,
+													"_postman_previewlanguage": "json",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "application/json"
+														}
+													],
+													"cookie": [],
+													"body": "[\n  4,\n  4\n]"
+												},
+												{
+													"name": "Bad request",
+													"originalRequest": {
+														"method": "GET",
+														"header": [
+															{
+																"description": "Added as a part of security scheme: apikey",
+																"key": "X-ACCESS-TOKEN",
+																"value": "<API Key>"
+															}
+														],
+														"url": {
+															"raw": "{{baseUrl}}/game/:game/cards/playing",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"game",
+																":game",
+																"cards",
+																"playing"
+															],
+															"variable": [
+																{
+																	"key": "game",
+																	"value": "zq7d24gr9n",
+																	"description": "(Required) Id of the game"
+																}
+															]
+														}
+													},
+													"status": "Bad Request",
+													"code": 400,
+													"_postman_previewlanguage": "text",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "text/plain"
+														}
+													],
+													"cookie": [],
+													"body": ""
+												},
+												{
+													"name": "Unauthorized",
+													"originalRequest": {
+														"method": "GET",
+														"header": [
+															{
+																"description": "Added as a part of security scheme: apikey",
+																"key": "X-ACCESS-TOKEN",
+																"value": "<API Key>"
+															}
+														],
+														"url": {
+															"raw": "{{baseUrl}}/game/:game/cards/playing",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"game",
+																":game",
+																"cards",
+																"playing"
+															],
+															"variable": [
+																{
+																	"key": "game",
+																	"value": "zq7d24gr9n",
+																	"description": "(Required) Id of the game"
+																}
+															]
+														}
+													},
+													"status": "Unauthorized",
+													"code": 401,
+													"_postman_previewlanguage": "text",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "text/plain"
+														}
+													],
+													"cookie": [],
+													"body": ""
+												}
+											]
+										},
+										{
+											"name": "Play the specified card as influence",
+											"request": {
+												"auth": {
+													"type": "apikey",
+													"apikey": [
+														{
+															"key": "key",
+															"value": "X-ACCESS-TOKEN",
+															"type": "string"
+														},
+														{
+															"key": "value",
+															"value": "<API Key>",
+															"type": "string"
+														},
+														{
+															"key": "in",
+															"value": "header",
+															"type": "string"
+														}
+													]
+												},
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "application/json"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"targets\": [\n    {\n      \"target\": {\n        \"Congo\": 1\n      },\n      \"targetExtra\": {\n        \"US\": 1\n      }\n    }\n  ]\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/game/:game/cards/playing/influence/:id?validate=false",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"game",
+														":game",
+														"cards",
+														"playing",
+														"influence",
+														":id"
+													],
+													"query": [
+														{
+															"key": "validate",
+															"value": "false",
+															"description": "Specify if only validate the play"
+														}
+													],
+													"variable": [
+														{
+															"key": "game",
+															"value": "zq7d24gr9n",
+															"description": "(Required) Id of the game"
+														},
+														{
+															"key": "id",
+															"value": "3",
+															"description": "(Required) Id of the card"
+														}
+													]
+												},
+												"description": "Play the specified card as influence"
+											},
+											"response": [
+												{
+													"name": "Card",
+													"originalRequest": {
+														"method": "POST",
+														"header": [
+															{
+																"description": "Added as a part of security scheme: apikey",
+																"key": "X-ACCESS-TOKEN",
+																"value": "<API Key>"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\n  \"targets\": [\n    {\n      \"target\": {\n        \"name\": -72871588\n      },\n      \"targetExtra\": {\n        \"name\": 38985829\n      }\n    },\n    {\n      \"target\": {\n        \"name\": -10757170\n      },\n      \"targetExtra\": {\n        \"name\": 76024878\n      }\n    }\n  ]\n}",
+															"options": {
+																"raw": {
+																	"language": "json"
+																}
+															}
+														},
+														"url": {
+															"raw": "{{baseUrl}}/game/:game/cards/playing/influence/:id?validate=false",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"game",
+																":game",
+																"cards",
+																"playing",
+																"influence",
+																":id"
+															],
+															"query": [
+																{
+																	"key": "validate",
+																	"value": "false"
+																}
+															],
+															"variable": [
+																{
+																	"key": "game",
+																	"value": "zq7d24gr9n",
+																	"description": "(Required) Id of the game"
+																},
+																{
+																	"key": "id",
+																	"value": "3",
+																	"description": "(Required) Id of the card"
+																}
+															]
+														}
+													},
+													"status": "OK",
+													"code": 200,
+													"_postman_previewlanguage": "json",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "application/json"
+														}
+													],
+													"cookie": [],
+													"body": "{\n  \"id\": 3,\n  \"title\": \"Black Monday\",\n  \"epoch\": \"Pre\",\n  \"description\": \"US and EU lose supremacy on all NWO economy slots.\",\n  \"points\": 2,\n  \"faction\": \"E\",\n  \"type\": \"Economy\",\n  \"remove\": true,\n  \"image\": \"images/blackMonday.jpg\",\n  \"background\": \"#DDDDFF\",\n  \"year\": \"ipsum qui fugiat in\",\n  \"subtype\": \"\"\n}"
+												},
+												{
+													"name": "Bad request",
+													"originalRequest": {
+														"method": "POST",
+														"header": [
+															{
+																"description": "Added as a part of security scheme: apikey",
+																"key": "X-ACCESS-TOKEN",
+																"value": "<API Key>"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\n  \"targets\": [\n    {\n      \"target\": {\n        \"name\": -72871588\n      },\n      \"targetExtra\": {\n        \"name\": 38985829\n      }\n    },\n    {\n      \"target\": {\n        \"name\": -10757170\n      },\n      \"targetExtra\": {\n        \"name\": 76024878\n      }\n    }\n  ]\n}",
+															"options": {
+																"raw": {
+																	"language": "json"
+																}
+															}
+														},
+														"url": {
+															"raw": "{{baseUrl}}/game/:game/cards/playing/influence/:id?validate=false",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"game",
+																":game",
+																"cards",
+																"playing",
+																"influence",
+																":id"
+															],
+															"query": [
+																{
+																	"key": "validate",
+																	"value": "false"
+																}
+															],
+															"variable": [
+																{
+																	"key": "game",
+																	"value": "zq7d24gr9n",
+																	"description": "(Required) Id of the game"
+																},
+																{
+																	"key": "id",
+																	"value": "3",
+																	"description": "(Required) Id of the card"
+																}
+															]
+														}
+													},
+													"status": "Bad Request",
+													"code": 400,
+													"_postman_previewlanguage": "text",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "text/plain"
+														}
+													],
+													"cookie": [],
+													"body": ""
+												},
+												{
+													"name": "Unauthorized",
+													"originalRequest": {
+														"method": "POST",
+														"header": [
+															{
+																"description": "Added as a part of security scheme: apikey",
+																"key": "X-ACCESS-TOKEN",
+																"value": "<API Key>"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\n  \"targets\": [\n    {\n      \"target\": {\n        \"name\": -72871588\n      },\n      \"targetExtra\": {\n        \"name\": 38985829\n      }\n    },\n    {\n      \"target\": {\n        \"name\": -10757170\n      },\n      \"targetExtra\": {\n        \"name\": 76024878\n      }\n    }\n  ]\n}",
+															"options": {
+																"raw": {
+																	"language": "json"
+																}
+															}
+														},
+														"url": {
+															"raw": "{{baseUrl}}/game/:game/cards/playing/influence/:id?validate=false",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"game",
+																":game",
+																"cards",
+																"playing",
+																"influence",
+																":id"
+															],
+															"query": [
+																{
+																	"key": "validate",
+																	"value": "false"
+																}
+															],
+															"variable": [
+																{
+																	"key": "game",
+																	"value": "zq7d24gr9n",
+																	"description": "(Required) Id of the game"
+																},
+																{
+																	"key": "id",
+																	"value": "3",
+																	"description": "(Required) Id of the card"
+																}
+															]
+														}
+													},
+													"status": "Unauthorized",
+													"code": 401,
+													"_postman_previewlanguage": "text",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "text/plain"
+														}
+													],
+													"cookie": [],
+													"body": ""
+												}
+											]
+										},
+										{
+											"name": "Play the specified card as destabilization. This play consists of 2 requests",
+											"request": {
+												"auth": {
+													"type": "apikey",
+													"apikey": [
+														{
+															"key": "key",
+															"value": "X-ACCESS-TOKEN",
+															"type": "string"
+														},
+														{
+															"key": "value",
+															"value": "<API Key>",
+															"type": "string"
+														},
+														{
+															"key": "in",
+															"value": "header",
+															"type": "string"
+														}
+													]
+												},
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "application/json"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"target\": \"Congo\",\n  \"add\": [\n    {\n      \"US\": 2\n    }\n  ],\n  \"remove\": [\n    {\n      \"China\": 1\n    }\n  ]\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/game/:game/cards/playing/destabilization/:id",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"game",
+														":game",
+														"cards",
+														"playing",
+														"destabilization",
+														":id"
+													],
+													"variable": [
+														{
+															"key": "game",
+															"value": "zq7d24gr9n",
+															"description": "(Required) Id of the game"
+														},
+														{
+															"key": "id",
+															"value": "3",
+															"description": "(Required) Id of the card"
+														}
+													]
+												},
+												"description": "Play the specified card as destabilization. This play consists of 2 requests. 1st request will return the result of a dice throw (1 to 6) + card points - the country stability points * 2. If the country is conflictive you lose 1 VP. If result X is positive, you can add (superpowers of your block) or remove (opposing superpowers) up to X points of influence"
+											},
+											"response": [
+												{
+													"name": "Card",
+													"originalRequest": {
+														"method": "POST",
+														"header": [
+															{
+																"description": "Added as a part of security scheme: apikey",
+																"key": "X-ACCESS-TOKEN",
+																"value": "<API Key>"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\n  \"add\": [\n    {\n      \"name\": -43399601\n    },\n    {\n      \"name\": 35084016\n    }\n  ],\n  \"remove\": [\n    {\n      \"name\": -57698636\n    },\n    {\n      \"name\": 84437134\n    }\n  ],\n  \"target\": \"nisi nulla dolor\"\n}",
+															"options": {
+																"raw": {
+																	"language": "json"
+																}
+															}
+														},
+														"url": {
+															"raw": "{{baseUrl}}/game/:game/cards/playing/destabilization/:id",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"game",
+																":game",
+																"cards",
+																"playing",
+																"destabilization",
+																":id"
+															],
+															"variable": [
+																{
+																	"key": "game",
+																	"value": "zq7d24gr9n",
+																	"description": "(Required) Id of the game"
+																},
+																{
+																	"key": "id",
+																	"value": "3",
+																	"description": "(Required) Id of the card"
+																}
+															]
+														}
+													},
+													"status": "OK",
+													"code": 200,
+													"_postman_previewlanguage": "json",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "application/json"
+														}
+													],
+													"cookie": [],
+													"body": "{\n  \"id\": 3,\n  \"title\": \"Black Monday\",\n  \"epoch\": \"Pre\",\n  \"description\": \"US and EU lose supremacy on all NWO economy slots.\",\n  \"points\": 2,\n  \"faction\": \"E\",\n  \"type\": \"Economy\",\n  \"remove\": true,\n  \"image\": \"images/blackMonday.jpg\",\n  \"background\": \"#DDDDFF\",\n  \"year\": \"ipsum qui fugiat in\",\n  \"subtype\": \"\"\n}"
+												},
+												{
+													"name": "Bad request",
+													"originalRequest": {
+														"method": "POST",
+														"header": [
+															{
+																"description": "Added as a part of security scheme: apikey",
+																"key": "X-ACCESS-TOKEN",
+																"value": "<API Key>"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\n  \"add\": [\n    {\n      \"name\": -43399601\n    },\n    {\n      \"name\": 35084016\n    }\n  ],\n  \"remove\": [\n    {\n      \"name\": -57698636\n    },\n    {\n      \"name\": 84437134\n    }\n  ],\n  \"target\": \"nisi nulla dolor\"\n}",
+															"options": {
+																"raw": {
+																	"language": "json"
+																}
+															}
+														},
+														"url": {
+															"raw": "{{baseUrl}}/game/:game/cards/playing/destabilization/:id",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"game",
+																":game",
+																"cards",
+																"playing",
+																"destabilization",
+																":id"
+															],
+															"variable": [
+																{
+																	"key": "game",
+																	"value": "zq7d24gr9n",
+																	"description": "(Required) Id of the game"
+																},
+																{
+																	"key": "id",
+																	"value": "3",
+																	"description": "(Required) Id of the card"
+																}
+															]
+														}
+													},
+													"status": "Bad Request",
+													"code": 400,
+													"_postman_previewlanguage": "text",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "text/plain"
+														}
+													],
+													"cookie": [],
+													"body": ""
+												},
+												{
+													"name": "Unauthorized",
+													"originalRequest": {
+														"method": "POST",
+														"header": [
+															{
+																"description": "Added as a part of security scheme: apikey",
+																"key": "X-ACCESS-TOKEN",
+																"value": "<API Key>"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\n  \"add\": [\n    {\n      \"name\": -43399601\n    },\n    {\n      \"name\": 35084016\n    }\n  ],\n  \"remove\": [\n    {\n      \"name\": -57698636\n    },\n    {\n      \"name\": 84437134\n    }\n  ],\n  \"target\": \"nisi nulla dolor\"\n}",
+															"options": {
+																"raw": {
+																	"language": "json"
+																}
+															}
+														},
+														"url": {
+															"raw": "{{baseUrl}}/game/:game/cards/playing/destabilization/:id",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"game",
+																":game",
+																"cards",
+																"playing",
+																"destabilization",
+																":id"
+															],
+															"variable": [
+																{
+																	"key": "game",
+																	"value": "zq7d24gr9n",
+																	"description": "(Required) Id of the game"
+																},
+																{
+																	"key": "id",
+																	"value": "3",
+																	"description": "(Required) Id of the card"
+																}
+															]
+														}
+													},
+													"status": "Unauthorized",
+													"code": 401,
+													"_postman_previewlanguage": "text",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "text/plain"
+														}
+													],
+													"cookie": [],
+													"body": ""
+												}
+											]
+										},
+										{
+											"name": "Play the specified card by its text",
+											"request": {
+												"auth": {
+													"type": "apikey",
+													"apikey": [
+														{
+															"key": "key",
+															"value": "X-ACCESS-TOKEN",
+															"type": "string"
+														},
+														{
+															"key": "value",
+															"value": "<API Key>",
+															"type": "string"
+														},
+														{
+															"key": "in",
+															"value": "header",
+															"type": "string"
+														}
+													]
+												},
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "application/json"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"targets\": [\n    {\n      \"Congo\": 1\n    }\n  ]\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/game/:game/cards/playing/text/:id",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"game",
+														":game",
+														"cards",
+														"playing",
+														"text",
+														":id"
+													],
+													"variable": [
+														{
+															"key": "game",
+															"value": "zq7d24gr9n",
+															"description": "(Required) Id of the game"
+														},
+														{
+															"key": "id",
+															"value": "3",
+															"description": "(Required) Id of the card"
+														}
+													]
+												},
+												"description": "Play the specified card by its text. The request body is only necessary for the cards that need the player to choose something and it is used to specify said choice"
+											},
+											"response": [
+												{
+													"name": "Card",
+													"originalRequest": {
+														"method": "POST",
+														"header": [
+															{
+																"description": "Added as a part of security scheme: apikey",
+																"key": "X-ACCESS-TOKEN",
+																"value": "<API Key>"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\n  \"targets\": [\n    {\n      \"name\": 86580901\n    },\n    {\n      \"name\": -7449820\n    }\n  ]\n}",
+															"options": {
+																"raw": {
+																	"language": "json"
+																}
+															}
+														},
+														"url": {
+															"raw": "{{baseUrl}}/game/:game/cards/playing/text/:id",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"game",
+																":game",
+																"cards",
+																"playing",
+																"text",
+																":id"
+															],
+															"variable": [
+																{
+																	"key": "game",
+																	"value": "zq7d24gr9n",
+																	"description": "(Required) Id of the game"
+																},
+																{
+																	"key": "id",
+																	"value": "3",
+																	"description": "(Required) Id of the card"
+																}
+															]
+														}
+													},
+													"status": "OK",
+													"code": 200,
+													"_postman_previewlanguage": "json",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "application/json"
+														}
+													],
+													"cookie": [],
+													"body": "{\n  \"id\": 3,\n  \"title\": \"Black Monday\",\n  \"epoch\": \"Pre\",\n  \"description\": \"US and EU lose supremacy on all NWO economy slots.\",\n  \"points\": 2,\n  \"faction\": \"E\",\n  \"type\": \"Economy\",\n  \"remove\": true,\n  \"image\": \"images/blackMonday.jpg\",\n  \"background\": \"#DDDDFF\",\n  \"year\": \"ipsum qui fugiat in\",\n  \"subtype\": \"\"\n}"
+												},
+												{
+													"name": "Bad request",
+													"originalRequest": {
+														"method": "POST",
+														"header": [
+															{
+																"description": "Added as a part of security scheme: apikey",
+																"key": "X-ACCESS-TOKEN",
+																"value": "<API Key>"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\n  \"targets\": [\n    {\n      \"name\": 86580901\n    },\n    {\n      \"name\": -7449820\n    }\n  ]\n}",
+															"options": {
+																"raw": {
+																	"language": "json"
+																}
+															}
+														},
+														"url": {
+															"raw": "{{baseUrl}}/game/:game/cards/playing/text/:id",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"game",
+																":game",
+																"cards",
+																"playing",
+																"text",
+																":id"
+															],
+															"variable": [
+																{
+																	"key": "game",
+																	"value": "zq7d24gr9n",
+																	"description": "(Required) Id of the game"
+																},
+																{
+																	"key": "id",
+																	"value": "3",
+																	"description": "(Required) Id of the card"
+																}
+															]
+														}
+													},
+													"status": "Bad Request",
+													"code": 400,
+													"_postman_previewlanguage": "text",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "text/plain"
+														}
+													],
+													"cookie": [],
+													"body": ""
+												},
+												{
+													"name": "Unauthorized",
+													"originalRequest": {
+														"method": "POST",
+														"header": [
+															{
+																"description": "Added as a part of security scheme: apikey",
+																"key": "X-ACCESS-TOKEN",
+																"value": "<API Key>"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\n  \"targets\": [\n    {\n      \"name\": 86580901\n    },\n    {\n      \"name\": -7449820\n    }\n  ]\n}",
+															"options": {
+																"raw": {
+																	"language": "json"
+																}
+															}
+														},
+														"url": {
+															"raw": "{{baseUrl}}/game/:game/cards/playing/text/:id",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"game",
+																":game",
+																"cards",
+																"playing",
+																"text",
+																":id"
+															],
+															"variable": [
+																{
+																	"key": "game",
+																	"value": "zq7d24gr9n",
+																	"description": "(Required) Id of the game"
+																},
+																{
+																	"key": "id",
+																	"value": "3",
+																	"description": "(Required) Id of the card"
+																}
+															]
+														}
+													},
+													"status": "Unauthorized",
+													"code": 401,
+													"_postman_previewlanguage": "text",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "text/plain"
+														}
+													],
+													"cookie": [],
+													"body": ""
+												}
+											]
+										},
+										{
+											"name": "Play the specified punctuation card. Score it",
+											"request": {
+												"auth": {
+													"type": "apikey",
+													"apikey": [
+														{
+															"key": "key",
+															"value": "X-ACCESS-TOKEN",
+															"type": "string"
+														},
+														{
+															"key": "value",
+															"value": "<API Key>",
+															"type": "string"
+														},
+														{
+															"key": "in",
+															"value": "header",
+															"type": "string"
+														}
+													]
+												},
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "application/json"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"region\": \"NC America\"\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/game/:game/cards/playing/score/:id?validate=false",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"game",
+														":game",
+														"cards",
+														"playing",
+														"score",
+														":id"
+													],
+													"query": [
+														{
+															"key": "validate",
+															"value": "false",
+															"description": "Specify if only validate the play"
+														}
+													],
+													"variable": [
+														{
+															"key": "game",
+															"value": "zq7d24gr9n",
+															"description": "(Required) Id of the game"
+														},
+														{
+															"key": "id",
+															"value": "3",
+															"description": "(Required) Id of the card"
+														}
+													]
+												},
+												"description": "Play the specified punctuation card. Score it"
+											},
+											"response": [
+												{
+													"name": "Card",
+													"originalRequest": {
+														"method": "POST",
+														"header": [
+															{
+																"description": "Added as a part of security scheme: apikey",
+																"key": "X-ACCESS-TOKEN",
+																"value": "<API Key>"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\n  \"region\": \"NC America\"\n}",
+															"options": {
+																"raw": {
+																	"language": "json"
+																}
+															}
+														},
+														"url": {
+															"raw": "{{baseUrl}}/game/:game/cards/playing/score/:id?validate=false",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"game",
+																":game",
+																"cards",
+																"playing",
+																"score",
+																":id"
+															],
+															"query": [
+																{
+																	"key": "validate",
+																	"value": "false"
+																}
+															],
+															"variable": [
+																{
+																	"key": "game",
+																	"value": "zq7d24gr9n",
+																	"description": "(Required) Id of the game"
+																},
+																{
+																	"key": "id",
+																	"value": "3",
+																	"description": "(Required) Id of the card"
+																}
+															]
+														}
+													},
+													"status": "OK",
+													"code": 200,
+													"_postman_previewlanguage": "json",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "application/json"
+														}
+													],
+													"cookie": [],
+													"body": "{\n  \"id\": 3,\n  \"title\": \"Black Monday\",\n  \"epoch\": \"Pre\",\n  \"description\": \"US and EU lose supremacy on all NWO economy slots.\",\n  \"points\": 2,\n  \"faction\": \"E\",\n  \"type\": \"Economy\",\n  \"remove\": true,\n  \"image\": \"images/blackMonday.jpg\",\n  \"background\": \"#DDDDFF\",\n  \"year\": \"ipsum qui fugiat in\",\n  \"subtype\": \"\"\n}"
+												},
+												{
+													"name": "Bad request",
+													"originalRequest": {
+														"method": "POST",
+														"header": [
+															{
+																"description": "Added as a part of security scheme: apikey",
+																"key": "X-ACCESS-TOKEN",
+																"value": "<API Key>"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\n  \"region\": \"NC America\"\n}",
+															"options": {
+																"raw": {
+																	"language": "json"
+																}
+															}
+														},
+														"url": {
+															"raw": "{{baseUrl}}/game/:game/cards/playing/score/:id?validate=false",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"game",
+																":game",
+																"cards",
+																"playing",
+																"score",
+																":id"
+															],
+															"query": [
+																{
+																	"key": "validate",
+																	"value": "false"
+																}
+															],
+															"variable": [
+																{
+																	"key": "game",
+																	"value": "zq7d24gr9n",
+																	"description": "(Required) Id of the game"
+																},
+																{
+																	"key": "id",
+																	"value": "3",
+																	"description": "(Required) Id of the card"
+																}
+															]
+														}
+													},
+													"status": "Bad Request",
+													"code": 400,
+													"_postman_previewlanguage": "text",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "text/plain"
+														}
+													],
+													"cookie": [],
+													"body": ""
+												},
+												{
+													"name": "Unauthorized",
+													"originalRequest": {
+														"method": "POST",
+														"header": [
+															{
+																"description": "Added as a part of security scheme: apikey",
+																"key": "X-ACCESS-TOKEN",
+																"value": "<API Key>"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\n  \"region\": \"NC America\"\n}",
+															"options": {
+																"raw": {
+																	"language": "json"
+																}
+															}
+														},
+														"url": {
+															"raw": "{{baseUrl}}/game/:game/cards/playing/score/:id?validate=false",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"game",
+																":game",
+																"cards",
+																"playing",
+																"score",
+																":id"
+															],
+															"query": [
+																{
+																	"key": "validate",
+																	"value": "false"
+																}
+															],
+															"variable": [
+																{
+																	"key": "game",
+																	"value": "zq7d24gr9n",
+																	"description": "(Required) Id of the game"
+																},
+																{
+																	"key": "id",
+																	"value": "3",
+																	"description": "(Required) Id of the card"
+																}
+															]
+														}
+													},
+													"status": "Unauthorized",
+													"code": 401,
+													"_postman_previewlanguage": "text",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "text/plain"
+														}
+													],
+													"cookie": [],
+													"body": ""
+												}
+											]
+										},
+										{
+											"name": "Play the specified card in a New World Order track",
+											"request": {
+												"auth": {
+													"type": "apikey",
+													"apikey": [
+														{
+															"key": "key",
+															"value": "X-ACCESS-TOKEN",
+															"type": "string"
+														},
+														{
+															"key": "value",
+															"value": "<API Key>",
+															"type": "string"
+														},
+														{
+															"key": "in",
+															"value": "header",
+															"type": "string"
+														}
+													]
+												},
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "application/json"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"name\": \"State propaganda\"\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/game/:game/cards/playing/nwo/:id?validate=false",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"game",
+														":game",
+														"cards",
+														"playing",
+														"nwo",
+														":id"
+													],
+													"query": [
+														{
+															"key": "validate",
+															"value": "false",
+															"description": "Specify if only validate the play"
+														}
+													],
+													"variable": [
+														{
+															"key": "game",
+															"value": "zq7d24gr9n",
+															"description": "(Required) Id of the game"
+														},
+														{
+															"key": "id",
+															"value": "3",
+															"description": "(Required) Id of the card"
+														}
+													]
+												},
+												"description": "Play the specified card in a New World Order track"
+											},
+											"response": [
+												{
+													"name": "Card",
+													"originalRequest": {
+														"method": "POST",
+														"header": [
+															{
+																"description": "Added as a part of security scheme: apikey",
+																"key": "X-ACCESS-TOKEN",
+																"value": "<API Key>"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\n  \"name\": \"State propaganda\"\n}",
+															"options": {
+																"raw": {
+																	"language": "json"
+																}
+															}
+														},
+														"url": {
+															"raw": "{{baseUrl}}/game/:game/cards/playing/nwo/:id?validate=false",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"game",
+																":game",
+																"cards",
+																"playing",
+																"nwo",
+																":id"
+															],
+															"query": [
+																{
+																	"key": "validate",
+																	"value": "false"
+																}
+															],
+															"variable": [
+																{
+																	"key": "game",
+																	"value": "zq7d24gr9n",
+																	"description": "(Required) Id of the game"
+																},
+																{
+																	"key": "id",
+																	"value": "3",
+																	"description": "(Required) Id of the card"
+																}
+															]
+														}
+													},
+													"status": "OK",
+													"code": 200,
+													"_postman_previewlanguage": "json",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "application/json"
+														}
+													],
+													"cookie": [],
+													"body": "{\n  \"id\": 3,\n  \"title\": \"Black Monday\",\n  \"epoch\": \"Pre\",\n  \"description\": \"US and EU lose supremacy on all NWO economy slots.\",\n  \"points\": 2,\n  \"faction\": \"E\",\n  \"type\": \"Economy\",\n  \"remove\": true,\n  \"image\": \"images/blackMonday.jpg\",\n  \"background\": \"#DDDDFF\",\n  \"year\": \"ipsum qui fugiat in\",\n  \"subtype\": \"\"\n}"
+												},
+												{
+													"name": "Bad request",
+													"originalRequest": {
+														"method": "POST",
+														"header": [
+															{
+																"description": "Added as a part of security scheme: apikey",
+																"key": "X-ACCESS-TOKEN",
+																"value": "<API Key>"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\n  \"name\": \"State propaganda\"\n}",
+															"options": {
+																"raw": {
+																	"language": "json"
+																}
+															}
+														},
+														"url": {
+															"raw": "{{baseUrl}}/game/:game/cards/playing/nwo/:id?validate=false",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"game",
+																":game",
+																"cards",
+																"playing",
+																"nwo",
+																":id"
+															],
+															"query": [
+																{
+																	"key": "validate",
+																	"value": "false"
+																}
+															],
+															"variable": [
+																{
+																	"key": "game",
+																	"value": "zq7d24gr9n",
+																	"description": "(Required) Id of the game"
+																},
+																{
+																	"key": "id",
+																	"value": "3",
+																	"description": "(Required) Id of the card"
+																}
+															]
+														}
+													},
+													"status": "Bad Request",
+													"code": 400,
+													"_postman_previewlanguage": "text",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "text/plain"
+														}
+													],
+													"cookie": [],
+													"body": ""
+												},
+												{
+													"name": "Unauthorized",
+													"originalRequest": {
+														"method": "POST",
+														"header": [
+															{
+																"description": "Added as a part of security scheme: apikey",
+																"key": "X-ACCESS-TOKEN",
+																"value": "<API Key>"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\n  \"name\": \"State propaganda\"\n}",
+															"options": {
+																"raw": {
+																	"language": "json"
+																}
+															}
+														},
+														"url": {
+															"raw": "{{baseUrl}}/game/:game/cards/playing/nwo/:id?validate=false",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"game",
+																":game",
+																"cards",
+																"playing",
+																"nwo",
+																":id"
+															],
+															"query": [
+																{
+																	"key": "validate",
+																	"value": "false"
+																}
+															],
+															"variable": [
+																{
+																	"key": "game",
+																	"value": "zq7d24gr9n",
+																	"description": "(Required) Id of the game"
+																},
+																{
+																	"key": "id",
+																	"value": "3",
+																	"description": "(Required) Id of the card"
+																}
+															]
+														}
+													},
+													"status": "Unauthorized",
+													"code": 401,
+													"_postman_previewlanguage": "text",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "text/plain"
+														}
+													],
+													"cookie": [],
+													"body": ""
+												}
+											]
+										},
+										{
+											"name": "Set the specified card as the one being played as header card",
+											"request": {
+												"auth": {
+													"type": "apikey",
+													"apikey": [
+														{
+															"key": "key",
+															"value": "X-ACCESS-TOKEN",
+															"type": "string"
+														},
+														{
+															"key": "value",
+															"value": "<API Key>",
+															"type": "string"
+														},
+														{
+															"key": "in",
+															"value": "header",
+															"type": "string"
+														}
+													]
+												},
+												"method": "POST",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "application/json"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/game/:game/cards/playing/header/:id",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"game",
+														":game",
+														"cards",
+														"playing",
+														"header",
+														":id"
+													],
+													"variable": [
+														{
+															"key": "game",
+															"value": "zq7d24gr9n",
+															"description": "(Required) Id of the game"
+														},
+														{
+															"key": "id",
+															"value": "3",
+															"description": "(Required) Id of the card"
+														}
+													]
+												},
+												"description": "Set the specified card as the one being played as header card"
+											},
+											"response": [
+												{
+													"name": "Card",
+													"originalRequest": {
+														"method": "POST",
+														"header": [
+															{
+																"description": "Added as a part of security scheme: apikey",
+																"key": "X-ACCESS-TOKEN",
+																"value": "<API Key>"
+															}
+														],
+														"url": {
+															"raw": "{{baseUrl}}/game/:game/cards/playing/header/:id",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"game",
+																":game",
+																"cards",
+																"playing",
+																"header",
+																":id"
+															],
+															"variable": [
+																{
+																	"key": "game",
+																	"value": "zq7d24gr9n",
+																	"description": "(Required) Id of the game"
+																},
+																{
+																	"key": "id",
+																	"value": "3",
+																	"description": "(Required) Id of the card"
+																}
+															]
+														}
+													},
+													"status": "OK",
+													"code": 200,
+													"_postman_previewlanguage": "json",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "application/json"
+														}
+													],
+													"cookie": [],
+													"body": "{\n  \"id\": 3,\n  \"title\": \"Black Monday\",\n  \"epoch\": \"Pre\",\n  \"description\": \"US and EU lose supremacy on all NWO economy slots.\",\n  \"points\": 2,\n  \"faction\": \"E\",\n  \"type\": \"Economy\",\n  \"remove\": true,\n  \"image\": \"images/blackMonday.jpg\",\n  \"background\": \"#DDDDFF\",\n  \"year\": \"ipsum qui fugiat in\",\n  \"subtype\": \"\"\n}"
+												},
+												{
+													"name": "Bad request",
+													"originalRequest": {
+														"method": "POST",
+														"header": [
+															{
+																"description": "Added as a part of security scheme: apikey",
+																"key": "X-ACCESS-TOKEN",
+																"value": "<API Key>"
+															}
+														],
+														"url": {
+															"raw": "{{baseUrl}}/game/:game/cards/playing/header/:id",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"game",
+																":game",
+																"cards",
+																"playing",
+																"header",
+																":id"
+															],
+															"variable": [
+																{
+																	"key": "game",
+																	"value": "zq7d24gr9n",
+																	"description": "(Required) Id of the game"
+																},
+																{
+																	"key": "id",
+																	"value": "3",
+																	"description": "(Required) Id of the card"
+																}
+															]
+														}
+													},
+													"status": "Bad Request",
+													"code": 400,
+													"_postman_previewlanguage": "text",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "text/plain"
+														}
+													],
+													"cookie": [],
+													"body": ""
+												},
+												{
+													"name": "Unauthorized",
+													"originalRequest": {
+														"method": "POST",
+														"header": [
+															{
+																"description": "Added as a part of security scheme: apikey",
+																"key": "X-ACCESS-TOKEN",
+																"value": "<API Key>"
+															}
+														],
+														"url": {
+															"raw": "{{baseUrl}}/game/:game/cards/playing/header/:id",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"game",
+																":game",
+																"cards",
+																"playing",
+																"header",
+																":id"
+															],
+															"variable": [
+																{
+																	"key": "game",
+																	"value": "zq7d24gr9n",
+																	"description": "(Required) Id of the game"
+																},
+																{
+																	"key": "id",
+																	"value": "3",
+																	"description": "(Required) Id of the card"
+																}
+															]
+														}
+													},
+													"status": "Unauthorized",
+													"code": 401,
+													"_postman_previewlanguage": "text",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "text/plain"
+														}
+													],
+													"cookie": [],
+													"body": ""
+												}
+											]
+										}
+									]
+								},
+								{
+									"name": "Get the details of the card with the specified id",
+									"request": {
+										"auth": {
+											"type": "apikey",
+											"apikey": [
+												{
+													"key": "key",
+													"value": "X-ACCESS-TOKEN",
+													"type": "string"
+												},
+												{
+													"key": "value",
+													"value": "<API Key>",
+													"type": "string"
+												},
+												{
+													"key": "in",
+													"value": "header",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/game/:game/cards/:id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"game",
+												":game",
+												"cards",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "game",
+													"value": "zq7d24gr9n",
+													"description": "(Required) Id of the game"
+												},
+												{
+													"key": "id",
+													"value": "3",
+													"description": "(Required) Id of the card"
+												}
+											]
+										},
+										"description": "Get the details of the card with the specified id"
+									},
+									"response": [
+										{
+											"name": "Card",
+											"originalRequest": {
+												"method": "GET",
+												"header": [
+													{
+														"description": "Added as a part of security scheme: apikey",
+														"key": "X-ACCESS-TOKEN",
+														"value": "<API Key>"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/game/:game/cards/:id",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"game",
+														":game",
+														"cards",
+														":id"
+													],
+													"variable": [
+														{
+															"key": "game",
+															"value": "zq7d24gr9n",
+															"description": "(Required) Id of the game"
+														},
+														{
+															"key": "id",
+															"value": "3",
+															"description": "(Required) Id of the card"
+														}
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"id\": 3,\n  \"title\": \"Black Monday\",\n  \"epoch\": \"Pre\",\n  \"description\": \"US and EU lose supremacy on all NWO economy slots.\",\n  \"points\": 2,\n  \"faction\": \"E\",\n  \"type\": \"Economy\",\n  \"remove\": true,\n  \"image\": \"images/blackMonday.jpg\",\n  \"background\": \"#DDDDFF\",\n  \"year\": \"ipsum qui fugiat in\",\n  \"subtype\": \"\"\n}"
+										},
+										{
+											"name": "Bad request",
+											"originalRequest": {
+												"method": "GET",
+												"header": [
+													{
+														"description": "Added as a part of security scheme: apikey",
+														"key": "X-ACCESS-TOKEN",
+														"value": "<API Key>"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/game/:game/cards/:id",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"game",
+														":game",
+														"cards",
+														":id"
+													],
+													"variable": [
+														{
+															"key": "game",
+															"value": "zq7d24gr9n",
+															"description": "(Required) Id of the game"
+														},
+														{
+															"key": "id",
+															"value": "3",
+															"description": "(Required) Id of the card"
+														}
+													]
+												}
+											},
+											"status": "Bad Request",
+											"code": 400,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "text/plain"
+												}
+											],
+											"cookie": [],
+											"body": ""
+										},
+										{
+											"name": "Unauthorized",
+											"originalRequest": {
+												"method": "GET",
+												"header": [
+													{
+														"description": "Added as a part of security scheme: apikey",
+														"key": "X-ACCESS-TOKEN",
+														"value": "<API Key>"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/game/:game/cards/:id",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"game",
+														":game",
+														"cards",
+														":id"
+													],
+													"variable": [
+														{
+															"key": "game",
+															"value": "zq7d24gr9n",
+															"description": "(Required) Id of the game"
+														},
+														{
+															"key": "id",
+															"value": "3",
+															"description": "(Required) Id of the card"
+														}
+													]
+												}
+											},
+											"status": "Unauthorized",
+											"code": 401,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "text/plain"
+												}
+											],
+											"cookie": [],
+											"body": ""
+										}
+									]
+								},
+								{
+									"name": "Get the cards of the players",
+									"request": {
+										"auth": {
+											"type": "apikey",
+											"apikey": [
+												{
+													"key": "key",
+													"value": "X-ACCESS-TOKEN",
+													"type": "string"
+												},
+												{
+													"key": "value",
+													"value": "<API Key>",
+													"type": "string"
+												},
+												{
+													"key": "in",
+													"value": "header",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/game/:game/cards/player",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"game",
+												":game",
+												"cards",
+												"player"
+											],
+											"variable": [
+												{
+													"key": "game",
+													"value": "zq7d24gr9n",
+													"description": "(Required) Id of the game"
+												}
+											]
+										},
+										"description": "Get the cards of the players. A player cannot see the cards of another player's hand, but the player is allowed to see the header cards once all of them are chosen"
+									},
+									"response": [
+										{
+											"name": "Players cards",
+											"originalRequest": {
+												"method": "GET",
+												"header": [
+													{
+														"description": "Added as a part of security scheme: apikey",
+														"key": "X-ACCESS-TOKEN",
+														"value": "<API Key>"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/game/:game/cards/player",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"game",
+														":game",
+														"cards",
+														"player"
+													],
+													"variable": [
+														{
+															"key": "game",
+															"value": "zq7d24gr9n",
+															"description": "(Required) Id of the game"
+														}
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"name\": {\n    \"header\": \"enim magna eu ullamco laborum\",\n    \"hand\": [\n      \"cillum proident ullamco velit\",\n      \"eu Ut irure\"\n    ]\n  }\n}"
+										},
+										{
+											"name": "Bad request",
+											"originalRequest": {
+												"method": "GET",
+												"header": [
+													{
+														"description": "Added as a part of security scheme: apikey",
+														"key": "X-ACCESS-TOKEN",
+														"value": "<API Key>"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/game/:game/cards/player",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"game",
+														":game",
+														"cards",
+														"player"
+													],
+													"variable": [
+														{
+															"key": "game",
+															"value": "zq7d24gr9n",
+															"description": "(Required) Id of the game"
+														}
+													]
+												}
+											},
+											"status": "Bad Request",
+											"code": 400,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "text/plain"
+												}
+											],
+											"cookie": [],
+											"body": ""
+										},
+										{
+											"name": "Unauthorized",
+											"originalRequest": {
+												"method": "GET",
+												"header": [
+													{
+														"description": "Added as a part of security scheme: apikey",
+														"key": "X-ACCESS-TOKEN",
+														"value": "<API Key>"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/game/:game/cards/player",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"game",
+														":game",
+														"cards",
+														"player"
+													],
+													"variable": [
+														{
+															"key": "game",
+															"value": "zq7d24gr9n",
+															"description": "(Required) Id of the game"
+														}
+													]
+												}
+											},
+											"status": "Unauthorized",
+											"code": 401,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "text/plain"
+												}
+											],
+											"cookie": [],
+											"body": ""
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "Get the details of a game",
+							"request": {
+								"auth": {
+									"type": "apikey",
+									"apikey": [
+										{
+											"key": "key",
+											"value": "X-ACCESS-TOKEN",
+											"type": "string"
+										},
+										{
+											"key": "value",
+											"value": "<API Key>",
+											"type": "string"
+										},
+										{
+											"key": "in",
+											"value": "header",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/game/:game",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"game",
+										":game"
+									],
+									"variable": [
+										{
+											"key": "game",
+											"value": "zq7d24gr9n",
+											"description": "(Required) Id of the game"
+										}
+									]
+								},
+								"description": "Get the details of a game"
+							},
+							"response": [
+								{
+									"name": "Game details",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"description": "Added as a part of security scheme: apikey",
+												"key": "X-ACCESS-TOKEN",
+												"value": "<API Key>"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/game/:game",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"game",
+												":game"
+											],
+											"variable": [
+												{
+													"key": "game",
+													"value": "zq7d24gr9n",
+													"description": "(Required) Id of the game"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"isStarted\": false,\n  \"isFinished\": false,\n  \"isHeaderPhase\": false,\n  \"playingOrder\": [],\n  \"players\": [\n    \"US\",\n    \"EU\",\n    \"Russia\",\n    \"China\"\n  ]\n}"
+								},
+								{
+									"name": "Bad request",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"description": "Added as a part of security scheme: apikey",
+												"key": "X-ACCESS-TOKEN",
+												"value": "<API Key>"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/game/:game",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"game",
+												":game"
+											],
+											"variable": [
+												{
+													"key": "game",
+													"value": "zq7d24gr9n",
+													"description": "(Required) Id of the game"
+												}
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "text/plain"
+										}
+									],
+									"cookie": [],
+									"body": ""
+								},
+								{
+									"name": "Unauthorized",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"description": "Added as a part of security scheme: apikey",
+												"key": "X-ACCESS-TOKEN",
+												"value": "<API Key>"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/game/:game",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"game",
+												":game"
+											],
+											"variable": [
+												{
+													"key": "game",
+													"value": "zq7d24gr9n",
+													"description": "(Required) Id of the game"
+												}
+											]
+										}
+									},
+									"status": "Unauthorized",
+									"code": 401,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "text/plain"
+										}
+									],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						},
+						{
+							"name": "Start a game. The host of the game must do it",
+							"request": {
+								"auth": {
+									"type": "apikey",
+									"apikey": [
+										{
+											"key": "key",
+											"value": "X-ACCESS-TOKEN",
+											"type": "string"
+										},
+										{
+											"key": "value",
+											"value": "<API Key>",
+											"type": "string"
+										},
+										{
+											"key": "in",
+											"value": "header",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/game/:game",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"game",
+										":game"
+									],
+									"variable": [
+										{
+											"key": "game",
+											"value": "zq7d24gr9n",
+											"description": "(Required) Id of the game"
+										}
+									]
+								},
+								"description": "Start a game. The host of the game must do it"
+							},
+							"response": [
+								{
+									"name": "Game started",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"description": "Added as a part of security scheme: apikey",
+												"key": "X-ACCESS-TOKEN",
+												"value": "<API Key>"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/game/:game",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"game",
+												":game"
+											],
+											"variable": [
+												{
+													"key": "game",
+													"value": "zq7d24gr9n",
+													"description": "(Required) Id of the game"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "text/plain"
+										}
+									],
+									"cookie": [],
+									"body": ""
+								},
+								{
+									"name": "Bad request",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"description": "Added as a part of security scheme: apikey",
+												"key": "X-ACCESS-TOKEN",
+												"value": "<API Key>"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/game/:game",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"game",
+												":game"
+											],
+											"variable": [
+												{
+													"key": "game",
+													"value": "zq7d24gr9n",
+													"description": "(Required) Id of the game"
+												}
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "text/plain"
+										}
+									],
+									"cookie": [],
+									"body": ""
+								},
+								{
+									"name": "Unauthorized",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"description": "Added as a part of security scheme: apikey",
+												"key": "X-ACCESS-TOKEN",
+												"value": "<API Key>"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/game/:game",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"game",
+												":game"
+											],
+											"variable": [
+												{
+													"key": "game",
+													"value": "zq7d24gr9n",
+													"description": "(Required) Id of the game"
+												}
+											]
+										}
+									},
+									"status": "Unauthorized",
+									"code": 401,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "text/plain"
+										}
+									],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						},
+						{
+							"name": "Remove a game",
+							"request": {
+								"auth": {
+									"type": "apikey",
+									"apikey": [
+										{
+											"key": "key",
+											"value": "X-ACCESS-TOKEN",
+											"type": "string"
+										},
+										{
+											"key": "value",
+											"value": "<API Key>",
+											"type": "string"
+										},
+										{
+											"key": "in",
+											"value": "header",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/game/:game",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"game",
+										":game"
+									],
+									"variable": [
+										{
+											"key": "game",
+											"value": "zq7d24gr9n",
+											"description": "(Required) Id of the game"
+										}
+									]
+								},
+								"description": "Remove a game"
+							},
+							"response": [
+								{
+									"name": "Game removed",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [
+											{
+												"description": "Added as a part of security scheme: apikey",
+												"key": "X-ACCESS-TOKEN",
+												"value": "<API Key>"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/game/:game",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"game",
+												":game"
+											],
+											"variable": [
+												{
+													"key": "game",
+													"value": "zq7d24gr9n",
+													"description": "(Required) Id of the game"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"id\": \"zq7d24gr9n\"\n}"
+								},
+								{
+									"name": "Bad request",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [
+											{
+												"description": "Added as a part of security scheme: apikey",
+												"key": "X-ACCESS-TOKEN",
+												"value": "<API Key>"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/game/:game",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"game",
+												":game"
+											],
+											"variable": [
+												{
+													"key": "game",
+													"value": "zq7d24gr9n",
+													"description": "(Required) Id of the game"
+												}
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "text/plain"
+										}
+									],
+									"cookie": [],
+									"body": ""
+								},
+								{
+									"name": "Unauthorized",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [
+											{
+												"description": "Added as a part of security scheme: apikey",
+												"key": "X-ACCESS-TOKEN",
+												"value": "<API Key>"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/game/:game",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"game",
+												":game"
+											],
+											"variable": [
+												{
+													"key": "game",
+													"value": "zq7d24gr9n",
+													"description": "(Required) Id of the game"
+												}
+											]
+										}
+									},
+									"status": "Unauthorized",
+									"code": 401,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "text/plain"
+										}
+									],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						},
+						{
+							"name": "Select the specified player as the user's player in the specified game",
+							"request": {
+								"auth": {
+									"type": "apikey",
+									"apikey": [
+										{
+											"key": "key",
+											"value": "X-ACCESS-TOKEN",
+											"type": "string"
+										},
+										{
+											"key": "value",
+											"value": "<API Key>",
+											"type": "string"
+										},
+										{
+											"key": "in",
+											"value": "header",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/game/:game/player/:player",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"game",
+										":game",
+										"player",
+										":player"
+									],
+									"variable": [
+										{
+											"key": "game",
+											"value": "zq7d24gr9n",
+											"description": "(Required) Id of the game"
+										},
+										{
+											"key": "player",
+											"value": "Ut commodo anim",
+											"description": "(Required) Name of the player"
+										}
+									]
+								},
+								"description": "Select the specified player as the user's player in the specified game. The host of the game must choose the first"
+							},
+							"response": [
+								{
+									"name": "Player selected",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"description": "Added as a part of security scheme: apikey",
+												"key": "X-ACCESS-TOKEN",
+												"value": "<API Key>"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/game/:game/player/:player",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"game",
+												":game",
+												"player",
+												":player"
+											],
+											"variable": [
+												{
+													"key": "game",
+													"value": "zq7d24gr9n",
+													"description": "(Required) Id of the game"
+												},
+												{
+													"key": "player",
+													"value": "Ut commodo anim",
+													"description": "(Required) Name of the player"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "text/plain"
+										}
+									],
+									"cookie": [],
+									"body": ""
+								},
+								{
+									"name": "Bad request",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"description": "Added as a part of security scheme: apikey",
+												"key": "X-ACCESS-TOKEN",
+												"value": "<API Key>"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/game/:game/player/:player",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"game",
+												":game",
+												"player",
+												":player"
+											],
+											"variable": [
+												{
+													"key": "game",
+													"value": "zq7d24gr9n",
+													"description": "(Required) Id of the game"
+												},
+												{
+													"key": "player",
+													"value": "Ut commodo anim",
+													"description": "(Required) Name of the player"
+												}
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "text/plain"
+										}
+									],
+									"cookie": [],
+									"body": ""
+								},
+								{
+									"name": "Unauthorized",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"description": "Added as a part of security scheme: apikey",
+												"key": "X-ACCESS-TOKEN",
+												"value": "<API Key>"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/game/:game/player/:player",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"game",
+												":game",
+												"player",
+												":player"
+											],
+											"variable": [
+												{
+													"key": "game",
+													"value": "zq7d24gr9n",
+													"description": "(Required) Id of the game"
+												},
+												{
+													"key": "player",
+													"value": "Ut commodo anim",
+													"description": "(Required) Name of the player"
+												}
+											]
+										}
+									},
+									"status": "Unauthorized",
+									"code": 401,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "text/plain"
+										}
+									],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "Get the games",
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "key",
+									"value": "X-ACCESS-TOKEN",
+									"type": "string"
+								},
+								{
+									"key": "value",
+									"value": "<API Key>",
+									"type": "string"
+								},
+								{
+									"key": "in",
+									"value": "header",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/game",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"game"
+							]
+						},
+						"description": "Get the games"
+					},
+					"response": [
+						{
+							"name": "Games",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"description": "Added as a part of security scheme: apikey",
+										"key": "X-ACCESS-TOKEN",
+										"value": "<API Key>"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/game",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"game"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "[\n  {\n    \"id\": \"zq7d24gr9n\"\n  },\n  {\n    \"id\": \"zq7d24gr9n\"\n  }\n]"
+						},
+						{
+							"name": "Unauthorized",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"description": "Added as a part of security scheme: apikey",
+										"key": "X-ACCESS-TOKEN",
+										"value": "<API Key>"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/game",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"game"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "text/plain"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Create a new game",
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "key",
+									"value": "X-ACCESS-TOKEN",
+									"type": "string"
+								},
+								{
+									"key": "value",
+									"value": "<API Key>",
+									"type": "string"
+								},
+								{
+									"key": "in",
+									"value": "header",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/game",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"game"
+							]
+						},
+						"description": "Create a new game"
+					},
+					"response": [
+						{
+							"name": "Game created",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"description": "Added as a part of security scheme: apikey",
+										"key": "X-ACCESS-TOKEN",
+										"value": "<API Key>"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/game",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"game"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"id\": \"zq7d24gr9n\"\n}"
+						},
+						{
+							"name": "Unauthorized",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"description": "Added as a part of security scheme: apikey",
+										"key": "X-ACCESS-TOKEN",
+										"value": "<API Key>"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/game",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"game"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "text/plain"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Too many requests",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"description": "Added as a part of security scheme: apikey",
+										"key": "X-ACCESS-TOKEN",
+										"value": "<API Key>"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/game",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"game"
+									]
+								}
+							},
+							"status": "Too Many Requests",
+							"code": 429,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "text/plain"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8001",
+			"type": "string"
+		}
+	]
+}

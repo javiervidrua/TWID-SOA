@@ -1,0 +1,3536 @@
+{
+	"info": {
+		"_postman_id": "3fcb1ea4-b9ca-4bfc-b6cc-62f68abd10ee",
+		"name": "TWID-SOA-API-resources",
+		"description": "TWID-SOA API for the resources service.\n\nContact Support:\n Email: javiervidrua@gmail.com",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "game",
+			"item": [
+				{
+					"name": "{game}",
+					"item": [
+						{
+							"name": "board",
+							"item": [
+								{
+									"name": "round",
+									"item": [
+										{
+											"name": "Get the round",
+											"request": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "application/json"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/game/:game/board/round",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"game",
+														":game",
+														"board",
+														"round"
+													],
+													"variable": [
+														{
+															"key": "game",
+															"value": "zq7d24gr9n",
+															"description": "(Required) Id of the game"
+														}
+													]
+												},
+												"description": "Get the round"
+											},
+											"response": [
+												{
+													"name": "Round number",
+													"originalRequest": {
+														"method": "GET",
+														"header": [],
+														"url": {
+															"raw": "{{baseUrl}}/game/:game/board/round",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"game",
+																":game",
+																"board",
+																"round"
+															],
+															"variable": [
+																{
+																	"key": "game",
+																	"value": "zq7d24gr9n",
+																	"description": "(Required) Id of the game"
+																}
+															]
+														}
+													},
+													"status": "OK",
+													"code": 200,
+													"_postman_previewlanguage": "json",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "application/json"
+														}
+													],
+													"cookie": [],
+													"body": "{\n  \"round\": 1\n}"
+												}
+											]
+										},
+										{
+											"name": "Create a new round (increment the current round number)",
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "application/json"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/game/:game/board/round",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"game",
+														":game",
+														"board",
+														"round"
+													],
+													"variable": [
+														{
+															"key": "game",
+															"value": "zq7d24gr9n",
+															"description": "(Required) Id of the game"
+														}
+													]
+												},
+												"description": "Create a new round (increment the current round number)"
+											},
+											"response": [
+												{
+													"name": "Round created",
+													"originalRequest": {
+														"method": "POST",
+														"header": [],
+														"url": {
+															"raw": "{{baseUrl}}/game/:game/board/round",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"game",
+																":game",
+																"board",
+																"round"
+															],
+															"variable": [
+																{
+																	"key": "game",
+																	"value": "zq7d24gr9n",
+																	"description": "(Required) Id of the game"
+																}
+															]
+														}
+													},
+													"status": "OK",
+													"code": 200,
+													"_postman_previewlanguage": "json",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "application/json"
+														}
+													],
+													"cookie": [],
+													"body": "{\n  \"round\": 1\n}"
+												},
+												{
+													"name": "Cannot create any more rounds",
+													"originalRequest": {
+														"method": "POST",
+														"header": [],
+														"url": {
+															"raw": "{{baseUrl}}/game/:game/board/round",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"game",
+																":game",
+																"board",
+																"round"
+															],
+															"variable": [
+																{
+																	"key": "game",
+																	"value": "zq7d24gr9n",
+																	"description": "(Required) Id of the game"
+																}
+															]
+														}
+													},
+													"status": "Bad Request",
+													"code": 400,
+													"_postman_previewlanguage": "text",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "text/plain"
+														}
+													],
+													"cookie": [],
+													"body": ""
+												}
+											]
+										},
+										{
+											"name": "Reset the round to round 1",
+											"request": {
+												"method": "DELETE",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "application/json"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/game/:game/board/round",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"game",
+														":game",
+														"board",
+														"round"
+													],
+													"variable": [
+														{
+															"key": "game",
+															"value": "zq7d24gr9n",
+															"description": "(Required) Id of the game"
+														}
+													]
+												},
+												"description": "Reset the round to round 1"
+											},
+											"response": [
+												{
+													"name": "Round reset",
+													"originalRequest": {
+														"method": "DELETE",
+														"header": [],
+														"url": {
+															"raw": "{{baseUrl}}/game/:game/board/round",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"game",
+																":game",
+																"board",
+																"round"
+															],
+															"variable": [
+																{
+																	"key": "game",
+																	"value": "zq7d24gr9n",
+																	"description": "(Required) Id of the game"
+																}
+															]
+														}
+													},
+													"status": "OK",
+													"code": 200,
+													"_postman_previewlanguage": "json",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "application/json"
+														}
+													],
+													"cookie": [],
+													"body": "{\n  \"round\": 1\n}"
+												}
+											]
+										}
+									]
+								},
+								{
+									"name": "score",
+									"item": [
+										{
+											"name": "{player}",
+											"item": [
+												{
+													"name": "Get the score of the specified player",
+													"request": {
+														"method": "GET",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "application/json"
+															}
+														],
+														"url": {
+															"raw": "{{baseUrl}}/game/:game/board/score/:player",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"game",
+																":game",
+																"board",
+																"score",
+																":player"
+															],
+															"variable": [
+																{
+																	"key": "game",
+																	"value": "zq7d24gr9n",
+																	"description": "(Required) Id of the game"
+																},
+																{
+																	"key": "player",
+																	"value": "US",
+																	"description": "(Required) Name of the player"
+																}
+															]
+														},
+														"description": "Get the score of the specified player"
+													},
+													"response": [
+														{
+															"name": "Score of the specified player",
+															"originalRequest": {
+																"method": "GET",
+																"header": [],
+																"url": {
+																	"raw": "{{baseUrl}}/game/:game/board/score/:player",
+																	"host": [
+																		"{{baseUrl}}"
+																	],
+																	"path": [
+																		"game",
+																		":game",
+																		"board",
+																		"score",
+																		":player"
+																	],
+																	"variable": [
+																		{
+																			"key": "game",
+																			"value": "zq7d24gr9n",
+																			"description": "(Required) Id of the game"
+																		},
+																		{
+																			"key": "player",
+																			"value": "US",
+																			"description": "(Required) Name of the player"
+																		}
+																	]
+																}
+															},
+															"status": "OK",
+															"code": 200,
+															"_postman_previewlanguage": "json",
+															"header": [
+																{
+																	"key": "Content-Type",
+																	"value": "application/json"
+																}
+															],
+															"cookie": [],
+															"body": "{\n  \"score\": 0\n}"
+														}
+													]
+												},
+												{
+													"name": "Update the score of the specified player",
+													"request": {
+														"method": "PUT",
+														"header": [
+															{
+																"key": "Content-Type",
+																"value": "application/json"
+															},
+															{
+																"key": "Accept",
+																"value": "application/json"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\n  \"score\": 0\n}",
+															"options": {
+																"raw": {
+																	"language": "json"
+																}
+															}
+														},
+														"url": {
+															"raw": "{{baseUrl}}/game/:game/board/score/:player",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"game",
+																":game",
+																"board",
+																"score",
+																":player"
+															],
+															"variable": [
+																{
+																	"key": "game",
+																	"value": "zq7d24gr9n",
+																	"description": "(Required) Id of the game"
+																},
+																{
+																	"key": "player",
+																	"value": "US",
+																	"description": "(Required) Name of the player"
+																}
+															]
+														},
+														"description": "Update the score of the specified player"
+													},
+													"response": [
+														{
+															"name": "Score updated",
+															"originalRequest": {
+																"method": "PUT",
+																"header": [],
+																"body": {
+																	"mode": "raw",
+																	"raw": "{\n  \"score\": 0\n}",
+																	"options": {
+																		"raw": {
+																			"language": "json"
+																		}
+																	}
+																},
+																"url": {
+																	"raw": "{{baseUrl}}/game/:game/board/score/:player",
+																	"host": [
+																		"{{baseUrl}}"
+																	],
+																	"path": [
+																		"game",
+																		":game",
+																		"board",
+																		"score",
+																		":player"
+																	],
+																	"variable": [
+																		{
+																			"key": "game",
+																			"value": "zq7d24gr9n",
+																			"description": "(Required) Id of the game"
+																		},
+																		{
+																			"key": "player",
+																			"value": "US",
+																			"description": "(Required) Name of the player"
+																		}
+																	]
+																}
+															},
+															"status": "OK",
+															"code": 200,
+															"_postman_previewlanguage": "json",
+															"header": [
+																{
+																	"key": "Content-Type",
+																	"value": "application/json"
+																}
+															],
+															"cookie": [],
+															"body": "{\n  \"score\": 0\n}"
+														},
+														{
+															"name": "Invalid input",
+															"originalRequest": {
+																"method": "PUT",
+																"header": [],
+																"body": {
+																	"mode": "raw",
+																	"raw": "{\n  \"score\": 0\n}",
+																	"options": {
+																		"raw": {
+																			"language": "json"
+																		}
+																	}
+																},
+																"url": {
+																	"raw": "{{baseUrl}}/game/:game/board/score/:player",
+																	"host": [
+																		"{{baseUrl}}"
+																	],
+																	"path": [
+																		"game",
+																		":game",
+																		"board",
+																		"score",
+																		":player"
+																	],
+																	"variable": [
+																		{
+																			"key": "game",
+																			"value": "zq7d24gr9n",
+																			"description": "(Required) Id of the game"
+																		},
+																		{
+																			"key": "player",
+																			"value": "US",
+																			"description": "(Required) Name of the player"
+																		}
+																	]
+																}
+															},
+															"status": "Bad Request",
+															"code": 400,
+															"_postman_previewlanguage": "text",
+															"header": [
+																{
+																	"key": "Content-Type",
+																	"value": "text/plain"
+																}
+															],
+															"cookie": [],
+															"body": ""
+														}
+													]
+												},
+												{
+													"name": "Reset the score of a player to score 0",
+													"request": {
+														"method": "DELETE",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "application/json"
+															}
+														],
+														"url": {
+															"raw": "{{baseUrl}}/game/:game/board/score/:player",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"game",
+																":game",
+																"board",
+																"score",
+																":player"
+															],
+															"variable": [
+																{
+																	"key": "game",
+																	"value": "zq7d24gr9n",
+																	"description": "(Required) Id of the game"
+																},
+																{
+																	"key": "player",
+																	"value": "US",
+																	"description": "(Required) Name of the player"
+																}
+															]
+														},
+														"description": "Reset the score of a player to score 0"
+													},
+													"response": [
+														{
+															"name": "Score reset",
+															"originalRequest": {
+																"method": "DELETE",
+																"header": [],
+																"url": {
+																	"raw": "{{baseUrl}}/game/:game/board/score/:player",
+																	"host": [
+																		"{{baseUrl}}"
+																	],
+																	"path": [
+																		"game",
+																		":game",
+																		"board",
+																		"score",
+																		":player"
+																	],
+																	"variable": [
+																		{
+																			"key": "game",
+																			"value": "zq7d24gr9n",
+																			"description": "(Required) Id of the game"
+																		},
+																		{
+																			"key": "player",
+																			"value": "US",
+																			"description": "(Required) Name of the player"
+																		}
+																	]
+																}
+															},
+															"status": "OK",
+															"code": 200,
+															"_postman_previewlanguage": "json",
+															"header": [
+																{
+																	"key": "Content-Type",
+																	"value": "application/json"
+																}
+															],
+															"cookie": [],
+															"body": "{\n  \"score\": 0\n}"
+														}
+													]
+												}
+											]
+										},
+										{
+											"name": "Get the score of the players",
+											"request": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "application/json"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/game/:game/board/score",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"game",
+														":game",
+														"board",
+														"score"
+													],
+													"variable": [
+														{
+															"key": "game",
+															"value": "zq7d24gr9n",
+															"description": "(Required) Id of the game"
+														}
+													]
+												},
+												"description": "Get the score of the players"
+											},
+											"response": [
+												{
+													"name": "Score of the players",
+													"originalRequest": {
+														"method": "GET",
+														"header": [],
+														"url": {
+															"raw": "{{baseUrl}}/game/:game/board/score",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"game",
+																":game",
+																"board",
+																"score"
+															],
+															"variable": [
+																{
+																	"key": "game",
+																	"value": "zq7d24gr9n",
+																	"description": "(Required) Id of the game"
+																}
+															]
+														}
+													},
+													"status": "OK",
+													"code": 200,
+													"_postman_previewlanguage": "json",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "application/json"
+														}
+													],
+													"cookie": [],
+													"body": "[\n  {\n    \"name\": \"US\",\n    \"score\": 4\n  },\n  {\n    \"name\": \"US\",\n    \"score\": 4\n  }\n]"
+												}
+											]
+										}
+									]
+								},
+								{
+									"name": "map",
+									"item": [
+										{
+											"name": "{region}",
+											"item": [
+												{
+													"name": "{country}",
+													"item": [
+														{
+															"name": "Get the specified country of the specified region",
+															"request": {
+																"method": "GET",
+																"header": [
+																	{
+																		"key": "Accept",
+																		"value": "application/json"
+																	}
+																],
+																"url": {
+																	"raw": "{{baseUrl}}/game/:game/board/map/:region/:country",
+																	"host": [
+																		"{{baseUrl}}"
+																	],
+																	"path": [
+																		"game",
+																		":game",
+																		"board",
+																		"map",
+																		":region",
+																		":country"
+																	],
+																	"variable": [
+																		{
+																			"key": "game",
+																			"value": "zq7d24gr9n",
+																			"description": "(Required) Id of the game"
+																		},
+																		{
+																			"key": "region",
+																			"value": "Africa",
+																			"description": "(Required) Name of the region"
+																		},
+																		{
+																			"key": "country",
+																			"value": "Congo",
+																			"description": "(Required) Name of the country"
+																		}
+																	]
+																},
+																"description": "Get the specified country of the specified region"
+															},
+															"response": [
+																{
+																	"name": "Specified country of the specified region",
+																	"originalRequest": {
+																		"method": "GET",
+																		"header": [],
+																		"url": {
+																			"raw": "{{baseUrl}}/game/:game/board/map/:region/:country",
+																			"host": [
+																				"{{baseUrl}}"
+																			],
+																			"path": [
+																				"game",
+																				":game",
+																				"board",
+																				"map",
+																				":region",
+																				":country"
+																			],
+																			"variable": [
+																				{
+																					"key": "game",
+																					"value": "zq7d24gr9n",
+																					"description": "(Required) Id of the game"
+																				},
+																				{
+																					"key": "region",
+																					"value": "Africa",
+																					"description": "(Required) Name of the region"
+																				},
+																				{
+																					"key": "country",
+																					"value": "Congo",
+																					"description": "(Required) Name of the country"
+																				}
+																			]
+																		}
+																	},
+																	"status": "OK",
+																	"code": 200,
+																	"_postman_previewlanguage": "json",
+																	"header": [
+																		{
+																			"key": "Content-Type",
+																			"value": "application/json"
+																		}
+																	],
+																	"cookie": [],
+																	"body": "{\n  \"stability\": 2,\n  \"isConflictive\": true,\n  \"isOilProducer\": true,\n  \"influence\": {\n    \"$player\": {\n      \"influence\": 1,\n      \"extra\": {\n        \"$player\": 1\n      }\n    }\n  },\n  \"adjacent\": [\n    \"in Ut\",\n    \"in\"\n  ]\n}"
+																}
+															]
+														},
+														{
+															"name": "Update the specified country of the specified region",
+															"request": {
+																"method": "PUT",
+																"header": [
+																	{
+																		"key": "Content-Type",
+																		"value": "application/json"
+																	},
+																	{
+																		"key": "Accept",
+																		"value": "application/json"
+																	}
+																],
+																"body": {
+																	"mode": "raw",
+																	"raw": "{\n  \"stability\": 2,\n  \"isConflictive\": true,\n  \"isOilProducer\": true,\n  \"influence\": {\n    \"$player\": {\n      \"influence\": 1,\n      \"extra\": {\n        \"$player\": 1\n      }\n    }\n  },\n  \"adjacent\": [\n    \"r\",\n    \"sit voluptate laborum sed\"\n  ]\n}",
+																	"options": {
+																		"raw": {
+																			"language": "json"
+																		}
+																	}
+																},
+																"url": {
+																	"raw": "{{baseUrl}}/game/:game/board/map/:region/:country",
+																	"host": [
+																		"{{baseUrl}}"
+																	],
+																	"path": [
+																		"game",
+																		":game",
+																		"board",
+																		"map",
+																		":region",
+																		":country"
+																	],
+																	"variable": [
+																		{
+																			"key": "game",
+																			"value": "zq7d24gr9n",
+																			"description": "(Required) Id of the game"
+																		},
+																		{
+																			"key": "region",
+																			"value": "Africa",
+																			"description": "(Required) Name of the region"
+																		},
+																		{
+																			"key": "country",
+																			"value": "Congo",
+																			"description": "(Required) Name of the country"
+																		}
+																	]
+																},
+																"description": "Update the specified country of the specified region"
+															},
+															"response": [
+																{
+																	"name": "Specified country of the specified region updated",
+																	"originalRequest": {
+																		"method": "PUT",
+																		"header": [],
+																		"body": {
+																			"mode": "raw",
+																			"raw": "{\n  \"stability\": 2,\n  \"isConflictive\": true,\n  \"isOilProducer\": true,\n  \"influence\": {\n    \"$player\": {\n      \"influence\": 1,\n      \"extra\": {\n        \"$player\": 1\n      }\n    }\n  },\n  \"adjacent\": [\n    \"r\",\n    \"sit voluptate laborum sed\"\n  ]\n}",
+																			"options": {
+																				"raw": {
+																					"language": "json"
+																				}
+																			}
+																		},
+																		"url": {
+																			"raw": "{{baseUrl}}/game/:game/board/map/:region/:country",
+																			"host": [
+																				"{{baseUrl}}"
+																			],
+																			"path": [
+																				"game",
+																				":game",
+																				"board",
+																				"map",
+																				":region",
+																				":country"
+																			],
+																			"variable": [
+																				{
+																					"key": "game",
+																					"value": "zq7d24gr9n",
+																					"description": "(Required) Id of the game"
+																				},
+																				{
+																					"key": "region",
+																					"value": "Africa",
+																					"description": "(Required) Name of the region"
+																				},
+																				{
+																					"key": "country",
+																					"value": "Congo",
+																					"description": "(Required) Name of the country"
+																				}
+																			]
+																		}
+																	},
+																	"status": "OK",
+																	"code": 200,
+																	"_postman_previewlanguage": "json",
+																	"header": [
+																		{
+																			"key": "Content-Type",
+																			"value": "application/json"
+																		}
+																	],
+																	"cookie": [],
+																	"body": "{\n  \"stability\": 2,\n  \"isConflictive\": true,\n  \"isOilProducer\": true,\n  \"influence\": {\n    \"$player\": {\n      \"influence\": 1,\n      \"extra\": {\n        \"$player\": 1\n      }\n    }\n  },\n  \"adjacent\": [\n    \"r\",\n    \"sit voluptate laborum sed\"\n  ]\n}"
+																},
+																{
+																	"name": "Invalid input",
+																	"originalRequest": {
+																		"method": "PUT",
+																		"header": [],
+																		"body": {
+																			"mode": "raw",
+																			"raw": "{\n  \"stability\": 2,\n  \"isConflictive\": true,\n  \"isOilProducer\": true,\n  \"influence\": {\n    \"$player\": {\n      \"influence\": 1,\n      \"extra\": {\n        \"$player\": 1\n      }\n    }\n  },\n  \"adjacent\": [\n    \"r\",\n    \"sit voluptate laborum sed\"\n  ]\n}",
+																			"options": {
+																				"raw": {
+																					"language": "json"
+																				}
+																			}
+																		},
+																		"url": {
+																			"raw": "{{baseUrl}}/game/:game/board/map/:region/:country",
+																			"host": [
+																				"{{baseUrl}}"
+																			],
+																			"path": [
+																				"game",
+																				":game",
+																				"board",
+																				"map",
+																				":region",
+																				":country"
+																			],
+																			"variable": [
+																				{
+																					"key": "game",
+																					"value": "zq7d24gr9n",
+																					"description": "(Required) Id of the game"
+																				},
+																				{
+																					"key": "region",
+																					"value": "Africa",
+																					"description": "(Required) Name of the region"
+																				},
+																				{
+																					"key": "country",
+																					"value": "Congo",
+																					"description": "(Required) Name of the country"
+																				}
+																			]
+																		}
+																	},
+																	"status": "Bad Request",
+																	"code": 400,
+																	"_postman_previewlanguage": "text",
+																	"header": [
+																		{
+																			"key": "Content-Type",
+																			"value": "text/plain"
+																		}
+																	],
+																	"cookie": [],
+																	"body": ""
+																}
+															]
+														}
+													]
+												},
+												{
+													"name": "Get the countries of the specified region",
+													"request": {
+														"method": "GET",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "application/json"
+															}
+														],
+														"url": {
+															"raw": "{{baseUrl}}/game/:game/board/map/:region",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"game",
+																":game",
+																"board",
+																"map",
+																":region"
+															],
+															"variable": [
+																{
+																	"key": "game",
+																	"value": "zq7d24gr9n",
+																	"description": "(Required) Id of the game"
+																},
+																{
+																	"key": "region",
+																	"value": "Africa",
+																	"description": "(Required) Name of the region"
+																}
+															]
+														},
+														"description": "Get the countries of the specified region"
+													},
+													"response": [
+														{
+															"name": "Countries of the specified region",
+															"originalRequest": {
+																"method": "GET",
+																"header": [],
+																"url": {
+																	"raw": "{{baseUrl}}/game/:game/board/map/:region",
+																	"host": [
+																		"{{baseUrl}}"
+																	],
+																	"path": [
+																		"game",
+																		":game",
+																		"board",
+																		"map",
+																		":region"
+																	],
+																	"variable": [
+																		{
+																			"key": "game",
+																			"value": "zq7d24gr9n",
+																			"description": "(Required) Id of the game"
+																		},
+																		{
+																			"key": "region",
+																			"value": "Africa",
+																			"description": "(Required) Name of the region"
+																		}
+																	]
+																}
+															},
+															"status": "OK",
+															"code": 200,
+															"_postman_previewlanguage": "json",
+															"header": [
+																{
+																	"key": "Content-Type",
+																	"value": "application/json"
+																}
+															],
+															"cookie": [],
+															"body": "[\n  {\n    \"country\": \"Congo\"\n  },\n  {\n    \"country\": \"Congo\"\n  }\n]"
+														}
+													]
+												},
+												{
+													"name": "Update the countries of the specified region",
+													"request": {
+														"method": "PUT",
+														"header": [
+															{
+																"key": "Content-Type",
+																"value": "application/json"
+															},
+															{
+																"key": "Accept",
+																"value": "application/json"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "[\n  {\n    \"country\": \"Congo\"\n  },\n  {\n    \"country\": \"Congo\"\n  }\n]",
+															"options": {
+																"raw": {
+																	"language": "json"
+																}
+															}
+														},
+														"url": {
+															"raw": "{{baseUrl}}/game/:game/board/map/:region",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"game",
+																":game",
+																"board",
+																"map",
+																":region"
+															],
+															"variable": [
+																{
+																	"key": "game",
+																	"value": "zq7d24gr9n",
+																	"description": "(Required) Id of the game"
+																},
+																{
+																	"key": "region",
+																	"value": "Africa",
+																	"description": "(Required) Name of the region"
+																}
+															]
+														},
+														"description": "Update the countries of the specified region"
+													},
+													"response": [
+														{
+															"name": "Countries of the specified region updated",
+															"originalRequest": {
+																"method": "PUT",
+																"header": [],
+																"body": {
+																	"mode": "raw",
+																	"raw": "[\n  {\n    \"country\": \"Congo\"\n  },\n  {\n    \"country\": \"Congo\"\n  }\n]",
+																	"options": {
+																		"raw": {
+																			"language": "json"
+																		}
+																	}
+																},
+																"url": {
+																	"raw": "{{baseUrl}}/game/:game/board/map/:region",
+																	"host": [
+																		"{{baseUrl}}"
+																	],
+																	"path": [
+																		"game",
+																		":game",
+																		"board",
+																		"map",
+																		":region"
+																	],
+																	"variable": [
+																		{
+																			"key": "game",
+																			"value": "zq7d24gr9n",
+																			"description": "(Required) Id of the game"
+																		},
+																		{
+																			"key": "region",
+																			"value": "Africa",
+																			"description": "(Required) Name of the region"
+																		}
+																	]
+																}
+															},
+															"status": "OK",
+															"code": 200,
+															"_postman_previewlanguage": "json",
+															"header": [
+																{
+																	"key": "Content-Type",
+																	"value": "application/json"
+																}
+															],
+															"cookie": [],
+															"body": "[\n  {\n    \"country\": \"Congo\"\n  },\n  {\n    \"country\": \"Congo\"\n  }\n]"
+														},
+														{
+															"name": "Invalid input",
+															"originalRequest": {
+																"method": "PUT",
+																"header": [],
+																"body": {
+																	"mode": "raw",
+																	"raw": "[\n  {\n    \"country\": \"Congo\"\n  },\n  {\n    \"country\": \"Congo\"\n  }\n]",
+																	"options": {
+																		"raw": {
+																			"language": "json"
+																		}
+																	}
+																},
+																"url": {
+																	"raw": "{{baseUrl}}/game/:game/board/map/:region",
+																	"host": [
+																		"{{baseUrl}}"
+																	],
+																	"path": [
+																		"game",
+																		":game",
+																		"board",
+																		"map",
+																		":region"
+																	],
+																	"variable": [
+																		{
+																			"key": "game",
+																			"value": "zq7d24gr9n",
+																			"description": "(Required) Id of the game"
+																		},
+																		{
+																			"key": "region",
+																			"value": "Africa",
+																			"description": "(Required) Name of the region"
+																		}
+																	]
+																}
+															},
+															"status": "Bad Request",
+															"code": 400,
+															"_postman_previewlanguage": "text",
+															"header": [
+																{
+																	"key": "Content-Type",
+																	"value": "text/plain"
+																}
+															],
+															"cookie": [],
+															"body": ""
+														}
+													]
+												}
+											]
+										},
+										{
+											"name": "Get the regions of the map",
+											"request": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "application/json"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/game/:game/board/map",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"game",
+														":game",
+														"board",
+														"map"
+													],
+													"variable": [
+														{
+															"key": "game",
+															"value": "zq7d24gr9n",
+															"description": "(Required) Id of the game"
+														}
+													]
+												},
+												"description": "Get the regions of the map"
+											},
+											"response": [
+												{
+													"name": "Regions of the map",
+													"originalRequest": {
+														"method": "GET",
+														"header": [],
+														"url": {
+															"raw": "{{baseUrl}}/game/:game/board/map",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"game",
+																":game",
+																"board",
+																"map"
+															],
+															"variable": [
+																{
+																	"key": "game",
+																	"value": "zq7d24gr9n",
+																	"description": "(Required) Id of the game"
+																}
+															]
+														}
+													},
+													"status": "OK",
+													"code": 200,
+													"_postman_previewlanguage": "json",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "application/json"
+														}
+													],
+													"cookie": [],
+													"body": "[\n  {\n    \"region\": \"Middle east\"\n  },\n  {\n    \"region\": \"Middle east\"\n  }\n]"
+												}
+											]
+										}
+									]
+								},
+								{
+									"name": "nwo",
+									"item": [
+										{
+											"name": "{track}",
+											"item": [
+												{
+													"name": "{slot}",
+													"item": [
+														{
+															"name": "Get the state of the specified slot of the specified track",
+															"request": {
+																"method": "GET",
+																"header": [
+																	{
+																		"key": "Accept",
+																		"value": "application/json"
+																	}
+																],
+																"url": {
+																	"raw": "{{baseUrl}}/game/:game/board/nwo/:track/:slot",
+																	"host": [
+																		"{{baseUrl}}"
+																	],
+																	"path": [
+																		"game",
+																		":game",
+																		"board",
+																		"nwo",
+																		":track",
+																		":slot"
+																	],
+																	"variable": [
+																		{
+																			"key": "game",
+																			"value": "zq7d24gr9n",
+																			"description": "(Required) Id of the game"
+																		},
+																		{
+																			"key": "track",
+																			"value": "Public opinion",
+																			"description": "(Required) Name of the track"
+																		},
+																		{
+																			"key": "slot",
+																			"value": "State propaganda",
+																			"description": "(Required) Name of the slot"
+																		}
+																	]
+																},
+																"description": "Get the state of the specified slot of the specified track"
+															},
+															"response": [
+																{
+																	"name": "State of the specified slot of the specified track",
+																	"originalRequest": {
+																		"method": "GET",
+																		"header": [],
+																		"url": {
+																			"raw": "{{baseUrl}}/game/:game/board/nwo/:track/:slot",
+																			"host": [
+																				"{{baseUrl}}"
+																			],
+																			"path": [
+																				"game",
+																				":game",
+																				"board",
+																				"nwo",
+																				":track",
+																				":slot"
+																			],
+																			"variable": [
+																				{
+																					"key": "game",
+																					"value": "zq7d24gr9n",
+																					"description": "(Required) Id of the game"
+																				},
+																				{
+																					"key": "track",
+																					"value": "Public opinion",
+																					"description": "(Required) Name of the track"
+																				},
+																				{
+																					"key": "slot",
+																					"value": "State propaganda",
+																					"description": "(Required) Name of the slot"
+																				}
+																			]
+																		}
+																	},
+																	"status": "OK",
+																	"code": 200,
+																	"_postman_previewlanguage": "json",
+																	"header": [
+																		{
+																			"key": "Content-Type",
+																			"value": "application/json"
+																		}
+																	],
+																	"cookie": [],
+																	"body": "{\n  \"veto\": \"\",\n  \"ahead\": \"US\",\n  \"supremacy\": \"US\",\n  \"description\": \"Remove supremacy to add 1 influence to an already controlled country (usable before or after any action, yours or from other player, event or operation)\"\n}"
+																}
+															]
+														},
+														{
+															"name": "Update the state of the specified slot of the specified track",
+															"request": {
+																"method": "PUT",
+																"header": [
+																	{
+																		"key": "Content-Type",
+																		"value": "application/json"
+																	},
+																	{
+																		"key": "Accept",
+																		"value": "application/json"
+																	}
+																],
+																"body": {
+																	"mode": "raw",
+																	"raw": "{\n  \"veto\": \"\",\n  \"ahead\": \"US\",\n  \"supremacy\": \"US\",\n  \"description\": \"Remove supremacy to add 1 influence to an already controlled country (usable before or after any action, yours or from other player, event or operation)\"\n}",
+																	"options": {
+																		"raw": {
+																			"language": "json"
+																		}
+																	}
+																},
+																"url": {
+																	"raw": "{{baseUrl}}/game/:game/board/nwo/:track/:slot",
+																	"host": [
+																		"{{baseUrl}}"
+																	],
+																	"path": [
+																		"game",
+																		":game",
+																		"board",
+																		"nwo",
+																		":track",
+																		":slot"
+																	],
+																	"variable": [
+																		{
+																			"key": "game",
+																			"value": "zq7d24gr9n",
+																			"description": "(Required) Id of the game"
+																		},
+																		{
+																			"key": "track",
+																			"value": "Public opinion",
+																			"description": "(Required) Name of the track"
+																		},
+																		{
+																			"key": "slot",
+																			"value": "State propaganda",
+																			"description": "(Required) Name of the slot"
+																		}
+																	]
+																},
+																"description": "Update the state of the specified slot of the specified track"
+															},
+															"response": [
+																{
+																	"name": "State of the specified slot of the specified track updated",
+																	"originalRequest": {
+																		"method": "PUT",
+																		"header": [],
+																		"body": {
+																			"mode": "raw",
+																			"raw": "{\n  \"veto\": \"\",\n  \"ahead\": \"US\",\n  \"supremacy\": \"US\",\n  \"description\": \"Remove supremacy to add 1 influence to an already controlled country (usable before or after any action, yours or from other player, event or operation)\"\n}",
+																			"options": {
+																				"raw": {
+																					"language": "json"
+																				}
+																			}
+																		},
+																		"url": {
+																			"raw": "{{baseUrl}}/game/:game/board/nwo/:track/:slot",
+																			"host": [
+																				"{{baseUrl}}"
+																			],
+																			"path": [
+																				"game",
+																				":game",
+																				"board",
+																				"nwo",
+																				":track",
+																				":slot"
+																			],
+																			"variable": [
+																				{
+																					"key": "game",
+																					"value": "zq7d24gr9n",
+																					"description": "(Required) Id of the game"
+																				},
+																				{
+																					"key": "track",
+																					"value": "Public opinion",
+																					"description": "(Required) Name of the track"
+																				},
+																				{
+																					"key": "slot",
+																					"value": "State propaganda",
+																					"description": "(Required) Name of the slot"
+																				}
+																			]
+																		}
+																	},
+																	"status": "OK",
+																	"code": 200,
+																	"_postman_previewlanguage": "json",
+																	"header": [
+																		{
+																			"key": "Content-Type",
+																			"value": "application/json"
+																		}
+																	],
+																	"cookie": [],
+																	"body": "{\n  \"veto\": \"\",\n  \"ahead\": \"US\",\n  \"supremacy\": \"US\",\n  \"description\": \"Remove supremacy to add 1 influence to an already controlled country (usable before or after any action, yours or from other player, event or operation)\"\n}"
+																},
+																{
+																	"name": "Invalid input",
+																	"originalRequest": {
+																		"method": "PUT",
+																		"header": [],
+																		"body": {
+																			"mode": "raw",
+																			"raw": "{\n  \"veto\": \"\",\n  \"ahead\": \"US\",\n  \"supremacy\": \"US\",\n  \"description\": \"Remove supremacy to add 1 influence to an already controlled country (usable before or after any action, yours or from other player, event or operation)\"\n}",
+																			"options": {
+																				"raw": {
+																					"language": "json"
+																				}
+																			}
+																		},
+																		"url": {
+																			"raw": "{{baseUrl}}/game/:game/board/nwo/:track/:slot",
+																			"host": [
+																				"{{baseUrl}}"
+																			],
+																			"path": [
+																				"game",
+																				":game",
+																				"board",
+																				"nwo",
+																				":track",
+																				":slot"
+																			],
+																			"variable": [
+																				{
+																					"key": "game",
+																					"value": "zq7d24gr9n",
+																					"description": "(Required) Id of the game"
+																				},
+																				{
+																					"key": "track",
+																					"value": "Public opinion",
+																					"description": "(Required) Name of the track"
+																				},
+																				{
+																					"key": "slot",
+																					"value": "State propaganda",
+																					"description": "(Required) Name of the slot"
+																				}
+																			]
+																		}
+																	},
+																	"status": "Bad Request",
+																	"code": 400,
+																	"_postman_previewlanguage": "text",
+																	"header": [
+																		{
+																			"key": "Content-Type",
+																			"value": "text/plain"
+																		}
+																	],
+																	"cookie": [],
+																	"body": ""
+																}
+															]
+														},
+														{
+															"name": "Reset the state of the specified slot of the specified track",
+															"request": {
+																"method": "DELETE",
+																"header": [
+																	{
+																		"key": "Accept",
+																		"value": "application/json"
+																	}
+																],
+																"url": {
+																	"raw": "{{baseUrl}}/game/:game/board/nwo/:track/:slot",
+																	"host": [
+																		"{{baseUrl}}"
+																	],
+																	"path": [
+																		"game",
+																		":game",
+																		"board",
+																		"nwo",
+																		":track",
+																		":slot"
+																	],
+																	"variable": [
+																		{
+																			"key": "game",
+																			"value": "zq7d24gr9n",
+																			"description": "(Required) Id of the game"
+																		},
+																		{
+																			"key": "track",
+																			"value": "Public opinion",
+																			"description": "(Required) Name of the track"
+																		},
+																		{
+																			"key": "slot",
+																			"value": "State propaganda",
+																			"description": "(Required) Name of the slot"
+																		}
+																	]
+																},
+																"description": "Reset the state of the specified slot of the specified track"
+															},
+															"response": [
+																{
+																	"name": "State of the specified slot of the specified track reset",
+																	"originalRequest": {
+																		"method": "DELETE",
+																		"header": [],
+																		"url": {
+																			"raw": "{{baseUrl}}/game/:game/board/nwo/:track/:slot",
+																			"host": [
+																				"{{baseUrl}}"
+																			],
+																			"path": [
+																				"game",
+																				":game",
+																				"board",
+																				"nwo",
+																				":track",
+																				":slot"
+																			],
+																			"variable": [
+																				{
+																					"key": "game",
+																					"value": "zq7d24gr9n",
+																					"description": "(Required) Id of the game"
+																				},
+																				{
+																					"key": "track",
+																					"value": "Public opinion",
+																					"description": "(Required) Name of the track"
+																				},
+																				{
+																					"key": "slot",
+																					"value": "State propaganda",
+																					"description": "(Required) Name of the slot"
+																				}
+																			]
+																		}
+																	},
+																	"status": "OK",
+																	"code": 200,
+																	"_postman_previewlanguage": "json",
+																	"header": [
+																		{
+																			"key": "Content-Type",
+																			"value": "application/json"
+																		}
+																	],
+																	"cookie": [],
+																	"body": "{\n  \"veto\": \"\",\n  \"ahead\": \"US\",\n  \"supremacy\": \"US\",\n  \"description\": \"Remove supremacy to add 1 influence to an already controlled country (usable before or after any action, yours or from other player, event or operation)\"\n}"
+																}
+															]
+														}
+													]
+												},
+												{
+													"name": "Get the slots of the specified track",
+													"request": {
+														"method": "GET",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "application/json"
+															}
+														],
+														"url": {
+															"raw": "{{baseUrl}}/game/:game/board/nwo/:track",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"game",
+																":game",
+																"board",
+																"nwo",
+																":track"
+															],
+															"variable": [
+																{
+																	"key": "game",
+																	"value": "zq7d24gr9n",
+																	"description": "(Required) Id of the game"
+																},
+																{
+																	"key": "track",
+																	"value": "Public opinion",
+																	"description": "(Required) Name of the track"
+																}
+															]
+														},
+														"description": "Get the slots of the specified track"
+													},
+													"response": [
+														{
+															"name": "Slots of the specified track",
+															"originalRequest": {
+																"method": "GET",
+																"header": [],
+																"url": {
+																	"raw": "{{baseUrl}}/game/:game/board/nwo/:track",
+																	"host": [
+																		"{{baseUrl}}"
+																	],
+																	"path": [
+																		"game",
+																		":game",
+																		"board",
+																		"nwo",
+																		":track"
+																	],
+																	"variable": [
+																		{
+																			"key": "game",
+																			"value": "zq7d24gr9n",
+																			"description": "(Required) Id of the game"
+																		},
+																		{
+																			"key": "track",
+																			"value": "Public opinion",
+																			"description": "(Required) Name of the track"
+																		}
+																	]
+																}
+															},
+															"status": "OK",
+															"code": 200,
+															"_postman_previewlanguage": "json",
+															"header": [
+																{
+																	"key": "Content-Type",
+																	"value": "application/json"
+																}
+															],
+															"cookie": [],
+															"body": "[\n  {\n    \"name\": \"State propaganda\"\n  },\n  {\n    \"name\": \"Mass media\"\n  },\n  {\n    \"name\": \"Information leaks\"\n  }\n]"
+														}
+													]
+												}
+											]
+										},
+										{
+											"name": "Get the New World Order tracks",
+											"request": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "application/json"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/game/:game/board/nwo",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"game",
+														":game",
+														"board",
+														"nwo"
+													],
+													"variable": [
+														{
+															"key": "game",
+															"value": "zq7d24gr9n",
+															"description": "(Required) Id of the game"
+														}
+													]
+												},
+												"description": "Get the New World Order tracks"
+											},
+											"response": [
+												{
+													"name": "New World Order tracks",
+													"originalRequest": {
+														"method": "GET",
+														"header": [],
+														"url": {
+															"raw": "{{baseUrl}}/game/:game/board/nwo",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"game",
+																":game",
+																"board",
+																"nwo"
+															],
+															"variable": [
+																{
+																	"key": "game",
+																	"value": "zq7d24gr9n",
+																	"description": "(Required) Id of the game"
+																}
+															]
+														}
+													},
+													"status": "OK",
+													"code": 200,
+													"_postman_previewlanguage": "json",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "application/json"
+														}
+													],
+													"cookie": [],
+													"body": "[\n  {\n    \"name\": \"Economy\"\n  },\n  {\n    \"name\": \"Public opinion\"\n  },\n  {\n    \"name\": \"Technology\"\n  }\n]"
+												}
+											]
+										}
+									]
+								},
+								{
+									"name": "Get the resources of the board",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/game/:game/board",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"game",
+												":game",
+												"board"
+											],
+											"variable": [
+												{
+													"key": "game",
+													"value": "zq7d24gr9n",
+													"description": "(Required) Id of the game"
+												}
+											]
+										},
+										"description": "Get the resources of the board"
+									},
+									"response": [
+										{
+											"name": "Board resources",
+											"originalRequest": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{baseUrl}}/game/:game/board",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"game",
+														":game",
+														"board"
+													],
+													"variable": [
+														{
+															"key": "game",
+															"value": "zq7d24gr9n",
+															"description": "(Required) Id of the game"
+														}
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"regions\": [\n    {\n      \"region\": \"eiusmod in in velit\"\n    },\n    {\n      \"region\": \"nulla anim velit proident magna\"\n    }\n  ],\n  \"regionScoring\": {\n    \"regionScoring\": {\n      \"NC America\": {\n        \"presence\": 0,\n        \"domination\": 1,\n        \"control\": 3\n      },\n      \"South America\": {\n        \"presence\": 0,\n        \"domination\": 1,\n        \"control\": 2\n      },\n      \"Europe\": {\n        \"presence\": 2,\n        \"domination\": 2,\n        \"control\": 3\n      },\n      \"Africa\": {\n        \"presence\": 1,\n        \"domination\": 1,\n        \"control\": 2\n      },\n      \"Middle East\": {\n        \"presence\": 2,\n        \"domination\": 2,\n        \"control\": 2\n      },\n      \"Asia\": {\n        \"presence\": 1,\n        \"domination\": 2,\n        \"control\": 2\n      }\n    }\n  },\n  \"countries\": [\n    {\n      \"name\": \"sed culpa in\",\n      \"region\": \"culpa quis sed Ut ut\",\n      \"stability\": 2,\n      \"isConflictive\": true,\n      \"isOilProducer\": true,\n      \"influence\": {\n        \"$player\": {\n          \"influence\": 1,\n          \"extra\": {\n            \"$player\": 1\n          }\n        }\n      }\n    },\n    {\n      \"name\": \"est consectetur laborum\",\n      \"region\": \"officia consectetur nisi ipsum labore\",\n      \"stability\": 2,\n      \"isConflictive\": true,\n      \"isOilProducer\": true,\n      \"influence\": {\n        \"$player\": {\n          \"influence\": 1,\n          \"extra\": {\n            \"$player\": 1\n          }\n        }\n      }\n    }\n  ],\n  \"nwo\": {\n    \"track\": {\n      \"slot\": {\n        \"veto\": \"\",\n        \"ahead\": \"US\",\n        \"supremacy\": \"US\",\n        \"description\": \"Remove supremacy to add 1 influence to an already controlled country (usable before or after any action, yours or from other player, event or operation)\"\n      }\n    }\n  }\n}"
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "cards",
+							"item": [
+								{
+									"name": "deck",
+									"item": [
+										{
+											"name": "{type}",
+											"item": [
+												{
+													"name": "{id}",
+													"item": [
+														{
+															"name": "Add the specified card to the specified deck",
+															"request": {
+																"method": "POST",
+																"header": [
+																	{
+																		"key": "Accept",
+																		"value": "application/json"
+																	}
+																],
+																"url": {
+																	"raw": "{{baseUrl}}/game/:game/cards/deck/:type/:id",
+																	"host": [
+																		"{{baseUrl}}"
+																	],
+																	"path": [
+																		"game",
+																		":game",
+																		"cards",
+																		"deck",
+																		":type",
+																		":id"
+																	],
+																	"variable": [
+																		{
+																			"key": "game",
+																			"value": "zq7d24gr9n",
+																			"description": "(Required) Id of the game"
+																		},
+																		{
+																			"key": "type",
+																			"value": "veniam enim",
+																			"description": "(Required) Type of the deck"
+																		},
+																		{
+																			"key": "id",
+																			"value": "23",
+																			"description": "(Required) Id of the card"
+																		}
+																	]
+																},
+																"description": "Add the specified card to the specified deck"
+															},
+															"response": [
+																{
+																	"name": "Card added",
+																	"originalRequest": {
+																		"method": "POST",
+																		"header": [],
+																		"url": {
+																			"raw": "{{baseUrl}}/game/:game/cards/deck/:type/:id",
+																			"host": [
+																				"{{baseUrl}}"
+																			],
+																			"path": [
+																				"game",
+																				":game",
+																				"cards",
+																				"deck",
+																				":type",
+																				":id"
+																			],
+																			"variable": [
+																				{
+																					"key": "game",
+																					"value": "zq7d24gr9n",
+																					"description": "(Required) Id of the game"
+																				},
+																				{
+																					"key": "type",
+																					"value": "veniam enim",
+																					"description": "(Required) Type of the deck"
+																				},
+																				{
+																					"key": "id",
+																					"value": "23",
+																					"description": "(Required) Id of the card"
+																				}
+																			]
+																		}
+																	},
+																	"status": "OK",
+																	"code": 200,
+																	"_postman_previewlanguage": "json",
+																	"header": [
+																		{
+																			"key": "Content-Type",
+																			"value": "application/json"
+																		}
+																	],
+																	"cookie": [],
+																	"body": "{\n  \"id\": 3,\n  \"title\": \"Black Monday\",\n  \"epoch\": \"Pre\",\n  \"description\": \"US and EU lose supremacy on all NWO economy slots.\",\n  \"points\": 2,\n  \"faction\": \"E\",\n  \"type\": \"Economy\",\n  \"remove\": true,\n  \"image\": \"images/blackMonday.jpg\",\n  \"background\": \"#DDDDFF\",\n  \"year\": \"esse Duis dolore in\",\n  \"subtype\": \"\"\n}"
+																}
+															]
+														},
+														{
+															"name": "Remove the specified card from the specified deck",
+															"request": {
+																"method": "DELETE",
+																"header": [
+																	{
+																		"key": "Accept",
+																		"value": "application/json"
+																	}
+																],
+																"url": {
+																	"raw": "{{baseUrl}}/game/:game/cards/deck/:type/:id",
+																	"host": [
+																		"{{baseUrl}}"
+																	],
+																	"path": [
+																		"game",
+																		":game",
+																		"cards",
+																		"deck",
+																		":type",
+																		":id"
+																	],
+																	"variable": [
+																		{
+																			"key": "game",
+																			"value": "zq7d24gr9n",
+																			"description": "(Required) Id of the game"
+																		},
+																		{
+																			"key": "type",
+																			"value": "veniam enim",
+																			"description": "(Required) Type of the deck"
+																		},
+																		{
+																			"key": "id",
+																			"value": "23",
+																			"description": "(Required) Id of the card"
+																		}
+																	]
+																},
+																"description": "Remove the specified card from the specified deck"
+															},
+															"response": [
+																{
+																	"name": "Card removed",
+																	"originalRequest": {
+																		"method": "DELETE",
+																		"header": [],
+																		"url": {
+																			"raw": "{{baseUrl}}/game/:game/cards/deck/:type/:id",
+																			"host": [
+																				"{{baseUrl}}"
+																			],
+																			"path": [
+																				"game",
+																				":game",
+																				"cards",
+																				"deck",
+																				":type",
+																				":id"
+																			],
+																			"variable": [
+																				{
+																					"key": "game",
+																					"value": "zq7d24gr9n",
+																					"description": "(Required) Id of the game"
+																				},
+																				{
+																					"key": "type",
+																					"value": "veniam enim",
+																					"description": "(Required) Type of the deck"
+																				},
+																				{
+																					"key": "id",
+																					"value": "23",
+																					"description": "(Required) Id of the card"
+																				}
+																			]
+																		}
+																	},
+																	"status": "OK",
+																	"code": 200,
+																	"_postman_previewlanguage": "json",
+																	"header": [
+																		{
+																			"key": "Content-Type",
+																			"value": "application/json"
+																		}
+																	],
+																	"cookie": [],
+																	"body": "{\n  \"id\": 3,\n  \"title\": \"Black Monday\",\n  \"epoch\": \"Pre\",\n  \"description\": \"US and EU lose supremacy on all NWO economy slots.\",\n  \"points\": 2,\n  \"faction\": \"E\",\n  \"type\": \"Economy\",\n  \"remove\": true,\n  \"image\": \"images/blackMonday.jpg\",\n  \"background\": \"#DDDDFF\",\n  \"year\": \"esse Duis dolore in\",\n  \"subtype\": \"\"\n}"
+																}
+															]
+														}
+													]
+												},
+												{
+													"name": "Get the cards of the specified deck",
+													"request": {
+														"method": "GET",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "application/json"
+															}
+														],
+														"url": {
+															"raw": "{{baseUrl}}/game/:game/cards/deck/:type?random=false",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"game",
+																":game",
+																"cards",
+																"deck",
+																":type"
+															],
+															"query": [
+																{
+																	"key": "random",
+																	"value": "false",
+																	"description": "Specify if return the cards in random order"
+																}
+															],
+															"variable": [
+																{
+																	"key": "game",
+																	"value": "zq7d24gr9n",
+																	"description": "(Required) Id of the game"
+																},
+																{
+																	"key": "type",
+																	"value": "veniam enim",
+																	"description": "(Required) Type of the deck"
+																}
+															]
+														},
+														"description": "Get the cards of the specified deck"
+													},
+													"response": [
+														{
+															"name": "Cards",
+															"originalRequest": {
+																"method": "GET",
+																"header": [],
+																"url": {
+																	"raw": "{{baseUrl}}/game/:game/cards/deck/:type?random=false",
+																	"host": [
+																		"{{baseUrl}}"
+																	],
+																	"path": [
+																		"game",
+																		":game",
+																		"cards",
+																		"deck",
+																		":type"
+																	],
+																	"query": [
+																		{
+																			"key": "random",
+																			"value": "false"
+																		}
+																	],
+																	"variable": [
+																		{
+																			"key": "game",
+																			"value": "zq7d24gr9n",
+																			"description": "(Required) Id of the game"
+																		},
+																		{
+																			"key": "type",
+																			"value": "veniam enim",
+																			"description": "(Required) Type of the deck"
+																		}
+																	]
+																}
+															},
+															"status": "OK",
+															"code": 200,
+															"_postman_previewlanguage": "json",
+															"header": [
+																{
+																	"key": "Content-Type",
+																	"value": "application/json"
+																}
+															],
+															"cookie": [],
+															"body": "[\n  {\n    \"id\": 1\n  },\n  {\n    \"id\": 1\n  }\n]"
+														}
+													]
+												}
+											]
+										},
+										{
+											"name": "Get the decks of cards",
+											"request": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "application/json"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/game/:game/cards/deck",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"game",
+														":game",
+														"cards",
+														"deck"
+													],
+													"variable": [
+														{
+															"key": "game",
+															"value": "zq7d24gr9n",
+															"description": "(Required) Id of the game"
+														}
+													]
+												},
+												"description": "Get the decks of cards"
+											},
+											"response": [
+												{
+													"name": "Decks",
+													"originalRequest": {
+														"method": "GET",
+														"header": [],
+														"url": {
+															"raw": "{{baseUrl}}/game/:game/cards/deck",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"game",
+																":game",
+																"cards",
+																"deck"
+															],
+															"variable": [
+																{
+																	"key": "game",
+																	"value": "zq7d24gr9n",
+																	"description": "(Required) Id of the game"
+																}
+															]
+														}
+													},
+													"status": "OK",
+													"code": 200,
+													"_postman_previewlanguage": "json",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "application/json"
+														}
+													],
+													"cookie": [],
+													"body": "[\n  {\n    \"type\": \"main\"\n  },\n  {\n    \"type\": \"discarded\"\n  },\n  {\n    \"type\": \"removed\"\n  }\n]"
+												}
+											]
+										}
+									]
+								},
+								{
+									"name": "playing",
+									"item": [
+										{
+											"name": "{id}",
+											"item": [
+												{
+													"name": "Add the specified card to the cards that are currently being played",
+													"request": {
+														"method": "POST",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "application/json"
+															}
+														],
+														"url": {
+															"raw": "{{baseUrl}}/game/:game/cards/playing/:id",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"game",
+																":game",
+																"cards",
+																"playing",
+																":id"
+															],
+															"variable": [
+																{
+																	"key": "game",
+																	"value": "zq7d24gr9n",
+																	"description": "(Required) Id of the game"
+																},
+																{
+																	"key": "id",
+																	"value": "23",
+																	"description": "(Required) Id of the card"
+																}
+															]
+														},
+														"description": "Add the specified card to the cards that are currently being played"
+													},
+													"response": [
+														{
+															"name": "Cards",
+															"originalRequest": {
+																"method": "POST",
+																"header": [],
+																"url": {
+																	"raw": "{{baseUrl}}/game/:game/cards/playing/:id",
+																	"host": [
+																		"{{baseUrl}}"
+																	],
+																	"path": [
+																		"game",
+																		":game",
+																		"cards",
+																		"playing",
+																		":id"
+																	],
+																	"variable": [
+																		{
+																			"key": "game",
+																			"value": "zq7d24gr9n",
+																			"description": "(Required) Id of the game"
+																		},
+																		{
+																			"key": "id",
+																			"value": "23",
+																			"description": "(Required) Id of the card"
+																		}
+																	]
+																}
+															},
+															"status": "OK",
+															"code": 200,
+															"_postman_previewlanguage": "json",
+															"header": [
+																{
+																	"key": "Content-Type",
+																	"value": "application/json"
+																}
+															],
+															"cookie": [],
+															"body": "[\n  {\n    \"id\": 1\n  },\n  {\n    \"id\": 1\n  }\n]"
+														}
+													]
+												},
+												{
+													"name": "Remove the specified card to the cards that are currently being played",
+													"request": {
+														"method": "DELETE",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "application/json"
+															}
+														],
+														"url": {
+															"raw": "{{baseUrl}}/game/:game/cards/playing/:id",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"game",
+																":game",
+																"cards",
+																"playing",
+																":id"
+															],
+															"variable": [
+																{
+																	"key": "game",
+																	"value": "zq7d24gr9n",
+																	"description": "(Required) Id of the game"
+																},
+																{
+																	"key": "id",
+																	"value": "23",
+																	"description": "(Required) Id of the card"
+																}
+															]
+														},
+														"description": "Remove the specified card to the cards that are currently being played"
+													},
+													"response": [
+														{
+															"name": "Cards",
+															"originalRequest": {
+																"method": "DELETE",
+																"header": [],
+																"url": {
+																	"raw": "{{baseUrl}}/game/:game/cards/playing/:id",
+																	"host": [
+																		"{{baseUrl}}"
+																	],
+																	"path": [
+																		"game",
+																		":game",
+																		"cards",
+																		"playing",
+																		":id"
+																	],
+																	"variable": [
+																		{
+																			"key": "game",
+																			"value": "zq7d24gr9n",
+																			"description": "(Required) Id of the game"
+																		},
+																		{
+																			"key": "id",
+																			"value": "23",
+																			"description": "(Required) Id of the card"
+																		}
+																	]
+																}
+															},
+															"status": "OK",
+															"code": 200,
+															"_postman_previewlanguage": "json",
+															"header": [
+																{
+																	"key": "Content-Type",
+																	"value": "application/json"
+																}
+															],
+															"cookie": [],
+															"body": "[\n  {\n    \"id\": 1\n  },\n  {\n    \"id\": 1\n  }\n]"
+														}
+													]
+												}
+											]
+										},
+										{
+											"name": "Get the cards that are currently being played",
+											"request": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "application/json"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/game/:game/cards/playing",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"game",
+														":game",
+														"cards",
+														"playing"
+													],
+													"variable": [
+														{
+															"key": "game",
+															"value": "zq7d24gr9n",
+															"description": "(Required) Id of the game"
+														}
+													]
+												},
+												"description": "Get the cards that are currently being played"
+											},
+											"response": [
+												{
+													"name": "Cards",
+													"originalRequest": {
+														"method": "GET",
+														"header": [],
+														"url": {
+															"raw": "{{baseUrl}}/game/:game/cards/playing",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"game",
+																":game",
+																"cards",
+																"playing"
+															],
+															"variable": [
+																{
+																	"key": "game",
+																	"value": "zq7d24gr9n",
+																	"description": "(Required) Id of the game"
+																}
+															]
+														}
+													},
+													"status": "OK",
+													"code": 200,
+													"_postman_previewlanguage": "json",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "application/json"
+														}
+													],
+													"cookie": [],
+													"body": "[\n  {\n    \"id\": 1\n  },\n  {\n    \"id\": 1\n  }\n]"
+												}
+											]
+										}
+									]
+								},
+								{
+									"name": "player/{player}",
+									"item": [
+										{
+											"name": "{id}",
+											"item": [
+												{
+													"name": "Add the specified card to the specified player's hand",
+													"request": {
+														"method": "POST",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "application/json"
+															}
+														],
+														"url": {
+															"raw": "{{baseUrl}}/game/:game/cards/player/:player/:id",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"game",
+																":game",
+																"cards",
+																"player",
+																":player",
+																":id"
+															],
+															"variable": [
+																{
+																	"key": "game",
+																	"value": "zq7d24gr9n",
+																	"description": "(Required) Id of the game"
+																},
+																{
+																	"key": "player",
+																	"value": "veniam enim",
+																	"description": "(Required) Name of the player"
+																},
+																{
+																	"key": "id",
+																	"value": "23",
+																	"description": "(Required) Id of the card"
+																}
+															]
+														},
+														"description": "Add the specified card to the specified player's hand"
+													},
+													"response": [
+														{
+															"name": "Card added",
+															"originalRequest": {
+																"method": "POST",
+																"header": [],
+																"url": {
+																	"raw": "{{baseUrl}}/game/:game/cards/player/:player/:id",
+																	"host": [
+																		"{{baseUrl}}"
+																	],
+																	"path": [
+																		"game",
+																		":game",
+																		"cards",
+																		"player",
+																		":player",
+																		":id"
+																	],
+																	"variable": [
+																		{
+																			"key": "game",
+																			"value": "zq7d24gr9n",
+																			"description": "(Required) Id of the game"
+																		},
+																		{
+																			"key": "player",
+																			"value": "veniam enim",
+																			"description": "(Required) Name of the player"
+																		},
+																		{
+																			"key": "id",
+																			"value": "23",
+																			"description": "(Required) Id of the card"
+																		}
+																	]
+																}
+															},
+															"status": "OK",
+															"code": 200,
+															"_postman_previewlanguage": "json",
+															"header": [
+																{
+																	"key": "Content-Type",
+																	"value": "application/json"
+																}
+															],
+															"cookie": [],
+															"body": "{\n  \"id\": 3,\n  \"title\": \"Black Monday\",\n  \"epoch\": \"Pre\",\n  \"description\": \"US and EU lose supremacy on all NWO economy slots.\",\n  \"points\": 2,\n  \"faction\": \"E\",\n  \"type\": \"Economy\",\n  \"remove\": true,\n  \"image\": \"images/blackMonday.jpg\",\n  \"background\": \"#DDDDFF\",\n  \"year\": \"esse Duis dolore in\",\n  \"subtype\": \"\"\n}"
+														},
+														{
+															"name": "Cannot add any more cards",
+															"originalRequest": {
+																"method": "POST",
+																"header": [],
+																"url": {
+																	"raw": "{{baseUrl}}/game/:game/cards/player/:player/:id",
+																	"host": [
+																		"{{baseUrl}}"
+																	],
+																	"path": [
+																		"game",
+																		":game",
+																		"cards",
+																		"player",
+																		":player",
+																		":id"
+																	],
+																	"variable": [
+																		{
+																			"key": "game",
+																			"value": "zq7d24gr9n",
+																			"description": "(Required) Id of the game"
+																		},
+																		{
+																			"key": "player",
+																			"value": "veniam enim",
+																			"description": "(Required) Name of the player"
+																		},
+																		{
+																			"key": "id",
+																			"value": "23",
+																			"description": "(Required) Id of the card"
+																		}
+																	]
+																}
+															},
+															"status": "Bad Request",
+															"code": 400,
+															"_postman_previewlanguage": "text",
+															"header": [
+																{
+																	"key": "Content-Type",
+																	"value": "text/plain"
+																}
+															],
+															"cookie": [],
+															"body": ""
+														}
+													]
+												},
+												{
+													"name": "Remove the specified card from the specified player's hand",
+													"request": {
+														"method": "DELETE",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "application/json"
+															}
+														],
+														"url": {
+															"raw": "{{baseUrl}}/game/:game/cards/player/:player/:id",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"game",
+																":game",
+																"cards",
+																"player",
+																":player",
+																":id"
+															],
+															"variable": [
+																{
+																	"key": "game",
+																	"value": "zq7d24gr9n",
+																	"description": "(Required) Id of the game"
+																},
+																{
+																	"key": "player",
+																	"value": "veniam enim",
+																	"description": "(Required) Name of the player"
+																},
+																{
+																	"key": "id",
+																	"value": "23",
+																	"description": "(Required) Id of the card"
+																}
+															]
+														},
+														"description": "Remove the specified card from the specified player's hand"
+													},
+													"response": [
+														{
+															"name": "Card removed",
+															"originalRequest": {
+																"method": "DELETE",
+																"header": [],
+																"url": {
+																	"raw": "{{baseUrl}}/game/:game/cards/player/:player/:id",
+																	"host": [
+																		"{{baseUrl}}"
+																	],
+																	"path": [
+																		"game",
+																		":game",
+																		"cards",
+																		"player",
+																		":player",
+																		":id"
+																	],
+																	"variable": [
+																		{
+																			"key": "game",
+																			"value": "zq7d24gr9n",
+																			"description": "(Required) Id of the game"
+																		},
+																		{
+																			"key": "player",
+																			"value": "veniam enim",
+																			"description": "(Required) Name of the player"
+																		},
+																		{
+																			"key": "id",
+																			"value": "23",
+																			"description": "(Required) Id of the card"
+																		}
+																	]
+																}
+															},
+															"status": "OK",
+															"code": 200,
+															"_postman_previewlanguage": "json",
+															"header": [
+																{
+																	"key": "Content-Type",
+																	"value": "application/json"
+																}
+															],
+															"cookie": [],
+															"body": "{\n  \"id\": 3,\n  \"title\": \"Black Monday\",\n  \"epoch\": \"Pre\",\n  \"description\": \"US and EU lose supremacy on all NWO economy slots.\",\n  \"points\": 2,\n  \"faction\": \"E\",\n  \"type\": \"Economy\",\n  \"remove\": true,\n  \"image\": \"images/blackMonday.jpg\",\n  \"background\": \"#DDDDFF\",\n  \"year\": \"esse Duis dolore in\",\n  \"subtype\": \"\"\n}"
+														},
+														{
+															"name": "Cannot remove any more cards",
+															"originalRequest": {
+																"method": "DELETE",
+																"header": [],
+																"url": {
+																	"raw": "{{baseUrl}}/game/:game/cards/player/:player/:id",
+																	"host": [
+																		"{{baseUrl}}"
+																	],
+																	"path": [
+																		"game",
+																		":game",
+																		"cards",
+																		"player",
+																		":player",
+																		":id"
+																	],
+																	"variable": [
+																		{
+																			"key": "game",
+																			"value": "zq7d24gr9n",
+																			"description": "(Required) Id of the game"
+																		},
+																		{
+																			"key": "player",
+																			"value": "veniam enim",
+																			"description": "(Required) Name of the player"
+																		},
+																		{
+																			"key": "id",
+																			"value": "23",
+																			"description": "(Required) Id of the card"
+																		}
+																	]
+																}
+															},
+															"status": "Bad Request",
+															"code": 400,
+															"_postman_previewlanguage": "text",
+															"header": [
+																{
+																	"key": "Content-Type",
+																	"value": "text/plain"
+																}
+															],
+															"cookie": [],
+															"body": ""
+														}
+													]
+												}
+											]
+										},
+										{
+											"name": "header",
+											"item": [
+												{
+													"name": "Get the card that is being played as header card",
+													"request": {
+														"method": "GET",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "application/json"
+															}
+														],
+														"url": {
+															"raw": "{{baseUrl}}/game/:game/cards/player/:player/header",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"game",
+																":game",
+																"cards",
+																"player",
+																":player",
+																"header"
+															],
+															"variable": [
+																{
+																	"key": "game",
+																	"value": "zq7d24gr9n",
+																	"description": "(Required) Id of the game"
+																},
+																{
+																	"key": "player",
+																	"value": "veniam enim",
+																	"description": "(Required) Name of the player"
+																}
+															]
+														},
+														"description": "Get the card that is being played as header card"
+													},
+													"response": [
+														{
+															"name": "Card",
+															"originalRequest": {
+																"method": "GET",
+																"header": [],
+																"url": {
+																	"raw": "{{baseUrl}}/game/:game/cards/player/:player/header",
+																	"host": [
+																		"{{baseUrl}}"
+																	],
+																	"path": [
+																		"game",
+																		":game",
+																		"cards",
+																		"player",
+																		":player",
+																		"header"
+																	],
+																	"variable": [
+																		{
+																			"key": "game",
+																			"value": "zq7d24gr9n",
+																			"description": "(Required) Id of the game"
+																		},
+																		{
+																			"key": "player",
+																			"value": "veniam enim",
+																			"description": "(Required) Name of the player"
+																		}
+																	]
+																}
+															},
+															"status": "OK",
+															"code": 200,
+															"_postman_previewlanguage": "json",
+															"header": [
+																{
+																	"key": "Content-Type",
+																	"value": "application/json"
+																}
+															],
+															"cookie": [],
+															"body": "{\n  \"id\": 1\n}"
+														}
+													]
+												},
+												{
+													"name": "Unset the specified card as the one being played as header card",
+													"request": {
+														"method": "DELETE",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "application/json"
+															}
+														],
+														"url": {
+															"raw": "{{baseUrl}}/game/:game/cards/player/:player/header",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"game",
+																":game",
+																"cards",
+																"player",
+																":player",
+																"header"
+															],
+															"variable": [
+																{
+																	"key": "game",
+																	"value": "zq7d24gr9n",
+																	"description": "(Required) Id of the game"
+																},
+																{
+																	"key": "player",
+																	"value": "veniam enim",
+																	"description": "(Required) Name of the player"
+																}
+															]
+														},
+														"description": "Unset the specified card as the one being played as header card"
+													},
+													"response": [
+														{
+															"name": "Card unset as header card",
+															"originalRequest": {
+																"method": "DELETE",
+																"header": [],
+																"url": {
+																	"raw": "{{baseUrl}}/game/:game/cards/player/:player/header",
+																	"host": [
+																		"{{baseUrl}}"
+																	],
+																	"path": [
+																		"game",
+																		":game",
+																		"cards",
+																		"player",
+																		":player",
+																		"header"
+																	],
+																	"variable": [
+																		{
+																			"key": "game",
+																			"value": "zq7d24gr9n",
+																			"description": "(Required) Id of the game"
+																		},
+																		{
+																			"key": "player",
+																			"value": "veniam enim",
+																			"description": "(Required) Name of the player"
+																		}
+																	]
+																}
+															},
+															"status": "OK",
+															"code": 200,
+															"_postman_previewlanguage": "json",
+															"header": [
+																{
+																	"key": "Content-Type",
+																	"value": "application/json"
+																}
+															],
+															"cookie": [],
+															"body": "{\n  \"id\": 3,\n  \"title\": \"Black Monday\",\n  \"epoch\": \"Pre\",\n  \"description\": \"US and EU lose supremacy on all NWO economy slots.\",\n  \"points\": 2,\n  \"faction\": \"E\",\n  \"type\": \"Economy\",\n  \"remove\": true,\n  \"image\": \"images/blackMonday.jpg\",\n  \"background\": \"#DDDDFF\",\n  \"year\": \"esse Duis dolore in\",\n  \"subtype\": \"\"\n}"
+														}
+													]
+												},
+												{
+													"name": "Set the specified card as the one being played as header card",
+													"request": {
+														"method": "POST",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "application/json"
+															}
+														],
+														"url": {
+															"raw": "{{baseUrl}}/game/:game/cards/player/:player/header/:id",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"game",
+																":game",
+																"cards",
+																"player",
+																":player",
+																"header",
+																":id"
+															],
+															"variable": [
+																{
+																	"key": "game",
+																	"value": "zq7d24gr9n",
+																	"description": "(Required) Id of the game"
+																},
+																{
+																	"key": "player",
+																	"value": "veniam enim",
+																	"description": "(Required) Name of the player"
+																},
+																{
+																	"key": "id",
+																	"value": "23",
+																	"description": "(Required) Id of the card"
+																}
+															]
+														},
+														"description": "Set the specified card as the one being played as header card"
+													},
+													"response": [
+														{
+															"name": "Card set as header card",
+															"originalRequest": {
+																"method": "POST",
+																"header": [],
+																"url": {
+																	"raw": "{{baseUrl}}/game/:game/cards/player/:player/header/:id",
+																	"host": [
+																		"{{baseUrl}}"
+																	],
+																	"path": [
+																		"game",
+																		":game",
+																		"cards",
+																		"player",
+																		":player",
+																		"header",
+																		":id"
+																	],
+																	"variable": [
+																		{
+																			"key": "game",
+																			"value": "zq7d24gr9n",
+																			"description": "(Required) Id of the game"
+																		},
+																		{
+																			"key": "player",
+																			"value": "veniam enim",
+																			"description": "(Required) Name of the player"
+																		},
+																		{
+																			"key": "id",
+																			"value": "23",
+																			"description": "(Required) Id of the card"
+																		}
+																	]
+																}
+															},
+															"status": "OK",
+															"code": 200,
+															"_postman_previewlanguage": "json",
+															"header": [
+																{
+																	"key": "Content-Type",
+																	"value": "application/json"
+																}
+															],
+															"cookie": [],
+															"body": "{\n  \"id\": 3,\n  \"title\": \"Black Monday\",\n  \"epoch\": \"Pre\",\n  \"description\": \"US and EU lose supremacy on all NWO economy slots.\",\n  \"points\": 2,\n  \"faction\": \"E\",\n  \"type\": \"Economy\",\n  \"remove\": true,\n  \"image\": \"images/blackMonday.jpg\",\n  \"background\": \"#DDDDFF\",\n  \"year\": \"esse Duis dolore in\",\n  \"subtype\": \"\"\n}"
+														},
+														{
+															"name": "Cannot add the specified card",
+															"originalRequest": {
+																"method": "POST",
+																"header": [],
+																"url": {
+																	"raw": "{{baseUrl}}/game/:game/cards/player/:player/header/:id",
+																	"host": [
+																		"{{baseUrl}}"
+																	],
+																	"path": [
+																		"game",
+																		":game",
+																		"cards",
+																		"player",
+																		":player",
+																		"header",
+																		":id"
+																	],
+																	"variable": [
+																		{
+																			"key": "game",
+																			"value": "zq7d24gr9n",
+																			"description": "(Required) Id of the game"
+																		},
+																		{
+																			"key": "player",
+																			"value": "veniam enim",
+																			"description": "(Required) Name of the player"
+																		},
+																		{
+																			"key": "id",
+																			"value": "23",
+																			"description": "(Required) Id of the card"
+																		}
+																	]
+																}
+															},
+															"status": "Bad Request",
+															"code": 400,
+															"_postman_previewlanguage": "text",
+															"header": [
+																{
+																	"key": "Content-Type",
+																	"value": "text/plain"
+																}
+															],
+															"cookie": [],
+															"body": ""
+														}
+													]
+												}
+											]
+										},
+										{
+											"name": "Get the cards of the specified player's hand",
+											"request": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "application/json"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/game/:game/cards/player/:player",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"game",
+														":game",
+														"cards",
+														"player",
+														":player"
+													],
+													"variable": [
+														{
+															"key": "game",
+															"value": "zq7d24gr9n",
+															"description": "(Required) Id of the game"
+														},
+														{
+															"key": "player",
+															"value": "veniam enim",
+															"description": "(Required) Name of the player"
+														}
+													]
+												},
+												"description": "Get the cards of the specified player's hand"
+											},
+											"response": [
+												{
+													"name": "Cards",
+													"originalRequest": {
+														"method": "GET",
+														"header": [],
+														"url": {
+															"raw": "{{baseUrl}}/game/:game/cards/player/:player",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"game",
+																":game",
+																"cards",
+																"player",
+																":player"
+															],
+															"variable": [
+																{
+																	"key": "game",
+																	"value": "zq7d24gr9n",
+																	"description": "(Required) Id of the game"
+																},
+																{
+																	"key": "player",
+																	"value": "veniam enim",
+																	"description": "(Required) Name of the player"
+																}
+															]
+														}
+													},
+													"status": "OK",
+													"code": 200,
+													"_postman_previewlanguage": "json",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "application/json"
+														}
+													],
+													"cookie": [],
+													"body": "[\n  {\n    \"id\": 1\n  },\n  {\n    \"id\": 1\n  }\n]"
+												}
+											]
+										}
+									]
+								},
+								{
+									"name": "Get the resources of the cards",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/game/:game/cards",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"game",
+												":game",
+												"cards"
+											],
+											"variable": [
+												{
+													"key": "game",
+													"value": "zq7d24gr9n",
+													"description": "(Required) Id of the game"
+												}
+											]
+										},
+										"description": "Get the resources of the cards"
+									},
+									"response": [
+										{
+											"name": "Cards resources",
+											"originalRequest": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{baseUrl}}/game/:game/cards",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"game",
+														":game",
+														"cards"
+													],
+													"variable": [
+														{
+															"key": "game",
+															"value": "zq7d24gr9n",
+															"description": "(Required) Id of the game"
+														}
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "[\n  {\n    \"name\": \"deck\"\n  },\n  {\n    \"name\": \"playing\"\n  },\n  {\n    \"name\": \"player\"\n  }\n]"
+										}
+									]
+								},
+								{
+									"name": "Get the details of the card with the specified id",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/game/:game/cards/:id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"game",
+												":game",
+												"cards",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "game",
+													"value": "zq7d24gr9n",
+													"description": "(Required) Id of the game"
+												},
+												{
+													"key": "id",
+													"value": "3",
+													"description": "(Required) Id of the card"
+												}
+											]
+										},
+										"description": "Get the details of the card with the specified id"
+									},
+									"response": [
+										{
+											"name": "Card",
+											"originalRequest": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{baseUrl}}/game/:game/cards/:id",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"game",
+														":game",
+														"cards",
+														":id"
+													],
+													"variable": [
+														{
+															"key": "game",
+															"value": "zq7d24gr9n",
+															"description": "(Required) Id of the game"
+														},
+														{
+															"key": "id",
+															"value": "3",
+															"description": "(Required) Id of the card"
+														}
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"id\": 3,\n  \"title\": \"Black Monday\",\n  \"epoch\": \"Pre\",\n  \"description\": \"US and EU lose supremacy on all NWO economy slots.\",\n  \"points\": 2,\n  \"faction\": \"E\",\n  \"type\": \"Economy\",\n  \"remove\": true,\n  \"image\": \"images/blackMonday.jpg\",\n  \"background\": \"#DDDDFF\",\n  \"year\": \"esse Duis dolore in\",\n  \"subtype\": \"\"\n}"
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "Delete the specified game",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/game/:game",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"game",
+										":game"
+									],
+									"variable": [
+										{
+											"key": "game",
+											"value": "zq7d24gr9n",
+											"description": "(Required) Id of the game"
+										}
+									]
+								},
+								"description": "Delete the specified game"
+							},
+							"response": [
+								{
+									"name": "Game removed",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/game/:game",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"game",
+												":game"
+											],
+											"variable": [
+												{
+													"key": "game",
+													"value": "zq7d24gr9n",
+													"description": "(Required) Id of the game"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"id\": \"zq7d24gr9n\"\n}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "Get the games",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/game",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"game"
+							]
+						},
+						"description": "Get the games"
+					},
+					"response": [
+						{
+							"name": "Games",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/game",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"game"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "[\n  {\n    \"id\": \"zq7d24gr9n\"\n  },\n  {\n    \"id\": \"zq7d24gr9n\"\n  }\n]"
+						}
+					]
+				},
+				{
+					"name": "Create a new game (with a board and the cards)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/game",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"game"
+							]
+						},
+						"description": "Create a new game (with a board and the cards)"
+					},
+					"response": [
+						{
+							"name": "Game created",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/game",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"game"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"id\": \"zq7d24gr9n\"\n}"
+						}
+					]
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8000",
+			"type": "string"
+		}
+	]
+}
